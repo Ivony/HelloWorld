@@ -20,7 +20,10 @@ namespace HelloWorld.Core
     }
 
 
-    public static 
+    public static ProductionDescription GetProduction( string name )
+    {
+      throw new NotImplementedException();
+    }
 
 
   }

@@ -17,7 +17,7 @@ namespace HelloWorld.Core
     public Coordinate Coordinate { get; private set; }
 
     /// <summary>
-    /// 地块建筑
+    /// 地块上的建筑
     /// </summary>
     public BuildingDescriptor Building { get; private set; }
 

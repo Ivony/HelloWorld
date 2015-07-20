@@ -25,6 +25,5 @@ namespace HelloWorld.Core
       throw new NotImplementedException();
     }
 
-
   }
 }

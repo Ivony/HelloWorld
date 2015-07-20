@@ -19,7 +19,7 @@ namespace HelloWorld.Core
     /// <summary>
     /// 地块建筑
     /// </summary>
-    public Building Building { get; private set; }
+    public BuildingDescriptor Building { get; private set; }
 
   }
 }

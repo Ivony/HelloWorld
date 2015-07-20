@@ -6,11 +6,14 @@ using System.Threading.Tasks;
 namespace HelloWorld.Core
 {
 
+
   /// <summary>
-  /// 定义一个生产过程
+  /// 定义一个物品描述信息
   /// </summary>
-  public class Production
+  public class ItemDescriptor
   {
+
+    public string Name { get; private set; }
 
   }
 }

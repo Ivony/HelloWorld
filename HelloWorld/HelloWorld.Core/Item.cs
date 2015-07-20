@@ -12,7 +12,9 @@ namespace HelloWorld.Core
   public class Item
   {
 
-    public string Name { get; private set; }
+    public ItemDescriptor ItemDescriptor { get; private set; }
+
+    public int Quantity { get; private set; }
 
   }
 }

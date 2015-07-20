@@ -22,6 +22,11 @@ namespace HelloWorld.Core
 
     }
 
+    public ItemList Items
+    {
+      get { throw new NotImplementedException(); }
+    }
+
 
   }
 }

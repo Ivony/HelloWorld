@@ -4,7 +4,7 @@
   /// <summary>
   /// 建筑
   /// </summary>
-  public class Building
+  public class BuildingDescriptor
   {
 
   }

@@ -11,7 +11,15 @@ namespace HelloWorld.Core
   public sealed class Place
   {
 
-    
+    /// <summary>
+    /// 地块坐标
+    /// </summary>
+    public Coordinate Coordinate { get; private set; }
+
+    /// <summary>
+    /// 地块建筑
+    /// </summary>
+    public Building Building { get; private set; }
 
   }
 }

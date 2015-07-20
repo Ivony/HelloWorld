@@ -50,6 +50,28 @@
                 }
                 var buildSer = JsonConvert.SerializeObject(buildList);
                 File.WriteAllText(baseSavePath + "Build.json", buildSer);
+
+                //出建筑功能
+                var buildFetureResource = MySqlHelper.ExecuteDataset(conn, "select * from BuildFeture");
+                var buildFetureList = new List<BuildFeture>();
+                for (int i = 0; i < buildFetureResource.Tables[0].Rows.Count; i++)
+                {
+                    var row=buildFetureResource.Tables[0].Rows[i];
+                    buildFetureList.Add(new BuildFeture()
+                    {
+                        BuildID = Convert.ToInt32(row["BuildID"]),
+                        Description = row["Description"].ToString(),
+                        ID = Convert.ToInt32(row["ID"]),
+                        Name = row["Name"].ToString(),
+                        RequiredTime = Convert.ToInt64(row["RequiredTime"]),
+                        ResourceNeed = row["ResourceNeed"].ToString(),
+                        Result = row["Result"].ToString(),
+                        Workers = Convert.ToInt32(row["Workers"])
+                    });
+                }
+                var buildFetureSeri = JsonConvert.SerializeObject(buildFetureList);
+                File.WriteAllText(baseSavePath + "BuildFeture.json", buildFetureSeri);
+
             }
 
             Console.WriteLine("OK");

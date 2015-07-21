@@ -12,5 +12,8 @@ namespace HelloWorld.Core
 
     public abstract Player GetPlayer( Guid userId );
 
+
+    public abstract Player RegisterPlayer( string email, string password );
+
   }
 }

@@ -16,9 +16,9 @@ namespace HelloWorld.Core
     /// <summary>
     /// 获取一个物品描述
     /// </summary>
-    /// <param name="name"></param>
+    /// <param name="id"></param>
     /// <returns></returns>
-    public static ItemDescriptor GetItem( string name )
+    public static ItemDescriptor GetItem( Guid id )
     {
       throw new NotImplementedException();
     }
@@ -27,9 +27,9 @@ namespace HelloWorld.Core
     /// <summary>
     /// 获取一个建筑描述
     /// </summary>
-    /// <param name="name"></param>
+    /// <param name="id"></param>
     /// <returns></returns>
-    public static BuildingDescriptor GetBuilding( string name )
+    public static BuildingDescriptor GetBuilding( Guid id )
     {
       throw new NotImplementedException();
     }
@@ -38,9 +38,19 @@ namespace HelloWorld.Core
     /// <summary>
     /// 获取一条生产规则
     /// </summary>
-    /// <param name="name"></param>
+    /// <param name="id"></param>
     /// <returns></returns>
-    public static ProductionDescription GetProduction( string name )
+    public static ProductionDescription GetProduction( Guid id )
+    {
+      throw new NotImplementedException();
+    }
+
+    /// <summary>
+    /// 获取一条建造规则
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public static ConstructionDescriptor GetConstruction( Guid id )
     {
       throw new NotImplementedException();
     }

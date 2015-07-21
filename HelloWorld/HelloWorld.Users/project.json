@@ -1,0 +1,34 @@
+{
+  "version": "1.0.0-*",
+  "description": "HelloWorld.Users Class Library",
+  "authors":
+  [
+    "Ivony"
+  ],
+  "tags":
+  [
+    ""
+  ],
+  "projectUrl": "",
+  "licenseUrl": "",
+
+  "dependencies":
+  {
+    "System.Collections": "4.0.10-beta-23019",
+    "System.Linq": "4.0.0-beta-23019",
+    "System.Threading": "4.0.10-beta-23019",
+    "System.Runtime": "4.0.10-beta-23019",
+    "Microsoft.CSharp": "4.0.0-beta-23019",
+    "HelloWorld.Core": "1.0.0-*"
+  },
+
+  "frameworks":
+  {
+    "dnx50":
+    {
+    },
+    "dnxcore50":
+    {
+    }
+  }
+}

@@ -1,1 +1,11 @@
-[{"ID":1,"Name":"草庐","Description":"最cheap的房间","RequiredTime":3600,"Workers":1,"DependentBuild":0,"ResourceNeed":"{1:100}"}]
+[
+  {
+    "ID": 1,
+    "Name": "草庐",
+    "Description": "最cheap的房间",
+    "RequiredTime": 3600,
+    "Workers": 1,
+    "DependentBuild": 0,
+    "ResourceNeed": "{1:100}"
+  }
+]

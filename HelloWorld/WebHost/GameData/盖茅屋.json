@@ -1,0 +1,15 @@
+﻿{
+  "type": "construction",
+  "id": "{DB1A39FF-CA4C-4470-A908-3EB1801A3BC4}",
+  "origin-building": "{9E104099-3561-41D4-A990-B897DD4BED4A}", //荒地
+  "building": "{E5528FEA-0223-4346-99E3-5AB828C121DE}", //茅屋
+  "resources":
+  {
+    "items":
+    {
+      "{FFCC7FB9-D4AC-4F7A-8B9E-C1F7AFAA6761}": 100, //茅草
+    },
+    "workers": 2,
+    "time": 1000,
+  }
+}

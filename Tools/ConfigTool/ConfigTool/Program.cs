@@ -24,7 +24,7 @@
                     var row = baseResource.Tables[0].Rows[i];
                     brList.Add(new BaseResource()
                     {
-                        ID = Convert.ToInt32(row[0]),
+                        ID = row[0].ToString(),
                         Name = row[1].ToString()
                     });
                 }
@@ -39,13 +39,15 @@
                     var row = buildResource.Tables[0].Rows[i];
                     buildList.Add(new Build()
                     {
-                        ID = Convert.ToInt32(row[0]),
+                        ID = row["ID"].ToString(),
                         Name = row[1].ToString(),
                         Description = row[2].ToString(),
                         RequiredTime = Convert.ToInt64(row[3]),
                         Workers = Convert.ToInt32(row[4]),
-                        DependentBuild = Convert.ToInt32(row[5]),
-                        ResourceNeed = row[6].ToString()
+                        DependentBuild = row[5].ToString(),
+                        ResourceNeed = row[6].ToString(),
+                        HP=Convert.ToInt32(row["HP"]),
+                        AP = Convert.ToInt32(row["AP"])
                     });
                 }
                 var buildSer = JsonConvert.SerializeObject(buildList);
@@ -61,7 +63,7 @@
                     {
                         BuildID = Convert.ToInt32(row["BuildID"]),
                         Description = row["Description"].ToString(),
-                        ID = Convert.ToInt32(row["ID"]),
+                        ID = row["ID"].ToString(),
                         Name = row["Name"].ToString(),
                         RequiredTime = Convert.ToInt64(row["RequiredTime"]),
                         ResourceNeed = row["ResourceNeed"].ToString(),
@@ -72,7 +74,55 @@
                 var buildFetureSeri = JsonConvert.SerializeObject(buildFetureList);
                 File.WriteAllText(baseSavePath + "BuildFeture.json", buildFetureSeri);
 
+
+
+
+                 //出物品
+                var itemResource = MySqlHelper.ExecuteDataset(conn, "select * from item");
+                var itemList = new List<Item>();
+                for (int i = 0; i < itemResource.Tables[0].Rows.Count; i++)
+                {
+                    var r=itemResource.Tables[0].Rows[i];
+                    itemList.Add(new Item()
+                    {
+                        ID = r["ID"].ToString(),
+                        Description = r["Description"].ToString(),
+                        Name = r["Name"].ToString(),
+                        ResourceNeed = r["ResourceNeed"].ToString()
+                    });
+                }
+                var itemser = JsonConvert.SerializeObject(itemList);
+                File.WriteAllText(baseSavePath + "Item.json", itemser);
+
+
+                //出人物
+                var personResource = MySqlHelper.ExecuteDataset(conn, "select * from person");
+                var personList = new List<Person>();
+                for (int i = 0; i < personResource.Tables[0].Rows.Count; i++)
+                {
+                    var r = personResource.Tables[0].Rows[i];
+                    personList.Add(new Person()
+                    {
+                        AP = Convert.ToInt32(r["AP"]),
+                        DependentPerson = r["DependentPerson"].ToString(),
+                        Description = r["Description"].ToString(),
+                        HP = Convert.ToInt32(r["HP"]),
+                        ID =r["ID"].ToString(),
+                        Name = r["Name"].ToString(),
+                        ResourceNeed = r["ResourceNeed"].ToString()
+                    });
+                }
+                var personSer = JsonConvert.SerializeObject(personList);
+                File.WriteAllText(baseSavePath + "Person.json", personSer);
+
+
+
+
+
+
             }
+
+           
 
             Console.WriteLine("OK");
             Console.ReadKey();

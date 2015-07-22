@@ -71,8 +71,28 @@ namespace ConfigHelper.Controllers
             WriteFile("construction.json", constr.ToString());
             //product
             var product = DBHelper.Query<Product>("select * from product");
-            var prostr = JsonConvert.SerializeObject(product);
-            WriteFile("product.json", prostr);
+            var productstr = new StringBuilder();
+            productstr.Append("[");
+            foreach (var p in product)
+            {
+                productstr.Append("{");
+                productstr.Append(ConstructionJsonItem("ID", p.ID.ToString()));
+                productstr.Append(ConstructionJsonItem("Name", p.Name));
+                productstr.Append(ConstructionJsonItem("Description", p.Description));
+                productstr.Append(ConstructionJsonItem("Building", p.Description));
+                productstr.Append("\"Products\":" + p.Products + ",");
+                productstr.Append("\"Resource\":{");
+                productstr.Append(ConstructionJsonItem("Workers", p.Workers));
+                productstr.Append(ConstructionJsonItem("Time", p.Time));
+                productstr.Append("\"Items\":");
+                productstr.Append(p.Resource);
+                productstr.Append("}");
+                productstr.Append("},");
+            }
+            if (productstr[productstr.Length - 1] == ',') productstr.Remove(productstr.Length - 1, 1);
+            productstr.Append("]");
+            // var prostr = JsonConvert.SerializeObject(product);
+            WriteFile("product.json", productstr.ToString());
 
 
             return null;

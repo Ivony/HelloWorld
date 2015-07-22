@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "ItemList";
+}
+<link href="/Content/bootstrap.css" rel="stylesheet" />
+<h2>物品列表</h2>
+<a href="/Home/ItemEdit">新增物品</a>
+@{
+    var data = ViewData["data"] as Entity.Models.Item[];
+}
+<table class="table">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>操作</th>
+    </tr>
+    @foreach (var d in data)
+    {
+        <tr>
+            <td>@d.ID</td>
+            <td>@d.Name</td>
+            <td>@d.Description</td>
+            <td>修改</td>
+        </tr>
+    }
+</table>

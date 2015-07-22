@@ -23,6 +23,7 @@ namespace ConfigHelper.Controllers
             return View();
         }
 
+        #region build
         public ActionResult BuildList()
         {
             var data = DBHelper.Query<Build>("select * from build");
@@ -32,7 +33,7 @@ namespace ConfigHelper.Controllers
 
         public ActionResult BuildEdit(Guid? id)
         {
-            if (null == id) { return View(new Build() { ID = Guid.NewGuid() }); }
+            if (null == id) { return View(new Build() { ID = EmtyGuid }); }
             var model = DBHelper.Query<Build>(string.Format("select * from build where ID='{0}' ", id.ToString())).FirstOrDefault();
             return View(model);
         }
@@ -40,9 +41,45 @@ namespace ConfigHelper.Controllers
         [HttpPost]
         public ActionResult BuildEdit(Build model)
         {
-            var res = DBHelper.Insert(model);
-            TempData["res"]="ok";
-            return RedirectToAction("BuildEdit", new { id = new Guid(res.ToString()) });
+            string res = string.Empty;
+            if (model.ID == EmtyGuid)
+            {
+                model.ID = Guid.NewGuid();
+                res = DBHelper.Insert(model).ToString();
+            }
+            TempData["res"] = "ok";
+            return RedirectToAction("BuildEdit", new { id = new Guid(res) });
+        }
+
+        #endregion
+
+
+        public ActionResult ItemList()
+        {
+            var data = GetAllItem();
+            ViewData["data"] = data;
+            return View();
+        }
+
+        public ActionResult ItemEdit(Guid? id)
+        {
+
+            if (null == id) { return View(new Item() { ID = EmtyGuid }); }
+            var model = DBHelper.Query<Item>(string.Format("select * from item where ID='{0}'", id.ToString())).FirstOrDefault();
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult ItemEdit(Item model)
+        {
+            string res = string.Empty;
+            if (model.ID == EmtyGuid)
+            {
+                model.ID = Guid.NewGuid();
+                res = DBHelper.Insert(model).ToString();
+            }
+            TempData["res"] = "ok";
+            return RedirectToAction("ItemEdit", new { id = new Guid(res) });
         }
 
         public ActionResult CreateJson()
@@ -124,6 +161,8 @@ namespace ConfigHelper.Controllers
         {
             return DBHelper.Query<Item>("select * from item");
         }
+
+        private static readonly Guid EmtyGuid= new Guid("00000000-0000-0000-0000-000000000000");
 
     }
 }

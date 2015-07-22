@@ -1,0 +1,89 @@
+﻿@{
+    ViewBag.Title = "";
+}
+@model Entity.Models.Product
+<link href="/Content/bootstrap.css" rel="stylesheet" />
+<h2>编辑房屋</h2>
+@if (null != TempData["res"])
+{ <font color="red">@TempData["res"]</font>}
+@{
+    var item = ConfigHelper.Controllers.HomeController.GetAllItem();
+    var itemList = new List<SelectListItem>();
+    foreach (var i in item)
+    {
+        itemList.Add(new SelectListItem() { Value = i.ID.ToString(), Text = i.Name });
+    }
+}
+<div style="width:500px;padding-left:10px">
+    <form action="/Home/ItemEdit" method="post" class="form-horizontal">
+
+        @Html.Hidden("ID", Model.ID)
+        <div class="form-group">
+            <label class="col-sm-2 control-label">物品</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="Name" name="Name" value="@Model.Name">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">描述</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="Description" name="Description" value="@Model.Description">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">人工</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="Workers" name="Workers" value="@Model.Workers">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">时间</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="Time" name="Time" value="@Model.Time">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">原材料</label>
+            <div class="col-sm-10">
+                @Html.DropDownList("item1", itemList)
+                &nbsp;&nbsp;数量
+                <input type="text" id="item1num" value="" />
+                &nbsp;&nbsp;
+                <button type="button" class="btn btn-primary btn-sm">添加</button>
+            </div>
+        </div>
+        <div class="form-group">
+            <table id="resourceTable" class="table">
+                <tr>
+                    <th>物品</th>
+                    <th>数量</th>
+                </tr>
+            </table>
+        </div>
+        <button type="submit" class="btn btn-default">保存</button>
+    </form>
+</div>
+<script src="/Scripts/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">
+    (function ($) {
+        var resource = [],
+            item1sel = $("#item1"),
+            item1num = $("#item1num"),
+            resourceTable = $("#resourceTable"),
+            checkExitst = function (id) {
+                for (var i = 0; i < resource.length; i++) if (resource[i][0] == id) return true;
+                return false;
+            },
+            addItem = function () {
+                var itemID = item1sel.val(),
+                    itemNum = itemNum.val();
+                if (checkExitst) {
+                    alert("该资源已经存在");
+                    return false;
+                }
+                resource.push({ itemID: itemNum });
+            }
+
+    }(jQuery));
+</script>

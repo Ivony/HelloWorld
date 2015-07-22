@@ -33,7 +33,7 @@ namespace ConfigHelper.Controllers
 
         public ActionResult BuildEdit(Guid? id)
         {
-            if (null == id) { return View(new Build() { ID = EmtyGuid }); }
+            if (null == id) { return View(new Build() { ID = EmptyGuid }); }
             var model = DBHelper.Query<Build>(string.Format("select * from build where ID='{0}' ", id.ToString())).FirstOrDefault();
             return View(model);
         }
@@ -42,7 +42,7 @@ namespace ConfigHelper.Controllers
         public ActionResult BuildEdit(Build model)
         {
             string res = string.Empty;
-            if (model.ID == EmtyGuid)
+            if (model.ID == EmptyGuid)
             {
                 model.ID = Guid.NewGuid();
                 res = DBHelper.Insert(model).ToString();
@@ -53,7 +53,7 @@ namespace ConfigHelper.Controllers
 
         #endregion
 
-
+        #region Item
         public ActionResult ItemList()
         {
             var data = GetAllItem();
@@ -64,7 +64,7 @@ namespace ConfigHelper.Controllers
         public ActionResult ItemEdit(Guid? id)
         {
 
-            if (null == id) { return View(new Item() { ID = EmtyGuid }); }
+            if (null == id) { return View(new Item() { ID = EmptyGuid }); }
             var model = DBHelper.Query<Item>(string.Format("select * from item where ID='{0}'", id.ToString())).FirstOrDefault();
             return View(model);
         }
@@ -73,13 +73,33 @@ namespace ConfigHelper.Controllers
         public ActionResult ItemEdit(Item model)
         {
             string res = string.Empty;
-            if (model.ID == EmtyGuid)
+            if (model.ID == EmptyGuid)
             {
                 model.ID = Guid.NewGuid();
                 res = DBHelper.Insert(model).ToString();
             }
             TempData["res"] = "ok";
             return RedirectToAction("ItemEdit", new { id = new Guid(res) });
+        }
+        #endregion
+
+        public ActionResult ProductList()
+        {
+            var data = DBHelper.Query<Models.SimpleModel>("select ID,Name from product");
+            ViewData["data"] = data;
+            return View();
+        }
+
+        public ActionResult ProductEdit(Guid? id)
+        {
+            if (null == id) { return View(new Product() { ID = EmptyGuid }); }
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ProductEdit(Product model)
+        {
+            return null;
         }
 
         public ActionResult CreateJson()
@@ -162,7 +182,7 @@ namespace ConfigHelper.Controllers
             return DBHelper.Query<Item>("select * from item");
         }
 
-        private static readonly Guid EmtyGuid= new Guid("00000000-0000-0000-0000-000000000000");
+        private static readonly Guid EmptyGuid= new Guid("00000000-0000-0000-0000-000000000000");
 
     }
 }

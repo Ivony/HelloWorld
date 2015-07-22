@@ -25,17 +25,24 @@ namespace ConfigHelper.Controllers
 
         public ActionResult BuildList()
         {
+            var data = DBHelper.Query<Build>("select * from build");
+            ViewData["data"] = data;
             return View();
         }
 
-        public ActionResult BuildEdit(int? id)
+        public ActionResult BuildEdit(Guid? id)
         {
-            return View();
+            if (null == id) { return View(new Build() { ID = Guid.NewGuid() }); }
+            var model = DBHelper.Query<Build>(string.Format("select * from build where ID='{0}' ", id.ToString())).FirstOrDefault();
+            return View(model);
         }
 
+        [HttpPost]
         public ActionResult BuildEdit(Build model)
         {
-            return null;
+            var res = DBHelper.Insert(model);
+            TempData["res"]="ok";
+            return RedirectToAction("BuildEdit", new { id = new Guid(res.ToString()) });
         }
 
         public ActionResult CreateJson()
@@ -95,7 +102,7 @@ namespace ConfigHelper.Controllers
             WriteFile("product.json", productstr.ToString());
 
 
-            return null;
+            return Content("ok");
         }
 
         private void WriteFile(string fileName, string data)
@@ -111,6 +118,11 @@ namespace ConfigHelper.Controllers
         private string ConstructionJsonItem(string name, int value)
         {
             return string.Format("\"{0}\":{1},", name, value);
+        }
+
+        public static Item[] GetAllItem()
+        {
+            return DBHelper.Query<Item>("select * from item");
         }
 
     }

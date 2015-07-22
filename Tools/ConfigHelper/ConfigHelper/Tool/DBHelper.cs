@@ -17,5 +17,14 @@ namespace ConfigHelper.Tool
                 return db.Query<T>(sqlstr).ToArray();
             }
         }
+
+        public static object Insert(object model)
+        {
+            using (var db = new Database("conn"))
+            {
+                return db.Insert(model);
+            }
+        }
+
     }
 }

@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "BuildList";
+}
+<link href="/Content/bootstrap.css" rel="stylesheet" />
+<h2>房屋列表</h2>
+<a href="/Home/BuildEdit">添加房屋</a>
+@{
+    var data = ViewData["data"] as Entity.Models.Build[];
+}
+<table class="table">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>操作</th>
+    </tr>
+    @foreach (var d in data)
+    {
+        <tr>
+            <td>@d.ID</td>
+            <td>@d.Name</td>
+            <td>@d.Description</td>
+            <td>修改</td>
+        </tr>
+    }
+</table>

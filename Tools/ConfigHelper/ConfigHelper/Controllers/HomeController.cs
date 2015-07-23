@@ -26,7 +26,7 @@ namespace ConfigHelper.Controllers
         #region build
         public ActionResult BuildList()
         {
-            var data = DBHelper.Query<Build>("select * from build");
+            var data = GetAllBuild();
             ViewData["data"] = data;
             return View();
         }
@@ -93,13 +93,38 @@ namespace ConfigHelper.Controllers
         public ActionResult ProductEdit(Guid? id)
         {
             if (null == id) { return View(new Product() { ID = EmptyGuid }); }
-            return View();
+            var model = DBHelper.Query<Product>(string.Format("select * from product where ID='{0}'", id.ToString())).FirstOrDefault(); 
+            return View(model);
         }
 
         [HttpPost]
         public ActionResult ProductEdit(Product model)
         {
-            return null;
+
+            model.Resource = JsonStrToJsonStr(model.Resource);
+            model.Products = JsonStrToJsonStr(model.Products);
+            string res = string.Empty;
+            if (model.ID == EmptyGuid)
+            {
+                model.ID = Guid.NewGuid();
+                res = DBHelper.Insert(model).ToString();
+            }
+            TempData["res"] = res;
+            return RedirectToAction("ProductEdit", new { id = new Guid(res) });
+        }
+
+        private static string JsonStrToJsonStr(string jsonStr)
+        {
+            var resourceJson = JsonConvert.DeserializeObject<Models.SimpleJsonModel[]>(jsonStr);
+            var sb = new StringBuilder();
+            sb.Append("[");
+            foreach (var r in resourceJson)
+            {
+                sb.Append("{\"" + r.ID + "\":" + r.Num + "},");
+            }
+            if (sb[sb.Length - 1] == ',') sb.Remove(sb.Length - 1, 1);
+            sb.Append("]");
+            return sb.ToString();
         }
 
         public ActionResult CreateJson()
@@ -182,7 +207,12 @@ namespace ConfigHelper.Controllers
             return DBHelper.Query<Item>("select * from item");
         }
 
-        private static readonly Guid EmptyGuid= new Guid("00000000-0000-0000-0000-000000000000");
+        public static Build[] GetAllBuild()
+        {
+            return DBHelper.Query<Build>("select * from build");
+        }
+
+        private static readonly Guid EmptyGuid = new Guid("00000000-0000-0000-0000-000000000000");
 
     }
 }

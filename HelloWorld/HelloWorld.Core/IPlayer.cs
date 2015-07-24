@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace HelloWorld.Core
 {
-  public sealed class Player
+  public interface IPlayer
   {
 
-    public string Email { get; private set; }
+    string Email { get; }
 
   }
 }

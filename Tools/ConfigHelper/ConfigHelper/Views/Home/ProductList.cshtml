@@ -1,0 +1,27 @@
+﻿@{
+    ViewBag.Title = "ProductList";
+}
+
+<link href="/Content/bootstrap.css" rel="stylesheet" />
+<h2>生产规则</h2>
+<a href="/Home/ProductEdit">添加规则</a>
+@{
+    var data = ViewData["data"] as ConfigHelper.Models.SimpleModel[];
+}
+<table class="table">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>操作</th>
+    </tr>
+    @foreach (var d in data)
+    {
+        <tr>
+            <td>@d.ID</td>
+            <td>@d.Name</td>
+            <td>修改</td>
+        </tr>
+    }
+</table>
+
+

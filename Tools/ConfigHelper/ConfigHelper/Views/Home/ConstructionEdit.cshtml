@@ -1,9 +1,10 @@
 ﻿@{
     ViewBag.Title = "";
 }
-@model Entity.Models.Product
+
+<h2>编辑建造规则</h2>
+@model Entity.Models.Construction
 <link href="/Content/bootstrap.css" rel="stylesheet" />
-<h2>编辑规则</h2>
 @if (null != TempData["res"])
 { <font color="red">@TempData["res"]</font>}
 @{
@@ -20,11 +21,10 @@
     {
         buildList.Add(new SelectListItem() { Text = b.Name, Value = b.ID.ToString() });
     }
-    
+
 }
 <div style="width:500px;padding-left:10px">
-    <form action="/Home/ProductEdit" method="post" id="form" class="form-horizontal">
-
+    <form action="/Home/ConstructionEdit" method="post" id="form" class="form-horizontal">
         @Html.Hidden("ID", Model.ID)
         <div class="form-group">
             <label class="col-sm-2 control-label">名称</label>
@@ -39,24 +39,28 @@
             </div>
         </div>
         <div class="form-group">
+            <label class="col-sm-2 control-label">新建筑</label>
+            <div class="col-sm-10">
+                @Html.DropDownList("Building", buildList)
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">新建筑</label>
+            <div class="col-sm-10">
+                @Html.DropDownList("OriginBuilding", buildList)
+            </div>
+        </div>
+        <div class="form-group">
             <label class="col-sm-2 control-label">人工</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="Workers" name="Workers" value="@Model.Workers">
+                <input type="text" class="form-control" id="Description" name="Description" value="@Model.Workers">
             </div>
-        </div>
-        <div class="form-group">
+        </div><div class="form-group">
             <label class="col-sm-2 control-label">时间</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="Time" name="Time" value="@Model.Time">
+                <input type="text" class="form-control" id="Description" name="Description" value="@Model.TIme">
             </div>
         </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">作坊</label>
-            <div class="col-sm-10">
-                @Html.DropDownList("Building",buildList)
-            </div>
-        </div>
-
         <div class="form-group">
             <label class="col-sm-2 control-label">原材料</label>
             <div class="col-sm-10">
@@ -76,27 +80,7 @@
                 </tr>
             </table>
         </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">成品</label>
-            <div class="col-sm-10">
-                @Html.DropDownList("item2", itemList)
-                &nbsp;&nbsp;数量
-                <input type="text" id="item2num" value="" />
-                &nbsp;&nbsp;
-                <button type="button" id="item2add" class="btn btn-primary btn-sm">添加</button>
-            </div>
-        </div>
-        <div class="form-group">
-            <table id="productTable" class="table" style="margin-left:30px">
-                <tr>
-                    <th>物品</th>
-                    <th>数量</th>
-                    <th>操作</th>
-                </tr>
-            </table>
-        </div>
-        <input type="hidden" name="Resource" id="hidResource" value="" />
-        <input type="hidden" name="Products" value="" id="hidProduct" />
+        <input type="hidden" name="Items" value="" id="resource" />
         <button type="submit" id="sub" class="btn btn-default">保存</button>
     </form>
 </div>
@@ -108,9 +92,6 @@
             item1sel = $("#item1"),
             item1num = $("#item1num"),
             resourceTable = $("#resourceTable"),
-            item2sel = $("#item2"),
-            item2num = $("#item2num"),
-            productTable = $("#productTable"),
             addTableItem = function (j, table, dataCollector) {
                 var html = "<tr><td>" + j.Name + "</td><td>" + j.Num + "</td><td id=" + j.ID + " style='cursor:pointer' value='" + j.ID + "' >删除</td></tr>";
                 table.append(html);
@@ -153,42 +134,27 @@
             },
             bindFunc1 = function () {
                 addItem(item1sel, item1num, resource, resourceTable)
-            },
-            bindFunc2 = function () {
-                addItem(item2sel, item2num, productor, productTable);
-            }
+            };
+           
         $("#item1add").click(bindFunc1);
-        $("#item2add").click(bindFunc2);
-        $("#sub").click(function () {           
-            $("#hidResource").val(JSON.stringify(resource));
-            $("#hidProduct").val(JSON.stringify(productor));
+        $("#sub").click(function () {
+            $("#resource").val(JSON.stringify(resource));
             $("#form").submit();
             return false;
         });
 
         $(document).ready(function () {
-            var strResource = "@ConfigHelper.Controllers.HomeController.TOJsonStr(Model.Resource)",
-                strProduct = "@ConfigHelper.Controllers.HomeController.TOJsonStr(Model.Products)";
+            var strResource = "@ConfigHelper.Controllers.HomeController.TOJsonStr(Model.Items)";
             if (strResource.length > 0) {
                 var arrResource = strResource.split(',');
                 for (var i = 0; i < arrResource.length; i++) {
                     var fieldResource = arrResource[i].split(':');
-                    var j = { "ID": fieldResource[0], "Num": fieldResource[1], "Name": getSel1Text(fieldResource[0],item1sel)};
-                    var jNonName = { "ID": fieldResource[0], "Num": fieldResource[1]};
+                    var j = { "ID": fieldResource[0], "Num": fieldResource[1], "Name": getSel1Text(fieldResource[0], item1sel) };
+                    var jNonName = { "ID": fieldResource[0], "Num": fieldResource[1] };
                     resource.push(jNonName);
                     addTableItem(j, resourceTable, resource);
                 }
-            }
-            if (strProduct.length > 0) {
-                var arrProduct = strProduct.split(';');
-                for (var i = 0; i < arrProduct.length; i++) {
-                    var fieldProduct = arrProduct[i].split(':');
-                    var j = { "ID": fieldProduct[0], "Num": fieldProduct[1], "Name": getSel1Text(fieldProduct[0], item2sel) };
-                    var jNonName = { "ID": fieldProduct[0], "Num": fieldProduct[1] };
-                    productor.push(jNonName);
-                    addTableItem(j, productTable, productor);
-                }
-            }
+            }            
         });
 
     }(jQuery));

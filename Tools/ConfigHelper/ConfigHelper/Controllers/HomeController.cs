@@ -47,6 +47,11 @@ namespace ConfigHelper.Controllers
                 model.ID = Guid.NewGuid();
                 res = DBHelper.Insert(model).ToString();
             }
+            else
+            {
+                res = model.ID.ToString();
+                DBHelper.Update(model);
+            }
             TempData["res"] = "ok";
             return RedirectToAction("BuildEdit", new { id = new Guid(res) });
         }
@@ -78,11 +83,17 @@ namespace ConfigHelper.Controllers
                 model.ID = Guid.NewGuid();
                 res = DBHelper.Insert(model).ToString();
             }
+            else
+            {
+                res = model.ID.ToString();
+                DBHelper.Update(model);
+            }
             TempData["res"] = "ok";
             return RedirectToAction("ItemEdit", new { id = new Guid(res) });
         }
         #endregion
 
+        #region Product
         public ActionResult ProductList()
         {
             var data = DBHelper.Query<Models.SimpleModel>("select ID,Name from product");
@@ -93,7 +104,7 @@ namespace ConfigHelper.Controllers
         public ActionResult ProductEdit(Guid? id)
         {
             if (null == id) { return View(new Product() { ID = EmptyGuid }); }
-            var model = DBHelper.Query<Product>(string.Format("select * from product where ID='{0}'", id.ToString())).FirstOrDefault(); 
+            var model = DBHelper.Query<Product>(string.Format("select * from product where ID='{0}'", id.ToString())).FirstOrDefault();
             return View(model);
         }
 
@@ -109,8 +120,48 @@ namespace ConfigHelper.Controllers
                 model.ID = Guid.NewGuid();
                 res = DBHelper.Insert(model).ToString();
             }
+            else
+            {
+                res = model.ID.ToString();
+                DBHelper.Update(model);
+            }
             TempData["res"] = res;
             return RedirectToAction("ProductEdit", new { id = new Guid(res) });
+        }
+        #endregion
+
+
+        public ActionResult ConstructionList()
+        {
+            var data = DBHelper.Query<Construction>("select * from construction");
+            ViewData["data"] = data;
+            return View();
+        }
+
+        public ActionResult ConstructionEdit(Guid? id)
+        {
+            if (null == id) { return View(new Construction() { ID = EmptyGuid }); }
+            var model = DBHelper.Query<Construction>(string.Format("select * from construction where ID='{0}'", id.ToString())).FirstOrDefault();
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult ConstructionEdit(Construction model)
+        {
+            model.Items = JsonStrToJsonStr(model.Items);
+            string res = string.Empty;
+            if (model.ID == EmptyGuid)
+            {
+                model.ID = Guid.NewGuid();
+                res = DBHelper.Insert(model).ToString();
+            }
+            else
+            {
+                res = model.ID.ToString();
+                DBHelper.Insert(model);
+            }
+            TempData["res"] = "ok";
+            return RedirectToAction("ConstructionEdit", new { id = res });
         }
 
         private static string JsonStrToJsonStr(string jsonStr)
@@ -145,6 +196,7 @@ namespace ConfigHelper.Controllers
             {
                 constr.Append("{");
                 constr.Append(ConstructionJsonItem("ID", c.ID.ToString()));
+                constr.Append(ConstructionJsonItem("ID", c.Name));
                 constr.Append(ConstructionJsonItem("OriginBuilding", c.OriginBuilding.ToString()));
                 constr.Append(ConstructionJsonItem("Building", c.Building.ToString()));
                 constr.Append(ConstructionJsonItem("Description", c.Description));
@@ -214,5 +266,10 @@ namespace ConfigHelper.Controllers
 
         private static readonly Guid EmptyGuid = new Guid("00000000-0000-0000-0000-000000000000");
 
+        public static string TOJsonStr(string input)
+        {
+            if (null == input) return string.Empty;
+            return input.Replace("\"", string.Empty).Replace("[", string.Empty).Replace("]", string.Empty).Replace("{", string.Empty).Replace("}", string.Empty);
+        }
     }
 }

@@ -161,6 +161,8 @@
     <Content Include="Views\Home\ItemEdit.cshtml" />
     <Content Include="Views\Home\ProductList.cshtml" />
     <Content Include="Views\Home\ProductEdit.cshtml" />
+    <Content Include="Views\Home\ConstructionList.cshtml" />
+    <Content Include="Views\Home\ConstructionEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

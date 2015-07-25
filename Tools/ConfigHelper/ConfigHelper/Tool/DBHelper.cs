@@ -26,5 +26,13 @@ namespace ConfigHelper.Tool
             }
         }
 
+        public static int Update(object model)
+        {
+            using (var db = new Database("conn"))
+            {
+                return db.Update(model);
+            }
+        }
+
     }
 }

@@ -20,5 +20,7 @@ namespace Entity.Models
         public string Description { get; set; }
 
         public int Workers { get; set; }
+
+        public string Name { get; set; }
     }
 }

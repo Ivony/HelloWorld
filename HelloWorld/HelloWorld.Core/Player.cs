@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace HelloWorld.Core
 {
-  public sealed class Player
+  public abstract class Player
   {
 
-    public string Email { get; private set; }
+    public abstract string Email { get; }
 
   }
 }

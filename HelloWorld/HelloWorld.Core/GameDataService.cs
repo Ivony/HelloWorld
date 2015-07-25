@@ -10,6 +10,6 @@ namespace HelloWorld.Core
     public abstract Task<Place> GetPlace( Coordinate coordinate );
 
 
-    public abstract Task<IPlayer> GetPlayer( Guid userId );
+    public abstract Task<Player> GetPlayer( Guid userId );
   }
 }

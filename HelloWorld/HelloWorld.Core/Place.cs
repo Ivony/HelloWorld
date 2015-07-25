@@ -8,18 +8,18 @@ namespace HelloWorld.Core
   /// <summary>
   /// 代表一个地块
   /// </summary>
-  public interface IPlace
+  public abstract class Place
   {
 
     /// <summary>
     /// 地块坐标
     /// </summary>
-    Coordinate Coordinate { get; }
+    public abstract Coordinate Coordinate { get; }
 
     /// <summary>
     /// 地块上的建筑
     /// </summary>
-    BuildingDescriptor Building { get; }
+    public abstract BuildingDescriptor Building { get; set; }
 
   }
 }

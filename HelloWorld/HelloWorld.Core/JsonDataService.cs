@@ -31,25 +31,25 @@ namespace HelloWorld.Core
       get; private set;
     }
 
-    public override Task<Place> GetPlace( Coordinate coordinate )
-    {
-    }
-
-
-    private abstract class JsonDataItem
+    private sealed class JsonDataItem
     {
 
 
-      private void Initialize( string filepath )
+      private JsonDataItem( string filepath )
       {
-        FilePath = filepath;
+        Filepath = filepath;
 
         var data = File.ReadAllText( filepath );
-        JsonConvert.PopulateObject( data, this );
+        Data = JObject.Parse( data );
+      }
+
+      public string Filepath
+      {
+        get; private set;
       }
 
 
-      protected string FilePath
+      public dynamic Data
       {
         get; private set;
       }
@@ -57,17 +57,14 @@ namespace HelloWorld.Core
 
       private JsonSerializer serializer = JsonSerializer.CreateDefault();
 
-      protected void Save()
+      public void Save()
       {
-        using ( var writer = new StreamWriter( FilePath, false, Encoding.UTF8 ) )
-        {
-          serializer.Serialize( writer, this );
-        }
+        File.WriteAllText( Filepath, ((JObject) Data).ToString( Formatting.None ) );
       }
 
 
 
-      public static T LoadData<T>( string path, string defaultValue ) where T : JsonDataItem, new()
+      public static JsonDataItem LoadData( string path, string defaultValue )
       {
 
         if ( File.Exists( path ) == false )
@@ -80,45 +77,81 @@ namespace HelloWorld.Core
         }
 
 
-        var result = new T();
-        result.Initialize( path );
-
-        return result;
-
+        return new JsonDataItem( path );
 
       }
-
-
-
     }
 
 
-    private class JsonPlayer : JsonDataItem, IPlayer
+
+    private class JsonPlace : Place
     {
-      public string Email
+
+      private JsonDataItem _data;
+
+      public JsonPlace( JsonDataItem data )
       {
-        get;
-        set;
+        _data = data;
+      }
+
+      public override BuildingDescriptor Building
+      {
+        get { return GameEnvironment.GetBuilding( Guid.Parse( _data.Data.Building ) ); }
+
+        set
+        {
+          _data.Data.Building = value.Guid.ToString();
+        }
+      }
+
+      public override Coordinate Coordinate
+      {
+        get
+        {
+          throw new NotImplementedException();
+        }
       }
     }
 
 
-    public override async Task<IPlayer> GetPlayer( Guid userId )
+
+
+    private class JsonPlayer : Player
+    {
+      private JsonDataItem data;
+
+      public JsonPlayer( JsonDataItem data )
+      {
+        this.data = data;
+      }
+
+      public override string Email
+      {
+        get { return data.Data.Email; }
+      }
+    }
+
+
+    public override Task<Player> GetPlayer( Guid userId )
     {
       var filepath = Path.ChangeExtension( Path.Combine( DataRoot, _players, userId.ToString() ), _extensions );
 
-      if ( File.Exists( filepath ) == false )
+      var data = JsonDataItem.LoadData( filepath, null );
+      if ( data == null )
         return null;
 
+      return Task.FromResult( (Player) new JsonPlayer( data ) );
 
-      string data;
-      using ( var reader = File.OpenText( filepath ) )
-      {
-        data = await reader.ReadToEndAsync();
-      }
+    }
 
-      return JsonConvert.DeserializeObject<IPlayer>( data );
+
+    public override Task<Place> GetPlace( Coordinate coordinate )
+    {
+      var filepath = Path.ChangeExtension( Path.Combine( DataRoot, _places, coordinate.ToString() ), _extensions );
+
+      var data = JsonDataItem.LoadData( filepath, "{'building':'{EB0C8AE8-FC09-4874-9985-98C081F4D1B7}'}" );
+
+      return Task.FromResult( (Place) new JsonPlace( data ) );
 
     }
   }
-}

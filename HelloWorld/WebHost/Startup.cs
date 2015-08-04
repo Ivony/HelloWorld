@@ -22,7 +22,7 @@ namespace WebHost
     public Startup( IHostingEnvironment env )
     {
 
-      UserService = new JsonUserService( Path.Combine( env.WebRootPath, "Data" ) );
+      UserService = new JsonUserService( Path.Combine( env.WebRootPath, "Data", "Users" ) );
       DataService = new JsonDataService( Path.Combine( env.WebRootPath, "Data" ) );
 
     }

@@ -1,1 +1,1 @@
-[{"ID":"990ffd25-2fc2-11e5-a581-60eb6958ce43","Name":"冶炼","Description":"把矿石变成金属","Building":"把矿石变成金属","Products":{"6b87bd04-2fc0-11e5-a581-60eb6958ce43":2},"Resource":{"Workers":2,"Time":2500,"Items":{"57f9a25f-2fc0-11e5-a581-60eb6958ce43":10}}}]
+[{"ID":"c407236a-fb8c-4086-9771-dc2d007cc5f3","Name":"铸币","Description":"铸金币","Building":"铸金币","Products":[{"f6dd21a5-e7ed-476a-8a12-19385524e9e8":1}],"Resource":{"Workers":10,"Time":100,"Items":[{"375797d9-1c79-497f-b508-b857216ab08e":10}]}}]

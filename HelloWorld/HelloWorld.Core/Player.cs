@@ -8,7 +8,7 @@ namespace HelloWorld.Core
   public abstract class Player
   {
 
-    public abstract string Email { get; }
+    public abstract string NickName { get; }
 
   }
 }

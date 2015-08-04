@@ -14,7 +14,7 @@ namespace HelloWorld.Core
     /// <param name="email"></param>
     /// <param name="password"></param>
     /// <returns></returns>
-    public abstract Guid Register( string email, string password );
+    public abstract bool TryRegister( string email, string password, out Guid userId );
 
     /// <summary>
     /// 用户登陆
@@ -22,7 +22,7 @@ namespace HelloWorld.Core
     /// <param name="email"></param>
     /// <param name="password"></param>
     /// <returns></returns>
-    public abstract Guid? Login( string email, string password );
+    public abstract bool TryLogin( string email, string password, out Guid userId );
 
   }
 }

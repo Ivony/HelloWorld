@@ -9,10 +9,10 @@ using Newtonsoft.Json.Linq;
 
 namespace HelloWorld.Core
 {
-  public class JsonDataHost : GameDataService
+  public class JsonDataService : GameDataService
   {
 
-    public JsonDataHost( string dataRoot )
+    public JsonDataService( string dataRoot )
     {
       DataRoot = dataRoot;
       Directory.CreateDirectory( DataRoot );

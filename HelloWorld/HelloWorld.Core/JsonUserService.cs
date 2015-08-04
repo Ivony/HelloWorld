@@ -16,6 +16,7 @@ namespace HelloWorld.Core
 
     private readonly string dataRoot;
     private const string extensions = ".json";
+    private const string salt = "Hello";
 
 
     public JsonUserService( string rootPath )
@@ -33,25 +34,27 @@ namespace HelloWorld.Core
     }
 
 
-    public override Guid? Login( string email, string password )
+    public override bool TryLogin( string email, string password, out Guid userId )
     {
 
+      userId = Guid.Empty;
 
       if ( Path.GetInvalidFileNameChars().Any( c => email.Contains( c ) ) )
-        return null;
+        return false;
 
       var data = LoadUserData( email );
 
       if ( data == null )
-        return null;
+        return false;
 
       var encrypted = EncryptPassword( password );
 
       if ( data.Password != encrypted )
-        return null;
+        return false;
 
 
-      return data.UserID;
+      userId = data.UserID;
+      return true;
     }
 
     private dynamic LoadUserData( string email )
@@ -59,7 +62,7 @@ namespace HelloWorld.Core
       string path = GetFilepath( email );
 
       if ( File.Exists( path ) == false )
-        return null;
+        return false;
 
       return JObject.Parse( File.ReadAllText( path ) );
     }
@@ -67,7 +70,7 @@ namespace HelloWorld.Core
 
     private static string EncryptPassword( string password )
     {
-      return Convert.ToBase64String( hash.ComputeHash( Encoding.UTF8.GetBytes( password ) ) );
+      return Convert.ToBase64String( hash.ComputeHash( Encoding.UTF8.GetBytes( password + salt ) ) );
     }
 
 

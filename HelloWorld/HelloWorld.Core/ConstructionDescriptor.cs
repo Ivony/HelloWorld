@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HelloWorld.Core
+namespace HelloWorld
 {
   /// <summary>
   /// 定义一个建造过程描述

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace HelloWorld.Core
+namespace HelloWorld
 {
   public class JsonDataService : GameDataService
   {

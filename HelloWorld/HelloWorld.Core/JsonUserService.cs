@@ -7,7 +7,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HelloWorld.Core
+namespace HelloWorld
 {
   public class JsonUserService : UserService
   {

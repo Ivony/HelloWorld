@@ -9,6 +9,8 @@ using Microsoft.AspNet.Routing;
 using Microsoft.Framework.DependencyInjection;
 using HelloWorld.Core;
 using System.IO;
+using Microsoft.AspNet.Diagnostics;
+using Microsoft.AspNet.Authentication.Cookies;
 
 namespace WebHost
 {
@@ -22,9 +24,8 @@ namespace WebHost
     public Startup( IHostingEnvironment env )
     {
 
-      UserService = new JsonUserService( Path.Combine( env.WebRootPath, "Data", "Users" ) );
+      UserService = new JsonUserService( Path.Combine( env.WebRootPath, "Data" ) );
       DataService = new JsonDataService( Path.Combine( env.WebRootPath, "Data" ) );
-
     }
 
     // This method gets called by a runtime.
@@ -51,7 +52,6 @@ namespace WebHost
       );
       // Add the following route for porting Web API 2 controllers.
       // routes.MapWebApiRoute("DefaultApi", "api/{controller}/{id?}");
-
     }
   }
 }

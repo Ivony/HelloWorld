@@ -1,18 +1,27 @@
 {
   "version": "1.0.0-*",
   "description": "",
-  "authors": [ "" ],
-  "tags": [ "" ],
+  "authors":
+  [
+    ""
+  ],
+  "tags":
+  [
+    ""
+  ],
   "projectUrl": "",
   "licenseUrl": "",
 
-  "dependencies": {
+  "dependencies":
+  {
     "Microsoft.AspNet.Mvc": "6.0.0-beta4",
     "Newtonsoft.Json": "7.0.1",
   },
 
-  "frameworks": {
-    "dnx451": {
+  "frameworks":
+  {
+    "dnx451":
+    {
     },
   }
 }

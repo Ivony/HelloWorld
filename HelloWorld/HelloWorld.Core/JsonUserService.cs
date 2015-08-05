@@ -14,14 +14,21 @@ namespace HelloWorld.Core
 
 
 
-    private readonly string dataRoot;
     private const string extensions = ".json";
     private const string salt = "Hello";
 
 
+    private readonly string userDataRoot;
+    private readonly string loginDataRoot;
+
+
     public JsonUserService( string rootPath )
     {
-      dataRoot = rootPath;
+      userDataRoot = Path.Combine( rootPath, "User" );
+      loginDataRoot = Path.Combine( rootPath, "Login" );
+
+      Directory.CreateDirectory( userDataRoot );
+      Directory.CreateDirectory( loginDataRoot );
     }
 
 
@@ -30,14 +37,69 @@ namespace HelloWorld.Core
 
     private string GetFilepath( string email )
     {
-      return Path.Combine( dataRoot, Path.ChangeExtension( email, extensions ) );
+      return Path.Combine( userDataRoot, Path.ChangeExtension( email, extensions ) );
+    }
+
+    private dynamic LoadUserData( string email )
+    {
+      string path = GetFilepath( email );
+
+      if ( File.Exists( path ) == false )
+        return null;
+
+      return JObject.Parse( File.ReadAllText( path ) );
     }
 
 
-    public override bool TryLogin( string email, string password, out Guid userId )
+    private static string EncryptPassword( string password )
+    {
+      return Convert.ToBase64String( hash.ComputeHash( Encoding.UTF8.GetBytes( password + salt ) ) );
+    }
+
+
+
+    private string CreateLoginToken( Guid userID )
     {
 
-      userId = Guid.Empty;
+      foreach ( var f in Directory.EnumerateFiles( loginDataRoot ).Where( file => File.GetCreationTimeUtc( file ) < DateTime.UtcNow.AddDays( -1 ) ) )
+      {
+        try
+        {
+          File.Delete( f );
+        }
+        catch { }
+      }
+
+      var token = Path.GetRandomFileName();
+      File.WriteAllText( Path.Combine( loginDataRoot, token ), userID.ToString() );
+      return token;
+    }
+
+
+
+    public override Guid? GetUserID( string loginToken )
+    {
+      if ( string.IsNullOrEmpty( loginToken ) )
+        return null;
+
+      var path = Path.Combine( loginDataRoot, loginToken );
+      if ( File.Exists( path ) == false )
+        return null;
+
+      Guid userId;
+      if ( Guid.TryParse( File.ReadAllText( path ), out userId ) == false )
+        return null;
+
+      return userId;
+    }
+
+
+
+
+    public override bool TryLogin( string email, string password, out string loginToken )
+    {
+
+      loginToken = null;
 
       if ( Path.GetInvalidFileNameChars().Any( c => email.Contains( c ) ) )
         return false;
@@ -53,24 +115,8 @@ namespace HelloWorld.Core
         return false;
 
 
-      userId = data.UserID;
+      loginToken = CreateLoginToken( (Guid) data.UserID );
       return true;
-    }
-
-    private dynamic LoadUserData( string email )
-    {
-      string path = GetFilepath( email );
-
-      if ( File.Exists( path ) == false )
-        return false;
-
-      return JObject.Parse( File.ReadAllText( path ) );
-    }
-
-
-    private static string EncryptPassword( string password )
-    {
-      return Convert.ToBase64String( hash.ComputeHash( Encoding.UTF8.GetBytes( password + salt ) ) );
     }
 
 
@@ -82,10 +128,9 @@ namespace HelloWorld.Core
     /// <param name="password">密码</param>
     /// <param name="userId">用户ID</param>
     /// <returns></returns>
-    public override bool TryRegister( string email, string password, out Guid userId )
+    public override bool TryRegister( string email, string password, out string loginToken )
     {
-
-      userId = Guid.Empty;
+      loginToken = null;
 
       var path = GetFilepath( email );
 
@@ -99,10 +144,11 @@ namespace HelloWorld.Core
 
       data.Email = email;
       data.Password = encrypted;
-      data.UserID = userId = Guid.NewGuid();
+      data.UserID = Guid.NewGuid();
 
 
       File.WriteAllText( path, ((JObject) data).ToString() );
+      loginToken = CreateLoginToken( (Guid) data.UserID );
       return true;
     }
   }

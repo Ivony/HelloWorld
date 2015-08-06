@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorld.WebHost", "Hello
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorld.Core", "HelloWorld.Core\HelloWorld.Core.csproj", "{ACA162FB-F382-475E-885A-C137929B2F31}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorld.CoordinateTest", "HelloWorld.CoordinateTest\HelloWorld.CoordinateTest.csproj", "{4E481903-7AC2-4D83-AF71-DFBE83959683}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{ACA162FB-F382-475E-885A-C137929B2F31}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ACA162FB-F382-475E-885A-C137929B2F31}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ACA162FB-F382-475E-885A-C137929B2F31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E481903-7AC2-4D83-AF71-DFBE83959683}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E481903-7AC2-4D83-AF71-DFBE83959683}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E481903-7AC2-4D83-AF71-DFBE83959683}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E481903-7AC2-4D83-AF71-DFBE83959683}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

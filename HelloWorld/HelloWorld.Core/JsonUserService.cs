@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace HelloWorld
@@ -21,6 +22,8 @@ namespace HelloWorld
     private readonly string userDataRoot;
     private readonly string loginDataRoot;
 
+
+    private static readonly Regex emailRegex = new Regex( @"^[0-9a-zA-Z-\.]+@([0-9a-zA-Z-]+\.)+[0-9a-zA-Z-]+$", RegexOptions.Compiled );
 
     public JsonUserService( string rootPath )
     {
@@ -130,6 +133,11 @@ namespace HelloWorld
     /// <returns></returns>
     public override bool TryRegister( string email, string password, out string loginToken )
     {
+
+      if ( emailRegex.IsMatch( email ) == false )
+        throw new FormatException( "invalid email address." );
+
+
       loginToken = null;
 
       var path = GetFilepath( email );

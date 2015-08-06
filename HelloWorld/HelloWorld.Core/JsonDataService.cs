@@ -66,6 +66,12 @@ namespace HelloWorld
 
 
 
+      /// <summary>
+      /// 加载 JsonData 对象
+      /// </summary>
+      /// <param name="path">文件路径</param>
+      /// <param name="defaultValue">默认值</param>
+      /// <returns></returns>
       public static JsonDataItem LoadData( string path, string defaultValue )
       {
 
@@ -82,6 +88,19 @@ namespace HelloWorld
         return new JsonDataItem( path );
 
       }
+
+
+      /// <summary>
+      /// 加载 JsonData 对象
+      /// </summary>
+      /// <param name="path">文件路径</param>
+      /// <param name="defaultValue">默认值</param>
+      /// <returns></returns>
+      public static JsonDataItem LoadData( string path, object defaultValue )
+      {
+        return LoadData( path, JObject.FromObject( defaultValue ).ToString() );
+      }
+
     }
 
 

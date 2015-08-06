@@ -13,6 +13,9 @@ namespace HelloWorld
   public static class GameEnvironment
   {
 
+
+
+
     /// <summary>
     /// 获取一个物品描述
     /// </summary>

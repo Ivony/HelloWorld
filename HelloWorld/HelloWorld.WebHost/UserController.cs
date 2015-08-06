@@ -39,7 +39,8 @@ namespace HelloWorld.WebHost
       {
         return new
         {
-          Success = false
+          Success = false,
+          Reason = "secret",
         };
       }
     }

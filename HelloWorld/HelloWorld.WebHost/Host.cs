@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net.Http.Formatting;
@@ -17,7 +18,8 @@ namespace HelloWorld.WebHost
     public static void Initailze( HttpConfiguration configuration )
     {
 
-      var dataRoot = Path.Combine( HostingEnvironment.ApplicationPhysicalPath, "Data" );
+      var configPath = ConfigurationManager.AppSettings["DataPath"] ?? "Data";
+      var dataRoot = Path.Combine( HostingEnvironment.ApplicationPhysicalPath, configPath );
 
       UserService = new JsonUserService( dataRoot );
       DataService = new JsonDataService( dataRoot );

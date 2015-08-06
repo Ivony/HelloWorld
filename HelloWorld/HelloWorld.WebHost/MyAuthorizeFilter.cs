@@ -20,7 +20,7 @@ namespace HelloWorld.WebHost
     public override async Task OnAuthorizationAsync( HttpActionContext actionContext, CancellationToken cancellationToken )
     {
 
-      if ( actionContext.ControllerContext.ControllerDescriptor.ControllerType == typeof( UserController ) )
+      if ( actionContext.ControllerContext.ControllerDescriptor.ControllerType == typeof( UserController ) || string.Equals( actionContext.ActionDescriptor.ActionName, "Test", StringComparison.OrdinalIgnoreCase ) )
         return;
 
       var request = actionContext.Request;

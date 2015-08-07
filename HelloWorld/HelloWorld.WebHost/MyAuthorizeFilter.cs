@@ -14,8 +14,7 @@ namespace HelloWorld.WebHost
 {
   public class MyAuthorizeFilter : AuthorizationFilterAttribute
   {
-
-
+    internal const string CookieName = "hu";
 
     public override async Task OnAuthorizationAsync( HttpActionContext actionContext, CancellationToken cancellationToken )
     {
@@ -37,9 +36,9 @@ namespace HelloWorld.WebHost
 
       if ( loginToken == null )
       {
-        var cookie = request.Headers.GetCookies( "loginToken" ).SelectMany( c => c.Cookies );
-        if ( cookie.Any() )
-          loginToken = cookie.First().Value;
+        var cookie = request.Headers.GetCookies().SelectMany( c => c.Cookies ).Where( c => c.Name == CookieName ).FirstOrDefault();
+        if ( cookie != null )
+          loginToken = cookie.Value;
 
       }
 

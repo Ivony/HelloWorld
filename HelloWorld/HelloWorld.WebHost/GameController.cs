@@ -10,6 +10,7 @@ using System.Web.Http.Filters;
 using System.Net.Http;
 using System.Threading;
 using System.Web.Http.Controllers;
+using Newtonsoft.Json.Linq;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -27,7 +28,7 @@ namespace WebHost.Controllers
 
 
     [HttpGet]
-    public Task<object> Info()
+    public async Task<object> Info()
     {
       return null;
     }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,12 +13,21 @@ namespace HelloWorld
   public class ItemCollection
   {
 
-    public void AddItems( Item item, int count )
+
+    public ItemCollection() { }
+
+
+    public void AddItems( Item item )
+    {
+      AddItems( item.ItemDescriptor, item.Quantity );
+    }
+
+    public void AddItems( ItemDescriptor item, int quantity )
     {
 
     }
 
-    public void RemoveItems( Item item, int count )
+    public void RemoveItems( ItemDescriptor item, int quantity )
     {
 
     }

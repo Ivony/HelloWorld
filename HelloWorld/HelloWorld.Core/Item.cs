@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,6 +12,23 @@ namespace HelloWorld
   /// </summary>
   public class Item
   {
+
+
+    private Item() { }
+
+    internal static Item FromData( JObject data )
+    {
+      if ( data == null )
+        return null;
+
+      return new Item
+      {
+        ItemDescriptor = ItemDescriptor.FromData( (JObject) data["ItemDescriptor"] ),
+        Quantity = (int) data["Quantity"],
+      };
+    }
+
+
 
     public ItemDescriptor ItemDescriptor { get; private set; }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace HelloWorld
@@ -83,12 +84,6 @@ namespace HelloWorld
     }
 
 
-    public override string ToString()
-    {
-      return string.Format( "{0}, {1}", X, Y );
-    }
-
-
 
     /// <summary>
     /// 计算与另一个坐标的距离
@@ -103,5 +98,35 @@ namespace HelloWorld
     }
 
 
+
+    /// <summary>
+    /// 将坐标转换为字符串形式
+    /// </summary>
+    /// <returns>坐标的字符串表达形式</returns>
+    public override string ToString()
+    {
+      return string.Format( "{{{0}, {1}}}", X, Y );
+    }
+
+
+    private static Regex coordinateRegex = new Regex( @"^\s*\{\s*(?<x>[0-9]+),\s*(?<y>[0-9]+)\s*\}\s*$", RegexOptions.Compiled );
+
+    /// <summary>
+    /// 从字符串中解析出坐标信息
+    /// </summary>
+    /// <param name="expression">包含坐标信息的字符串</param>
+    /// <returns>坐标信息</returns>
+    public static Coordinate Parse( string expression )
+    {
+      var match = coordinateRegex.Match( expression );
+      if ( match.Success == false )
+        throw new FormatException();
+
+      var x = int.Parse( match.Groups["x"].Value );
+      var y = int.Parse( match.Groups["y"].Value );
+
+
+      return Create( x, y );
+    }
   }
 }

@@ -127,10 +127,7 @@ namespace HelloWorld
 
       public override Coordinate Coordinate
       {
-        get
-        {
-          throw new NotImplementedException();
-        }
+        get { return Coordinate.Parse( (string) _data.Coordinate ); }
       }
     }
 
@@ -146,10 +143,23 @@ namespace HelloWorld
         this.data = data;
       }
 
+      /// <summary>
+      /// 昵称
+      /// </summary>
       public override string NickName
       {
         get { return data.NickName; }
+        set { data.NickName = value; }
       }
+
+      /// <summary>
+      /// 起始位置
+      /// </summary>
+      public override Coordinate Initiation
+      {
+        get { return Coordinate.Parse( (string) data.Initiation ); }
+      }
+
     }
 
 
@@ -157,7 +167,7 @@ namespace HelloWorld
     {
       var filepath = Path.ChangeExtension( Path.Combine( playersDirectory, userId.ToString() ), _extensions );
 
-      var data = JsonDataItem.LoadData( filepath, "{ 'NickName': 'NoBody' }" );
+      var data = JsonDataItem.LoadData( filepath, new { NickName = "Guest", Initiation = Coordinate.RandomCoordinate( 1000, 1000 ).ToString() } );
 
       return Task.FromResult( (Player) new JsonPlayer( data ) );
     }
@@ -167,7 +177,7 @@ namespace HelloWorld
     {
       var filepath = Path.ChangeExtension( Path.Combine( placesDirectory, coordinate.ToString() ), _extensions );
 
-      var data = JsonDataItem.LoadData( filepath, "{ 'Building': '{EB0C8AE8-FC09-4874-9985-98C081F4D1B7}' }" );
+      var data = JsonDataItem.LoadData( filepath, new { Building = Guid.Parse( "{EB0C8AE8-FC09-4874-9985-98C081F4D1B7}" ) } );
 
       return Task.FromResult( (Place) new JsonPlace( data ) );
     }

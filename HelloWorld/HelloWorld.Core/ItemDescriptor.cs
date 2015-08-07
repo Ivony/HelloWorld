@@ -11,39 +11,36 @@ namespace HelloWorld
   /// <summary>
   /// 定义一个物品描述信息
   /// </summary>
-  public class ItemDescriptor
+  public class ItemDescriptor : GameItemData
   {
 
 
-    private ItemDescriptor() { }
+    private ItemDescriptor( Guid guid, JObject data ) : base( guid, data ) { }
 
 
-
-    internal ItemDescriptor Create( JObject data )
+    internal static ItemDescriptor FromData( Guid guid, JObject data )
     {
 
       if ( data == null )
         return null;
 
-      return new ItemDescriptor
+      return new ItemDescriptor( guid, data )
       {
         Name = data.Value<string>( "Name" ),
         Description = data.Value<string>( "Description" ),
-        _json = data.ToString(),
       };
     }
 
 
+    /// <summary>
+    /// 物品名称
+    /// </summary>
     public string Name { get; private set; }
 
+    /// <summary>
+    /// 物品描述
+    /// </summary>
     public string Description { get; private set; }
-
-
-
-    private string _json;
-
-    public override string ToString() { return _json; }
-
 
   }
 }

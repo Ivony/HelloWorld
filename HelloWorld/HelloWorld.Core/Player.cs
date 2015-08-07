@@ -8,7 +8,15 @@ namespace HelloWorld
   public abstract class Player
   {
 
-    public abstract string NickName { get; }
+    /// <summary>
+    /// 昵称
+    /// </summary>
+    public abstract string NickName { get; set; }
+
+    /// <summary>
+    /// 起始位置
+    /// </summary>
+    public abstract Coordinate Initiation { get; }
 
   }
 }

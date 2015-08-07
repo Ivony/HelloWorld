@@ -12,10 +12,6 @@ namespace HelloWorld
 {
   public class JsonUserService : UserService
   {
-
-
-
-    private const string extensions = ".json";
     private const string salt = "Hello";
 
 
@@ -40,7 +36,7 @@ namespace HelloWorld
 
     private string GetFilepath( string email )
     {
-      return Path.Combine( userDataRoot, Path.ChangeExtension( email, extensions ) );
+      return Path.Combine( userDataRoot, email + ".json" );
     }
 
     private dynamic LoadUserData( string email )

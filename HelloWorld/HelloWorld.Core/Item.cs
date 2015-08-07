@@ -14,18 +14,10 @@ namespace HelloWorld
   {
 
 
-    private Item() { }
-
-    internal static Item FromData( JObject data )
+    public Item( ItemDescriptor descriptor, int quantity )
     {
-      if ( data == null )
-        return null;
-
-      return new Item
-      {
-        ItemDescriptor = ItemDescriptor.FromData( (JObject) data["ItemDescriptor"] ),
-        Quantity = (int) data["Quantity"],
-      };
+      ItemDescriptor = descriptor;
+      Quantity = quantity;
     }
 
 

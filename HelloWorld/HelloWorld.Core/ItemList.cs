@@ -22,26 +22,8 @@ namespace HelloWorld
 
     public static ItemList FromData( JArray data )
     {
-      return new ItemList( data.Cast<JObject>().Select( item => Item.FromData( item ) ).ToArray() );
+      return new ItemList( data.Cast<JObject>().Select( item => new Item( GameEnvironment.GetItem( item.Value<Guid>( "Item" ) ), item.Value<int>( "Quantity" ) ) ).ToArray() );
 
-    }
-
-    public int Count
-    {
-      get
-      {
-        throw new NotImplementedException();
-      }
-    }
-
-    public IEnumerator<Item> GetEnumerator()
-    {
-      throw new NotImplementedException();
-    }
-
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-      throw new NotImplementedException();
     }
   }
 }

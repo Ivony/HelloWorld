@@ -7,49 +7,39 @@ namespace HelloWorld
   /// <summary>
   /// 建筑
   /// </summary>
-  public class BuildingDescriptor
+  public class BuildingDescriptor : GameItemData
   {
 
 
-    public Guid Guid
-    {
-      get; private set;
-    }
+    private BuildingDescriptor( Guid guid, JObject data ) : base( guid, data ) { }
 
-
-    private BuildingDescriptor() { }
-
-    internal BuildingDescriptor Create( JObject data )
+    internal BuildingDescriptor Create( Guid guid, JObject data )
     {
       if ( data == null )
         return null;
 
-      return new BuildingDescriptor
+      return new BuildingDescriptor( guid, data )
       {
-        Guid = data.Value<Guid>( "ID" ),
         Name = data.Value<string>( "Name" ),
         Description = data.Value<string>( "Description" ),
-        _json = data.ToString(),
       };
     }
 
 
+    /// <summary>
+    /// 建筑名
+    /// </summary>
     public string Name
     {
       get; private set;
     }
 
+    /// <summary>
+    /// 建筑描述
+    /// </summary>
     public string Description
     {
       get; private set;
     }
-
-
-    private string _json;
-
-    public override string ToString() { return _json; }
-
-
-
   }
 }

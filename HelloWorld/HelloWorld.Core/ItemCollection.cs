@@ -14,6 +14,12 @@ namespace HelloWorld
   {
 
 
+
+    private Dictionary<ItemDescriptor, int> _collection;
+
+    private object _sync = new object();
+
+
     public ItemCollection() { }
 
 
@@ -25,18 +31,37 @@ namespace HelloWorld
     public void AddItems( ItemDescriptor item, int quantity )
     {
 
+      lock ( _sync )
+      {
+        if ( _collection.ContainsKey( item ) )
+          _collection[item] += quantity;
+
+        else
+          _collection.Add( item, quantity );
+      }
     }
 
     public void RemoveItems( ItemDescriptor item, int quantity )
     {
+      lock ( _sync )
+      {
+        if ( _collection.ContainsKey( item ) && _collection[item] >= quantity )
+          _collection[item] -= quantity;
 
+        else
+          throw new InvalidOperationException();
+      }
     }
 
     public ItemList Items
     {
-      get { throw new NotImplementedException(); }
+      get
+      {
+        lock ( _sync )
+        {
+          return new ItemList( _collection.Select( item => new Item( item.Key, item.Value ) ).ToArray() );
+        }
+      }
     }
-
-
   }
 }

@@ -89,5 +89,19 @@ namespace HelloWorld
     }
 
 
+
+    /// <summary>
+    /// 计算与另一个坐标的距离
+    /// </summary>
+    /// <param name="coordinate">要计算距离的坐标</param>
+    /// <returns></returns>
+    public int Distance( Coordinate coordinate )
+    {
+      var offsetY = Math.Abs( Y - coordinate.Y ) / 2;
+      var offsetX = Math.Max( Math.Abs( X - coordinate.X ) - offsetY, 0 ) / 2;
+      return offsetX + offsetY;
+    }
+
+
   }
 }

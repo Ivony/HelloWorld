@@ -146,7 +146,7 @@ namespace HelloWorld
       /// <summary>
       /// 昵称
       /// </summary>
-      public override string NickName
+      public override string Nickname
       {
         get { return data.NickName; }
         set { data.NickName = value; }
@@ -160,6 +160,10 @@ namespace HelloWorld
         get { return Coordinate.Parse( (string) data.Initiation ); }
       }
 
+      public override Task Save()
+      {
+        return Task.CompletedTask;
+      }
     }
 
 
@@ -181,5 +185,8 @@ namespace HelloWorld
 
       return Task.FromResult( (Place) new JsonPlace( data ) );
     }
+
+
+
   }
 }

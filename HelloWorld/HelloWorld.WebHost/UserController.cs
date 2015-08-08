@@ -39,7 +39,7 @@ namespace HelloWorld.WebHost
       {
         var response = Request.CreateResponse( result );
 
-        response.Headers.AddCookies( new[] { new CookieHeaderValue( MyAuthorizeFilter.CookieName, loginToken ) { Path = "/", Expires = DateTimeOffset.Now.AddDays( 1 ) } } );
+        response.Headers.AddCookies( new[] { new CookieHeaderValue( GameController.CookieName, loginToken ) { Path = "/", Expires = DateTimeOffset.Now.AddDays( 1 ) } } );
 
         return response;
       }

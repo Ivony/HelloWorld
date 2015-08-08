@@ -71,7 +71,7 @@ namespace HelloWorld.WebHost
 
 
     [HttpGet]
-    public Task<object> Info()
+    public object Info()
     {
       return Player.GetInfo();
     }

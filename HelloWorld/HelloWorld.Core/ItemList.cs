@@ -23,7 +23,12 @@ namespace HelloWorld
     public static ItemList FromData( JArray data )
     {
       return new ItemList( data.Cast<JObject>().Select( item => new Item( GameEnvironment.GetItem( item.GuidValue( "Item" ) ), item.Value<int>( "Quantity" ) ) ).ToArray() );
-
     }
+
+    public override string ToString()
+    {
+      return JObject.FromObject( this.ToDictionary( item => item.ItemDescriptor.Expression, item => item.Quantity ) ).ToString();
+    }
+
   }
 }

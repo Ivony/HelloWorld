@@ -136,7 +136,7 @@ namespace HelloWorld
 
     private class JsonPlayer : Player
     {
-      private dynamic data;
+      private JsonDataItem data;
 
       public JsonPlayer( JsonDataItem data )
       {
@@ -148,8 +148,8 @@ namespace HelloWorld
       /// </summary>
       public override string Nickname
       {
-        get { return data.NickName; }
-        set { data.NickName = value; }
+        get { return data.Value<string>( "Nickname" ); }
+        set { data["Nickname"] = value; }
       }
 
       /// <summary>
@@ -157,8 +157,30 @@ namespace HelloWorld
       /// </summary>
       public override Coordinate Initiation
       {
-        get { return Coordinate.Parse( (string) data.Initiation ); }
+        get { return data.CoordinateValue( "Initiation" ); }
       }
+
+      /// <summary>
+      /// 工人数量
+      /// </summary>
+      public override int Workers
+      {
+        get { return data.Value<int>( "Workers" ); }
+
+        set { data["Workers"] = value; }
+      }
+
+
+      private ItemCollection resources = new ItemCollection();
+
+      /// <summary>
+      /// 资源数量
+      /// </summary>
+      public override ItemCollection Resources
+      {
+        get { return resources; }
+      }
+
 
       public override Task Save()
       {

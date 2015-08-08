@@ -26,5 +26,12 @@ namespace HelloWorld
 
     public int Quantity { get; private set; }
 
+
+    public override string ToString()
+    {
+      return JObject.FromObject( new Dictionary<string, string>() { { ItemDescriptor.Expression, Quantity.ToString() } } ).ToString();
+    }
+
+
   }
 }

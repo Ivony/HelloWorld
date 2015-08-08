@@ -97,6 +97,7 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ControllerBase.cs" />
     <Compile Include="GameExtensions.cs" />
     <Compile Include="MyAuthorizeFilter.cs" />
     <Compile Include="GameController.cs" />

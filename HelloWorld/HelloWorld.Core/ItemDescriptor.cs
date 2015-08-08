@@ -42,5 +42,11 @@ namespace HelloWorld
     /// </summary>
     public string Description { get; private set; }
 
+
+    /// <summary>
+    /// 获取表达形式
+    /// </summary>
+    internal string Expression { get { return string.Format( "{0}({1})", Name, Guid ); } }
+
   }
 }

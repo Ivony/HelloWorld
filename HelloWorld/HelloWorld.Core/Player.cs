@@ -18,6 +18,18 @@ namespace HelloWorld
     /// </summary>
     public abstract Coordinate Initiation { get; }
 
+
+    /// <summary>
+    /// 工人数量
+    /// </summary>
+    public abstract int Workers { get; set; }
+
+    /// <summary>
+    /// 资源数量
+    /// </summary>
+    public abstract ItemCollection Resources { get; }
+
+
     /// <summary>
     /// 通知保存玩家信息修改
     /// </summary>
@@ -34,7 +46,8 @@ namespace HelloWorld
       return new
       {
         Nickname,
-
+        Workers,
+        Resources = Resources.Items,
       };
     }
   }

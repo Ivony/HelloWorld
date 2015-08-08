@@ -9,8 +9,11 @@ using System.Web.Http;
 
 namespace HelloWorld.WebHost
 {
-  public class UserController : ApiController
+  public class UserController : ControllerBase
   {
+
+    
+
     public async Task<object> Get( string email, string password, bool writeCookie = false )
     {
       string loginToken;

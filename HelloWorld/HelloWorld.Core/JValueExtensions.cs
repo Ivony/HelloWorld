@@ -27,5 +27,31 @@ namespace HelloWorld
     {
       return Guid.Parse( value.Value<string>() );
     }
+
+
+
+    /// <summary>
+    /// 获取坐标值
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    public static Coordinate CoordinateValue( this JObject obj, string name )
+    {
+      return Coordinate.Parse( obj.Value<string>( name ) );
+    }
+
+
+    /// <summary>
+    /// 获取坐标值
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public static Coordinate CoordinateValue( this JValue value )
+    {
+      return Coordinate.Parse( value.Value<string>() );
+    }
+
+
   }
 }

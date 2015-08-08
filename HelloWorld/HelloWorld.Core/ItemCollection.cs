@@ -15,7 +15,7 @@ namespace HelloWorld
 
 
 
-    private Dictionary<ItemDescriptor, int> _collection;
+    private Dictionary<ItemDescriptor, int> _collection = new Dictionary<ItemDescriptor, int>();
 
     private object _sync = new object();
 

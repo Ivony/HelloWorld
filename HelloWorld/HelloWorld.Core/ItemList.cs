@@ -22,7 +22,7 @@ namespace HelloWorld
 
     public static ItemList FromData( JArray data )
     {
-      return new ItemList( data.Cast<JObject>().Select( item => new Item( GameEnvironment.GetItem( item.Value<Guid>( "Item" ) ), item.Value<int>( "Quantity" ) ) ).ToArray() );
+      return new ItemList( data.Cast<JObject>().Select( item => new Item( GameEnvironment.GetItem( item.GuidValue( "Item" ) ), item.Value<int>( "Quantity" ) ) ).ToArray() );
 
     }
   }

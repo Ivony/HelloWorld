@@ -57,6 +57,7 @@
     <Compile Include="ItemList.cs" />
     <Compile Include="JsonDataService.cs" />
     <Compile Include="JsonUserService.cs" />
+    <Compile Include="JValueExtensions.cs" />
     <Compile Include="Place.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="ProductionDescription.cs" />

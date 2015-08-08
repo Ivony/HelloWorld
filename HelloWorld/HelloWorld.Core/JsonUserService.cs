@@ -86,7 +86,7 @@ namespace HelloWorld
       if ( data == null )
         return null;
 
-      return Guid.Parse( data.Value<string>( "UserID" ) );
+      return data.GuidValue( "UserID" );
     }
 
 

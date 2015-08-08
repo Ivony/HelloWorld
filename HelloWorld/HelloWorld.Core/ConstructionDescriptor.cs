@@ -24,8 +24,8 @@ namespace HelloWorld
 
       return new ConstructionDescriptor( guid, data )
       {
-        OriginBuilding = GameEnvironment.GetBuilding( data.Value<Guid>( "OriginBuilding" ) ),
-        NewBuiding = GameEnvironment.GetBuilding( data.Value<Guid>( "NewBuiding" ) ),
+        OriginBuilding = GameEnvironment.GetBuilding( data.GuidValue( "OriginBuilding" ) ),
+        NewBuiding = GameEnvironment.GetBuilding( data.GuidValue( "NewBuiding" ) ),
       };
     }
 

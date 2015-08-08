@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -57,7 +58,7 @@ namespace HelloWorld
 
 
 
-    private string CreateLoginToken( Guid userID )
+    private string CreateLoginToken( Guid userID, string email )
     {
 
       foreach ( var f in Directory.EnumerateFiles( loginDataRoot ).Where( file => File.GetCreationTimeUtc( file ) < DateTime.UtcNow.AddDays( -1 ) ) )
@@ -70,13 +71,26 @@ namespace HelloWorld
       }
 
       var token = Path.GetRandomFileName();
-      File.WriteAllText( Path.Combine( loginDataRoot, token ), userID.ToString() );
+
+      var data = JObject.FromObject( new { UserID = userID, Email = email } );
+      File.WriteAllText( Path.Combine( loginDataRoot, token ), data.ToString() );
       return token;
     }
 
 
 
     public override Guid? GetUserID( string loginToken )
+    {
+
+      var data = LoadLoginData( loginToken );
+      if ( data == null )
+        return null;
+
+      return Guid.Parse( data.Value<string>( "UserID" ) );
+    }
+
+
+    private JObject LoadLoginData( string loginToken )
     {
       if ( string.IsNullOrEmpty( loginToken ) )
         return null;
@@ -85,13 +99,10 @@ namespace HelloWorld
       if ( File.Exists( path ) == false )
         return null;
 
-      Guid userId;
-      if ( Guid.TryParse( File.ReadAllText( path ), out userId ) == false )
-        return null;
 
-      return userId;
+      return JObject.Parse( File.ReadAllText( path ) );
+
     }
-
 
 
 
@@ -114,7 +125,7 @@ namespace HelloWorld
         return false;
 
 
-      loginToken = CreateLoginToken( (Guid) data.UserID );
+      loginToken = CreateLoginToken( (Guid) data.UserID, email );
       return true;
     }
 
@@ -152,7 +163,37 @@ namespace HelloWorld
 
 
       File.WriteAllText( path, ((JObject) data).ToString() );
-      loginToken = CreateLoginToken( (Guid) data.UserID );
+      loginToken = CreateLoginToken( (Guid) data.UserID, email );
+      return true;
+    }
+
+
+    /// <summary>
+    /// 尝试重设用户密码
+    /// </summary>
+    /// <param name="loginToken"></param>
+    /// <param name="oldPassword"></param>
+    /// <param name="newPassword"></param>
+    /// <returns></returns>
+    public override bool TryResetPassword( string loginToken, string oldPassword, string newPassword )
+    {
+
+      var loginData = LoadLoginData( loginToken );
+      if ( loginData == null )
+        return false;
+
+
+      var path = GetFilepath( loginData.Value<string>( "Email" ) );
+
+      if ( File.Exists( path ) == false )
+        return false;
+
+      var userData = JObject.Parse( File.ReadAllText( path ) );
+      if ( EncryptPassword( oldPassword ) != userData.Value<string>( "Password" ) )
+        return false;
+
+      userData["Password"] = EncryptPassword( newPassword );
+      File.WriteAllText( path, userData.ToString() );
       return true;
     }
   }

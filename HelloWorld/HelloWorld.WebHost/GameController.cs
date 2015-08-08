@@ -13,7 +13,6 @@ using System.Web.Http.Controllers;
 using Newtonsoft.Json.Linq;
 using System.Net;
 
-// For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace HelloWorld.WebHost
 {
@@ -26,39 +25,42 @@ namespace HelloWorld.WebHost
 
     public async override Task<HttpResponseMessage> ExecuteAsync( HttpControllerContext controllerContext, CancellationToken cancellationToken )
     {
-      var request = controllerContext.Request;
 
-      string loginToken = null;
+      await Authentication( controllerContext.Request );
+      return await base.ExecuteAsync( controllerContext, cancellationToken );
 
-      if ( loginToken == null )
+    }
+
+    private async Task Authentication( HttpRequestMessage request )
+    {
+      if ( LoginToken == null )
       {
         var authorization = request.Headers.Authorization;
 
         if ( authorization != null && authorization.Scheme == "Hello" )
-          loginToken = authorization.Parameter;
+          LoginToken = authorization.Parameter;
       }
 
-      if ( loginToken == null )
+      if ( LoginToken == null )
       {
         var cookie = request.Headers.GetCookies().SelectMany( c => c.Cookies ).Where( c => c.Name == CookieName ).FirstOrDefault();
         if ( cookie != null )
-          loginToken = cookie.Value;
+          LoginToken = cookie.Value;
 
       }
 
 
-      var userId = Host.UserService.GetUserID( loginToken );
+      var userId = Host.UserService.GetUserID( LoginToken );
       if ( userId == null )
-        return request.CreateErrorResponse( HttpStatusCode.Unauthorized, "Unauthorized" );
+        throw new HttpResponseException( request.CreateErrorResponse( HttpStatusCode.Unauthorized, "Unauthorized" ) );
 
-      else
-        Player = await Host.DataService.GetPlayer( userId.Value );
-
-      return await base.ExecuteAsync( controllerContext, cancellationToken );
+      Player = await Host.DataService.GetPlayer( userId.Value );
     }
 
 
-    public Player Player { get; private set; }
+    protected string LoginToken { get; private set; }
+
+    protected Player Player { get; private set; }
 
 
 
@@ -78,6 +80,7 @@ namespace HelloWorld.WebHost
 
 
 
+    [HttpGet]
     public async Task<object> Info( string nickname )
     {
 
@@ -86,6 +89,13 @@ namespace HelloWorld.WebHost
 
       return Info();
     }
+
+
+    public async Task<object> Info( string oldPassword, string newPassword )
+    {
+      return Host.UserService.TryResetPassword( LoginToken, oldPassword, newPassword );
+    }
+
 
   }
 }

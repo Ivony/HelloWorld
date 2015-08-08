@@ -31,5 +31,13 @@ namespace HelloWorld
     /// <param name="loginToken"></param>
     public abstract Guid? GetUserID( string loginToken );
 
+    /// <summary>
+    /// 尝试修改密码
+    /// </summary>
+    /// <param name="loginToken">登陆凭据</param>
+    /// <param name="oldPassword">旧密码</param>
+    /// <param name="newPassword">新密码</param>
+    /// <returns></returns>
+    public abstract bool TryResetPassword( string loginToken, string oldPassword, string newPassword );
   }
 }

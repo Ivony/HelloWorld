@@ -24,7 +24,7 @@ namespace HelloWorld.WebHost
 
     }
 
-    private async Task Authentication( HttpRequestMessage request )
+    protected virtual async Task Authentication( HttpRequestMessage request )
     {
       if ( LoginToken == null )
       {

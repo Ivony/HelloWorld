@@ -12,7 +12,14 @@ namespace HelloWorld.WebHost
   public class UserController : ControllerBase
   {
 
-    
+
+
+    protected override Task Authentication( HttpRequestMessage request )
+    {
+      return Task.CompletedTask;
+    }
+
+
 
     public async Task<object> Get( string email, string password, bool writeCookie = false )
     {

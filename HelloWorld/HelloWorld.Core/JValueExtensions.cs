@@ -30,6 +30,30 @@ namespace HelloWorld
 
 
 
+
+    /// <summary>
+    /// 获取 TimeSpan 类型的值
+    /// </summary>
+    public static TimeSpan TimeValue( this JObject obj, string name )
+    {
+      return TimeSpan.Parse( obj.Value<string>( name ) );
+    }
+
+
+    /// <summary>
+    /// 获取 TimeSpan 类型的值
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public static TimeSpan TimeValue( this JValue value )
+    {
+      return TimeSpan.Parse( value.Value<string>() );
+    }
+
+
+
+
+
     /// <summary>
     /// 获取坐标值
     /// </summary>

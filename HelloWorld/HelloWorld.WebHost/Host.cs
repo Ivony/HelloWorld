@@ -18,6 +18,8 @@ namespace HelloWorld.WebHost
     public static void Initailze( HttpConfiguration configuration )
     {
 
+      
+
       var configPath = ConfigurationManager.AppSettings["DataPath"] ?? "Data";
       var dataRoot = Path.Combine( HostingEnvironment.ApplicationPhysicalPath, configPath );
 

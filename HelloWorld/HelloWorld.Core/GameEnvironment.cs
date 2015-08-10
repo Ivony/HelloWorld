@@ -37,12 +37,12 @@ namespace HelloWorld
 
 
 
-    public static Task Initialize()
+    public static void Initialize()
     {
-      return Initialize( ConfigurationManager.AppSettings["GamePath"] );
+      Initialize( ConfigurationManager.AppSettings["GamePath"] );
     }
 
-    public static async Task Initialize( string path )
+    public static void Initialize( string path )
     {
 
       if ( path == null || Directory.Exists( path ) == false )

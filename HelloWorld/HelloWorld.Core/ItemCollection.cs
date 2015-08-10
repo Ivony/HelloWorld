@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Collections;
 
 namespace HelloWorld
 {
@@ -10,7 +11,7 @@ namespace HelloWorld
   /// <summary>
   /// 定义一个物品容器
   /// </summary>
-  public class ItemCollection
+  public class ItemCollection : IEnumerable<Item>
   {
 
 
@@ -21,6 +22,13 @@ namespace HelloWorld
 
 
     public ItemCollection() { }
+
+
+    internal ItemCollection( Item[] data )
+    {
+      foreach ( var i in Items )
+        AddItems( i );
+    }
 
 
     public void AddItems( Item item )
@@ -51,6 +59,16 @@ namespace HelloWorld
         else
           throw new InvalidOperationException();
       }
+    }
+
+    IEnumerator<Item> IEnumerable<Item>.GetEnumerator()
+    {
+      return Items.GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+      return Items.GetEnumerator();
     }
 
     public ItemList Items

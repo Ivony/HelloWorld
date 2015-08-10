@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace HelloWorld.CoordinateTest
+namespace HelloWorld.Test
 {
   [TestClass]
   public class CoordinateTest

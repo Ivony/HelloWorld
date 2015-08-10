@@ -13,7 +13,7 @@ namespace HelloWorld
   /// <summary>
   /// 定义一个物品清单
   /// </summary>
-  [JsonConverter( typeof( ItemList.ItemListTypeConverter ) )]
+  [JsonConverter( typeof( ItemListTypeConverter ) )]
   public sealed class ItemList : ReadOnlyCollection<Item>
   {
 
@@ -31,35 +31,5 @@ namespace HelloWorld
     {
       return JObject.FromObject( this.ToDictionary( item => item.ItemDescriptor.Expression, item => item.Quantity ) ).ToString();
     }
-
-
-
-    public class ItemListTypeConverter : JsonConverter
-    {
-      public override bool CanConvert( Type objectType )
-      {
-        return objectType == typeof( ItemList );
-      }
-
-      public override object ReadJson( JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer )
-      {
-
-        throw new NotSupportedException();
-
-      }
-
-      public override void WriteJson( JsonWriter writer, object value, JsonSerializer serializer )
-      {
-
-        var list = (ItemList) value;
-        var data = new JObject();
-
-        foreach ( var item in list )
-          data.Add( item.ItemDescriptor.Guid.ToString( "B" ) + "/" + item.ItemDescriptor.Name, item.Quantity );
-
-        serializer.Serialize( writer, data );
-      }
-    }
-
   }
 }

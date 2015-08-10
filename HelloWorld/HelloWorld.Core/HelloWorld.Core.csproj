@@ -66,6 +66,7 @@
     <Compile Include="ItemCollection.cs" />
     <Compile Include="ItemDescriptor.cs" />
     <Compile Include="ItemList.cs" />
+    <Compile Include="ItemListTypeConverter.cs" />
     <Compile Include="JsonDataService.cs" />
     <Compile Include="JsonUserService.cs" />
     <Compile Include="JValueExtensions.cs" />

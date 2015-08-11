@@ -46,7 +46,7 @@ namespace HelloWorld
     /// <summary>
     /// 获取表达形式
     /// </summary>
-    internal string Expression { get { return string.Format( "{0}({1})", Name, Guid ); } }
+    internal string Expression { get { return string.Format( "{0:B}/{1}", Guid, Name ); } }
 
   }
 }

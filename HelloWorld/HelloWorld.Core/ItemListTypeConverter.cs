@@ -33,9 +33,8 @@ namespace HelloWorld
 
     private Item CreateItem( JProperty property )
     {
-
       var id = Guid.Parse( property.Name.Remove( property.Name.IndexOf( "/" ) ) );
-      return new Item( GameEnvironment.GetItem( id ), property.Value<int>() );
+      return new Item( GameEnvironment.GetItem( id ), property.Value.Value<int>() );
     }
 
     public override void WriteJson( JsonWriter writer, object value, JsonSerializer serializer )
@@ -45,7 +44,7 @@ namespace HelloWorld
       var data = new JObject();
 
       foreach ( var item in list )
-        data.Add( item.ItemDescriptor.Guid.ToString( "B" ) + "/" + item.ItemDescriptor.Name, item.Quantity );
+        data.Add( item.ItemDescriptor.Expression, item.Quantity );
 
       serializer.Serialize( writer, data );
     }

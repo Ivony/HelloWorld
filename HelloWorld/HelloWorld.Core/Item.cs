@@ -33,5 +33,25 @@ namespace HelloWorld
     }
 
 
+    public override bool Equals( object obj )
+    {
+
+      var item2 = obj as Item;
+
+      if ( item2 == null )
+        return false;
+
+
+      return item2.ItemDescriptor == ItemDescriptor && item2.Quantity == Quantity;
+    }
+
+
+    public override int GetHashCode()
+    {
+      return unchecked(ItemDescriptor.GetHashCode() + Quantity);
+    }
+
+
+
   }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Collections;
+using Newtonsoft.Json;
 
 namespace HelloWorld
 {
@@ -11,6 +12,7 @@ namespace HelloWorld
   /// <summary>
   /// 定义一个物品容器
   /// </summary>
+  [JsonConverter( typeof( ItemListTypeConverter ) )]
   public class ItemCollection : IEnumerable<Item>
   {
 
@@ -26,7 +28,7 @@ namespace HelloWorld
 
     internal ItemCollection( Item[] data )
     {
-      foreach ( var i in Items )
+      foreach ( var i in data )
         AddItems( i );
     }
 

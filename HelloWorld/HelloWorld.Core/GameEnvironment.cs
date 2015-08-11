@@ -57,27 +57,27 @@ namespace HelloWorld
 
       foreach ( var file in Directory.GetFiles( path, "*", SearchOption.AllDirectories ) )
       {
-        var data = JObject.Parse( File.ReadAllText( path ) );
+        var data = JObject.Parse( File.ReadAllText( file ) );
 
-        var id = data.GuidValue( "id" );
-        var type = data.Value<String>( "type" );
+        var id = data.GuidValue( "ID" );
+        var type = data.Value<String>( "Type" );
 
 
         switch ( type )
         {
-          case "item":
+          case "Item":
             _items.Add( ItemDescriptor.FromData( id, data ) );
             break;
 
-          case "building":
+          case "Building":
             _buildings.Add( BuildingDescriptor.FromData( id, data ) );
             break;
 
-          case "construction":
+          case "Construction":
             _constructions.Add( ConstructionDescriptor.FromData( id, data ) );
             break;
 
-          case "production":
+          case "Production":
             _productions.Add( ProductionDescription.FromData( id, data ) );
             break;
 

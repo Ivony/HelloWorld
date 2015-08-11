@@ -62,7 +62,7 @@
   <ItemGroup>
     <Compile Include="CoordinateTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="ItemListSerializeTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HelloWorld.Core\HelloWorld.Core.csproj">

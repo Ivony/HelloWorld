@@ -58,8 +58,10 @@ namespace HelloWorld
       }
 
 
-
-      private void Save()
+      /// <summary>
+      /// 保存数据对象
+      /// </summary>
+      public void Save()
       {
         File.WriteAllText( _filepath, ((JObject) this).ToString( Formatting.None ) );
       }
@@ -138,9 +140,16 @@ namespace HelloWorld
     {
       private JsonDataItem data;
 
-      public JsonPlayer( JsonDataItem data )
+      public JsonPlayer( JsonDataItem jsonData )
       {
-        this.data = data;
+        data = jsonData;
+
+        resources = new ItemCollection( ItemListTypeConverter.FromJson( (JObject) jsonData["Resources"] ), SaveItems );
+      }
+
+      private void SaveItems()
+      {
+        data["Resources"] = ItemListTypeConverter.ToJson( resources );
       }
 
       /// <summary>
@@ -171,7 +180,7 @@ namespace HelloWorld
       }
 
 
-      private ItemCollection resources = new ItemCollection();
+      private ItemCollection resources;
 
       /// <summary>
       /// 资源数量
@@ -193,7 +202,7 @@ namespace HelloWorld
     {
       var filepath = Path.ChangeExtension( Path.Combine( playersDirectory, userId.ToString() ), _extensions );
 
-      var data = JsonDataItem.LoadData( filepath, new { NickName = "Guest", Initiation = Coordinate.RandomCoordinate( 1000, 1000 ).ToString() } );
+      var data = JsonDataItem.LoadData( filepath, new { NickName = "Guest", Initiation = Coordinate.RandomCoordinate( 1000, 1000 ).ToString(), Resources = new ItemCollection() } );
 
       return Task.FromResult( (Player) new JsonPlayer( data ) );
     }

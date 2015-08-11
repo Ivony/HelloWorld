@@ -19,7 +19,7 @@ namespace HelloWorld
 
       var data = serializer.Deserialize<JObject>( reader );
 
-      var items = data.Properties().Select( p => CreateItem( p ) ).ToArray();
+      var items = FromJson( data );
 
       if ( objectType == typeof( ItemList ) )
         return new ItemList( items );
@@ -31,22 +31,52 @@ namespace HelloWorld
         throw new NotSupportedException();
     }
 
-    private Item CreateItem( JProperty property )
+    private static Item CreateItem( JProperty property )
     {
-      var id = Guid.Parse( property.Name.Remove( property.Name.IndexOf( "/" ) ) );
-      return new Item( GameEnvironment.GetItem( id ), property.Value.Value<int>() );
+      var index = property.Name.IndexOf( "/" );
+      string id;
+      if ( index > 0 )
+        id = property.Name.Remove( index );
+      else
+        id = property.Name;
+
+      return new Item( GameEnvironment.GetItem( Guid.Parse( id ) ), property.Value.Value<int>() );
     }
 
     public override void WriteJson( JsonWriter writer, object value, JsonSerializer serializer )
     {
+      serializer.Serialize( writer, ToJson( (IEnumerable<Item>) value ) );
+    }
 
-      var list = (IEnumerable<Item>) value;
+    /// <summary>
+    /// 从 JSON 数据中加载
+    /// </summary>
+    /// <param name="data">JSON 数据</param>
+    /// <returns></returns>
+    public static Item[] FromJson( JObject data )
+    {
+      if ( data == null )
+        return new Item[0];
+
+      return data.Properties().Select( p => CreateItem( p ) ).ToArray();
+    }
+
+    /// <summary>
+    /// 转换为 JSON 数据对象
+    /// </summary>
+    /// <param name="list">数据源</param>
+    /// <returns></returns>
+    internal static JObject ToJson( IEnumerable<Item> list )
+    {
       var data = new JObject();
 
-      foreach ( var item in list )
-        data.Add( item.ItemDescriptor.Expression, item.Quantity );
+      if ( list != null )
+      {
+        foreach ( var item in list )
+          data.Add( item.ItemDescriptor.Expression, item.Quantity );
+      }
 
-      serializer.Serialize( writer, data );
+      return data;
     }
   }
 }

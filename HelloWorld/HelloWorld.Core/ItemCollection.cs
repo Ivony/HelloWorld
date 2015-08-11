@@ -26,12 +26,25 @@ namespace HelloWorld
     public ItemCollection() { }
 
 
-    internal ItemCollection( Item[] data )
+
+    public ItemCollection( Item[] data )
     {
       foreach ( var i in data )
         AddItems( i );
     }
 
+    /// <summary>
+    /// 初始化一个物品容器
+    /// </summary>
+    /// <param name="data">物品数据</param>
+    /// <param name="changeHandler">更改处理器</param>
+    public ItemCollection( Item[] data, Action changeHandler ) : this( data )
+    {
+      ChangeHandler = changeHandler;
+    }
+
+
+    protected Action ChangeHandler { get; private set; }
 
     public void AddItems( Item item )
     {
@@ -48,6 +61,9 @@ namespace HelloWorld
 
         else
           _collection.Add( item, quantity );
+
+        if ( ChangeHandler != null )
+          ChangeHandler();
       }
     }
 
@@ -60,6 +76,9 @@ namespace HelloWorld
 
         else
           throw new InvalidOperationException();
+
+        if ( ChangeHandler != null )
+          ChangeHandler();
       }
     }
 

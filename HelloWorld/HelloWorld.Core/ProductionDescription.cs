@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,8 +10,25 @@ namespace HelloWorld
   /// <summary>
   /// 定义一个生产过程
   /// </summary>
-  public sealed class ProductionDescription
+  public sealed class ProductionDescription : GameItemData
   {
+
+
+    private ProductionDescription( Guid guid, JObject data ) : base( guid, data ) { }
+
+
+    internal static ProductionDescription FromData( Guid guid, JObject data )
+    {
+
+      if ( data == null )
+        return null;
+
+      return new ProductionDescription( guid, data )
+      {
+        Building = GameEnvironment.GetBuilding( data.GuidValue( "Building" ) ),
+        RequiredTime = data.TimeValue( "RequiredTime" ),
+      };
+    }
 
 
     /// <summary>

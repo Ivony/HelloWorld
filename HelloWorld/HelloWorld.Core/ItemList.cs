@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace HelloWorld
   /// <summary>
   /// 定义一个物品清单
   /// </summary>
+  [JsonConverter( typeof( ItemListTypeConverter ) )]
   public sealed class ItemList : ReadOnlyCollection<Item>
   {
 
@@ -29,6 +31,5 @@ namespace HelloWorld
     {
       return JObject.FromObject( this.ToDictionary( item => item.ItemDescriptor.Expression, item => item.Quantity ) ).ToString();
     }
-
   }
 }

@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorld.WebHost", "Hello
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorld.Core", "HelloWorld.Core\HelloWorld.Core.csproj", "{ACA162FB-F382-475E-885A-C137929B2F31}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorld.CoordinateTest", "HelloWorld.CoordinateTest\HelloWorld.CoordinateTest.csproj", "{FB3689CE-589E-433E-987C-DBAFBB791232}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorld.Test", "HelloWorld.CoordinateTest\HelloWorld.Test.csproj", "{FB3689CE-589E-433E-987C-DBAFBB791232}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

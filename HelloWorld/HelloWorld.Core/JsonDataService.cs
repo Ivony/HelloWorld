@@ -129,6 +129,20 @@ namespace HelloWorld
       }
 
 
+      public override Constructing Constructing
+      {
+        get { return null; }
+        set { }
+      }
+
+      public override Producting Producting
+      {
+        get { return null; }
+        set { }
+      }
+
+
+
       private Coordinate _coordinate;
 
       public override Coordinate Coordinate { get { return _coordinate; } }

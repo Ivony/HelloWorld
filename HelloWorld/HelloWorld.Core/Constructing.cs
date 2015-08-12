@@ -12,7 +12,10 @@ namespace HelloWorld
   public class Constructing : GameProgress
   {
 
-    public Constructing( DateTime startOn, Place place, ConstructionDescriptor construction ) : base( startOn, place ) { }
+    public Constructing( DateTime startOn, Place place, ConstructionDescriptor construction ) : base( startOn, place )
+    {
+      Construction = construction;
+    }
 
 
     public ConstructionDescriptor Construction { get; private set; }

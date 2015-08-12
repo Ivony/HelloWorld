@@ -41,6 +41,8 @@ namespace HelloWorld
       {
         Coordinate = Coordinate - player.Initiation,
         Building,
+        Constructing,
+        Producting,
       };
     }
   }

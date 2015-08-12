@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -11,6 +12,7 @@ namespace HelloWorld
   /// <summary>
   /// 坐标
   /// </summary>
+  [JsonConverter( typeof( CoordinateJsonConverter ) )]
   public sealed class Coordinate
   {
     public int X { get; private set; }
@@ -111,11 +113,11 @@ namespace HelloWorld
     /// <returns>坐标的字符串表达形式</returns>
     public override string ToString()
     {
-      return string.Format( "{{{0}, {1}}}", X, Y );
+      return string.Format( "({0}, {1})", X, Y );
     }
 
 
-    private static Regex coordinateRegex = new Regex( @"^\s*\{\s*(?<x>[0-9]+),\s*(?<y>[0-9]+)\s*\}\s*$", RegexOptions.Compiled );
+    private static Regex coordinateRegex = new Regex( @"^\s*\(\s*(?<x>[0-9]+),\s*(?<y>[0-9]+)\s*\)\s*$", RegexOptions.Compiled );
 
     /// <summary>
     /// 从字符串中解析出坐标信息

@@ -101,11 +101,11 @@ namespace HelloWorld
           var construction = ConstructionDescriptor.FromData( id, data );
           _constructions.Add( construction );
 
-          if ( _constructionsMap.ContainsKey( construction.OriginBuilding ) == false )
-            _constructionsMap.Add( construction.OriginBuilding, new HashSet<ConstructionDescriptor>() { construction } );
+          if ( _constructionsMap.ContainsKey( construction.RawBuilding ) == false )
+            _constructionsMap.Add( construction.RawBuilding, new HashSet<ConstructionDescriptor>() { construction } );
 
           else
-            _constructionsMap[construction.OriginBuilding].Add( construction );
+            _constructionsMap[construction.RawBuilding].Add( construction );
           break;
 
         case "Production":

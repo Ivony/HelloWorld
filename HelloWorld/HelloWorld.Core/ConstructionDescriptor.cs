@@ -24,7 +24,7 @@ namespace HelloWorld
 
       return new ConstructionDescriptor( guid, data )
       {
-        OriginBuilding = GameEnvironment.GetBuilding( data.GuidValue( "RawBuilding" ) ),
+        RawBuilding = GameEnvironment.GetBuilding( data.GuidValue( "RawBuilding" ) ),
         NewBuiding = GameEnvironment.GetBuilding( data.GuidValue( "NewBuilding" ) ),
         ResourceRequirment = ResourceRequirment.FromData( (JObject) data["Requirment"] ),
       };
@@ -33,7 +33,7 @@ namespace HelloWorld
     /// <summary>
     /// 原建筑
     /// </summary>
-    public BuildingDescriptor OriginBuilding { get; private set; }
+    public BuildingDescriptor RawBuilding { get; private set; }
 
 
     /// <summary>

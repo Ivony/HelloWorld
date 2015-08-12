@@ -160,12 +160,12 @@ namespace HelloWorld
       {
         data = jsonData;
 
-        resources = new ItemCollection( ItemListTypeConverter.FromJson( (JObject) jsonData["Resources"] ), SaveItems );
+        resources = new ItemCollection( ItemListJsonConverter.FromJson( (JObject) jsonData["Resources"] ), SaveItems );
       }
 
       private void SaveItems()
       {
-        data["Resources"] = ItemListTypeConverter.ToJson( resources );
+        data["Resources"] = ItemListJsonConverter.ToJson( resources );
       }
 
       /// <summary>

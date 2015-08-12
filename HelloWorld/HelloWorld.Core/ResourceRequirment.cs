@@ -16,7 +16,7 @@ namespace HelloWorld
     {
       return new ResourceRequirment
       {
-        Items = ItemListTypeConverter.FromJson( (JObject) data["Items"] ),
+        Items = ItemListJsonConverter.FromJson( (JObject) data["Items"] ),
         Time = data.TimeValue( "Time" ),
         Workers = data.Value<int>( "Workers" ),
       };

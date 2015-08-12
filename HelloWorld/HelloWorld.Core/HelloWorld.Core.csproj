@@ -60,6 +60,7 @@
     <Compile Include="Constructing.cs" />
     <Compile Include="ConstructionDescriptor.cs" />
     <Compile Include="Coordinate.cs" />
+    <Compile Include="CoordinateJsonConverter.cs" />
     <Compile Include="GameDataService.cs" />
     <Compile Include="GameEnvironment.cs" />
     <Compile Include="GameItemData.cs" />
@@ -67,7 +68,7 @@
     <Compile Include="ItemCollection.cs" />
     <Compile Include="ItemDescriptor.cs" />
     <Compile Include="ItemList.cs" />
-    <Compile Include="ItemListTypeConverter.cs" />
+    <Compile Include="ItemListJsonConverter.cs" />
     <Compile Include="JsonDataService.cs" />
     <Compile Include="JsonUserService.cs" />
     <Compile Include="JValueExtensions.cs" />

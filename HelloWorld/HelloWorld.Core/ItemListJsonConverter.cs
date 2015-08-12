@@ -7,7 +7,7 @@ using System.Web;
 
 namespace HelloWorld
 {
-  public class ItemListTypeConverter : JsonConverter
+  public class ItemListJsonConverter : JsonConverter
   {
     public override bool CanConvert( Type objectType )
     {

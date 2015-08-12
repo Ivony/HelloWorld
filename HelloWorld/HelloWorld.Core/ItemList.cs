@@ -13,7 +13,7 @@ namespace HelloWorld
   /// <summary>
   /// 定义一个物品清单
   /// </summary>
-  [JsonConverter( typeof( ItemListTypeConverter ) )]
+  [JsonConverter( typeof( ItemListJsonConverter ) )]
   public sealed class ItemList : ReadOnlyCollection<Item>
   {
 

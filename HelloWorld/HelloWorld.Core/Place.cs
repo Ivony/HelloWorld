@@ -21,5 +21,13 @@ namespace HelloWorld
     /// </summary>
     public abstract BuildingDescriptor Building { get; set; }
 
+    public object GetInfo( Player player )
+    {
+      return new
+      {
+        Coordinate = Coordinate - player.Initiation,
+        Building,
+      };
+    }
   }
 }

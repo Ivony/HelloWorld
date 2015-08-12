@@ -110,27 +110,29 @@ namespace HelloWorld
     private class JsonPlace : Place
     {
 
-      private dynamic _data;
+      private JsonDataItem _data;
 
-      public JsonPlace( JsonDataItem data )
+      public JsonPlace( Coordinate coordinate, JsonDataItem data )
       {
+        _coordinate = coordinate;
         _data = data;
       }
 
       public override BuildingDescriptor Building
       {
-        get { return GameEnvironment.GetBuilding( Guid.Parse( _data.Building ) ); }
+        get { return GameEnvironment.GetBuilding( _data.GuidValue( "Building" ) ); }
 
         set
         {
-          _data.Building = value.Guid.ToString();
+          _data["Building"] = value.Guid.ToString();
         }
       }
 
-      public override Coordinate Coordinate
-      {
-        get { return Coordinate.Parse( (string) _data.Coordinate ); }
-      }
+
+      private Coordinate _coordinate;
+
+      public override Coordinate Coordinate { get { return _coordinate; } }
+
     }
 
 
@@ -214,7 +216,7 @@ namespace HelloWorld
 
       var data = JsonDataItem.LoadData( filepath, new { Building = Guid.Parse( "{EB0C8AE8-FC09-4874-9985-98C081F4D1B7}" ) } );
 
-      return Task.FromResult( (Place) new JsonPlace( data ) );
+      return Task.FromResult( (Place) new JsonPlace( coordinate, data ) );
     }
 
 

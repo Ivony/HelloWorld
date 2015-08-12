@@ -19,6 +19,12 @@ namespace HelloWorld
 
 
 
+    /// <summary>
+    /// 创建一个坐标对象
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <returns></returns>
     public static Coordinate Create( int x, int y )
     {
 
@@ -118,6 +124,10 @@ namespace HelloWorld
     /// <returns>坐标信息</returns>
     public static Coordinate Parse( string expression )
     {
+      if ( expression == null )
+        throw new ArgumentNullException( "expression" );
+
+
       var match = coordinateRegex.Match( expression );
       if ( match.Success == false )
         throw new FormatException();
@@ -128,5 +138,55 @@ namespace HelloWorld
 
       return Create( x, y );
     }
+
+
+
+    private static Coordinate _origin = Create( 0, 0 );
+    /// <summary>
+    /// 原点坐标
+    /// </summary>
+    public static Coordinate Origin { get { return _origin; } }
+
+
+    /// <summary>
+    /// 计算两个坐标相加后的结果
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <returns></returns>
+    public static Coordinate operator +( Coordinate a, Coordinate b )
+    {
+      return Create( a.X + b.X, a.Y + b.Y );
+    }
+
+
+    /// <summary>
+    /// 计算两个坐标相减后的结果
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <returns></returns>
+    public static Coordinate operator -( Coordinate a, Coordinate b )
+    {
+      return Create( a.X - b.X, a.Y - b.Y );
+    }
+
+
+    public override bool Equals( object obj )
+    {
+      var coordinate = obj as Coordinate;
+      if ( coordinate == null )
+        return false;
+
+
+      return X == coordinate.X && Y == coordinate.Y;
+    }
+
+    public override int GetHashCode()
+    {
+      return (X ^ -Y);
+    }
+
+
   }
 }

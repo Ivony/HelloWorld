@@ -26,7 +26,7 @@ namespace HelloWorld.WebHost
     {
       routes.MapHttpRoute( "Info", "", new { controller = "Game", action = "Info" } );
       routes.MapHttpRoute( "User", "User", new { controller = "User" } );
-      routes.MapHttpRoute( "Game", "{action}", new { controller = "Game" } );
+      routes.MapHttpRoute( "Place", "{coordinate}", new { controller = "Game", action = "Place" } );
       routes.MapHttpRoute( "Default", "{controller}/{action}" );
 
 

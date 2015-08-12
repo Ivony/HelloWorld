@@ -11,7 +11,20 @@ namespace HelloWorld.Test
     {
       for ( int i = 0; i < 10000; i++ )
       {
-        Console.WriteLine( Coordinate.RandomCoordinate( 10000, 10000 ) );
+
+        Coordinate.RandomCoordinate( 10000, 10000 );
+
+        var a = Coordinate.RandomCoordinate( 10000, 10000 );
+        var b = Coordinate.RandomCoordinate( 10000, 10000 );
+
+        var c = a + b;
+        Assert.AreEqual( a, c - b );
+
+        c = a - b;
+        Assert.AreEqual( a, c + b );
+
+
+
       }
     }
 
@@ -30,6 +43,10 @@ namespace HelloWorld.Test
 
 
     }
+
+
+
+
 
   }
 }

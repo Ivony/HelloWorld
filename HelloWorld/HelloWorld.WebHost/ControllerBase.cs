@@ -53,7 +53,7 @@ namespace HelloWorld.WebHost
 
     protected string LoginToken { get; private set; }
 
-    protected Player Player { get; private set; }
+    protected GamePlayer Player { get; private set; }
 
 
 

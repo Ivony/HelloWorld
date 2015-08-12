@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HelloWorld
 {
-  public class Producting : GameProgress
+  public class Producting : GameActing
   {
 
     public Producting( DateTime startOn, Place place, ProductionDescription production ) : base( startOn, place )
@@ -16,9 +16,14 @@ namespace HelloWorld
 
 
 
-    public override GameProgressStatus Status { get { return GameProgressStatus.Processing; } }
+    public override GameActingStatus Status { get { return GameActingStatus.Processing; } }
 
 
     public ProductionDescription Production { get; private set; }
+
+    protected override void Complete()
+    {
+      
+    }
   }
 }

@@ -9,7 +9,7 @@ namespace HelloWorld
   /// <summary>
   /// 代表正在进行的一个建造过程
   /// </summary>
-  public class Constructing : GameProgress
+  public class Constructing : GameActing
   {
 
     public Constructing( DateTime startOn, Place place, ConstructionDescriptor construction ) : base( startOn, place )
@@ -22,9 +22,14 @@ namespace HelloWorld
 
 
 
-    public override GameProgressStatus Status
+    public override GameActingStatus Status
     {
-      get { return GameProgressStatus.Processing; }
+      get { return GameActingStatus.Processing; }
+    }
+
+    protected override void Complete()
+    {
+      Place.Building = Construction.NewBuiding;
     }
   }
 }

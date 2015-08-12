@@ -26,7 +26,7 @@ namespace HelloWorld
       return new ProductionDescription( guid, data )
       {
         Building = GameEnvironment.GetBuilding( data.GuidValue( "Building" ) ),
-        RequiredTime = data.TimeValue( "RequiredTime" ),
+        Requirment = ResourceRequirment.FromData( (JObject) data["Requirment"] ),
       };
     }
 
@@ -37,16 +37,10 @@ namespace HelloWorld
     public BuildingDescriptor Building { get; private set; }
 
 
-    /// <summary>
-    /// 此生产过程所需的时间
-    /// </summary>
-    public TimeSpan RequiredTime { get; private set; }
-
 
     /// <summary>
-    /// 此生产过程所需的劳工数量
+    /// 生产所需资源列表
     /// </summary>
-    public int Workers { get; private set; }
-
+    public ResourceRequirment Requirment { get; private set; }
   }
 }

@@ -11,12 +11,12 @@ namespace HelloWorld.WebHost
   public static class GameExtensions
   {
 
-    public async static Task<Player> GetCurrentPlayer( this HttpControllerContext context )
+    public async static Task<GamePlayer> GetCurrentPlayer( this HttpControllerContext context )
     {
       return await GetCurrentPlayer( context.Request );
     }
 
-    private async static Task<Player> GetCurrentPlayer( this HttpRequestMessage request )
+    private async static Task<GamePlayer> GetCurrentPlayer( this HttpRequestMessage request )
     {
       return await Host.DataService.GetPlayer( (Guid) request.Properties["UserID"] );
     }

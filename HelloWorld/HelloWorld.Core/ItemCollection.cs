@@ -51,6 +51,27 @@ namespace HelloWorld
       AddItems( item.ItemDescriptor, item.Quantity );
     }
 
+
+    /// <summary>
+    /// 收集另一个物品容器中的所有物品，并清空他。
+    /// </summary>
+    /// <param name="items"></param>
+    public void Collect( ItemCollection items )
+    {
+
+      lock ( items._sync )
+      {
+        lock ( _sync )
+        {
+          foreach ( var item in items )
+            AddItems( item );
+
+          items.Clear();
+        }
+      }
+    }
+
+
     public void AddItems( ItemDescriptor item, int quantity )
     {
 
@@ -84,23 +105,34 @@ namespace HelloWorld
 
     IEnumerator<Item> IEnumerable<Item>.GetEnumerator()
     {
-      return Items.GetEnumerator();
+      return ((ItemList) this).GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()
     {
-      return Items.GetEnumerator();
+      return ((ItemList) this).GetEnumerator();
     }
 
-    public ItemList Items
+
+    public static implicit operator ItemList( ItemCollection items )
     {
-      get
+      lock ( items._sync )
       {
-        lock ( _sync )
-        {
-          return new ItemList( _collection.Select( item => new Item( item.Key, item.Value ) ).ToArray() );
-        }
+        return new ItemList( items._collection.Select( item => new Item( item.Key, item.Value ) ).ToArray() );
       }
     }
+
+
+    /// <summary>
+    /// 清空物品容器
+    /// </summary>
+    public void Clear()
+    {
+      lock ( _sync )
+      {
+        _collection.Clear();
+      }
+    }
+
   }
 }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace HelloWorld
 {
-  public abstract class Player
+  public abstract class GamePlayer
   {
 
     /// <summary>
@@ -47,7 +47,7 @@ namespace HelloWorld
       {
         Nickname,
         Workers,
-        Resources = Resources.Items,
+        Resources = Resources,
       };
     }
   }

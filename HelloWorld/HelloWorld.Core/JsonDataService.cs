@@ -110,23 +110,40 @@ namespace HelloWorld
     private class JsonPlace : Place
     {
 
-      private JsonDataItem _data;
+      private JsonDataItem data;
 
-      public JsonPlace( Coordinate coordinate, JsonDataItem data )
+      public JsonPlace( Coordinate coordinate, JsonDataItem jsonData )
       {
         _coordinate = coordinate;
-        _data = data;
+        data = jsonData;
+        resources = new ItemCollection( ItemListJsonConverter.FromJson( (JObject) data["Resources"] ), SaveItems );
       }
 
       public override BuildingDescriptor Building
       {
-        get { return GameEnvironment.GetBuilding( _data.GuidValue( "Building" ) ); }
+        get { return GameEnvironment.GetBuilding( data.GuidValue( "Building" ) ); }
 
         set
         {
-          _data["Building"] = value.Guid.ToString();
+          data["Building"] = value.Guid.ToString();
         }
       }
+
+      private void SaveItems()
+      {
+        data["Resources"] = ItemListJsonConverter.ToJson( resources );
+      }
+
+      private ItemCollection resources;
+
+      /// <summary>
+      /// 资源数量
+      /// </summary>
+      public override ItemCollection Resources
+      {
+        get { return resources; }
+      }
+
 
 
       public override Constructing Constructing
@@ -152,7 +169,7 @@ namespace HelloWorld
 
 
 
-    private class JsonPlayer : Player
+    private class JsonPlayer : GamePlayer
     {
       private JsonDataItem data;
 
@@ -214,13 +231,13 @@ namespace HelloWorld
     }
 
 
-    public override Task<Player> GetPlayer( Guid userId )
+    public override Task<GamePlayer> GetPlayer( Guid userId )
     {
       var filepath = Path.ChangeExtension( Path.Combine( playersDirectory, userId.ToString() ), _extensions );
 
       var data = JsonDataItem.LoadData( filepath, new { NickName = "Guest", Initiation = Coordinate.RandomCoordinate( 1000, 1000 ).ToString(), Resources = new ItemCollection() } );
 
-      return Task.FromResult( (Player) new JsonPlayer( data ) );
+      return Task.FromResult( (GamePlayer) new JsonPlayer( data ) );
     }
 
 

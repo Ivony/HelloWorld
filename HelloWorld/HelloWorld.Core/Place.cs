@@ -11,6 +11,16 @@ namespace HelloWorld
   public abstract class Place
   {
 
+    protected Place()
+    {
+      SyncRoot = new object();
+    }
+
+    /// <summary>
+    /// 获取用于同步的对象
+    /// </summary>
+    public object SyncRoot { get; private set; }
+
     /// <summary>
     /// 地块坐标
     /// </summary>
@@ -35,12 +45,39 @@ namespace HelloWorld
     public abstract Constructing Constructing { get; set; }
 
 
-    public object GetInfo( Player player )
+
+    /// <summary>
+    /// 地块上存在的资源
+    /// </summary>
+    public abstract ItemCollection Resources { get; }
+
+
+    /// <summary>
+    /// 收集地块上所有的资源
+    /// </summary>
+    /// <param name="player"></param>
+    public void Collect( GamePlayer player )
+    {
+      lock ( SyncRoot )
+      {
+        player.Resources.Collect( Resources );
+        Resources.Clear();
+      }
+    }
+
+
+    /// <summary>
+    /// 获取用于展示的地块信息
+    /// </summary>
+    /// <param name="player"></param>
+    /// <returns></returns>
+    public object GetInfo( GamePlayer player )
     {
       return new
       {
         Coordinate = Coordinate - player.Initiation,
         Building,
+        Resources,
         Constructing,
         Producting,
         Actions = new

@@ -10,10 +10,10 @@ namespace HelloWorld
   /// <summary>
   /// 代表正在进行的一个活动
   /// </summary>
-  public abstract class GameProgress
+  public abstract class GameActing
   {
 
-    protected GameProgress( DateTime startOn, Place place )
+    protected GameActing( DateTime startOn, Place place )
     {
 
       StartOn = startOn;
@@ -35,7 +35,14 @@ namespace HelloWorld
     /// <summary>
     /// 活动状态
     /// </summary>
-    public abstract GameProgressStatus Status { get; }
+    public abstract GameActingStatus Status { get; }
+
+
+    /// <summary>
+    /// 完成这个活动
+    /// </summary>
+    protected abstract void Complete();
+
 
   }
 
@@ -44,23 +51,23 @@ namespace HelloWorld
   /// <summary>
   /// 定义游戏活动状态
   /// </summary>
-  public sealed class GameProgressStatus
+  public sealed class GameActingStatus
   {
 
     /// <summary>
     /// 正在进行
     /// </summary>
-    public static readonly GameProgressStatus Processing = new GameProgressStatus( "Processing" );
+    public static readonly GameActingStatus Processing = new GameActingStatus( "Processing" );
 
     /// <summary>
     /// 已经完成
     /// </summary>
-    public static readonly GameProgressStatus Done = new GameProgressStatus( "Done" );
+    public static readonly GameActingStatus Done = new GameActingStatus( "Done" );
 
 
     private string status;
 
-    private GameProgressStatus( string status )
+    private GameActingStatus( string status )
     {
       this.status = status;
     }
@@ -68,7 +75,7 @@ namespace HelloWorld
 
     public override bool Equals( object obj )
     {
-      var a = obj as GameProgressStatus;
+      var a = obj as GameActingStatus;
       if ( a == null )
         return false;
 

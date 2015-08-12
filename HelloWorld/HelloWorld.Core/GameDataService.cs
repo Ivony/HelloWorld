@@ -10,6 +10,6 @@ namespace HelloWorld
     public abstract Task<Place> GetPlace( Coordinate coordinate );
 
 
-    public abstract Task<Player> GetPlayer( Guid userId );
+    public abstract Task<GamePlayer> GetPlayer( Guid userId );
   }
 }

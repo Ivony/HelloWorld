@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
+using System.Linq;
 
 namespace HelloWorld.Test
 {
@@ -25,7 +26,7 @@ namespace HelloWorld.Test
 
       var data = JsonConvert.DeserializeObject<ItemCollection>( JsonConvert.SerializeObject( collection ) );
 
-      Assert.AreEqual( data.Items[0], item1 );
+      Assert.AreEqual( data.First(), item1 );
     }
   }
 }

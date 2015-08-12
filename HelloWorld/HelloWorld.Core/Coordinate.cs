@@ -117,7 +117,7 @@ namespace HelloWorld
     }
 
 
-    private static Regex coordinateRegex = new Regex( @"^\s*\(\s*(?<x>[0-9]+),\s*(?<y>[0-9]+)\s*\)\s*$", RegexOptions.Compiled );
+    private static Regex coordinateRegex = new Regex( @"^\s*\(\s*(?<x>[+-]?[0-9]+),\s*(?<y>[+-]?[0-9]+)\s*\)\s*$", RegexOptions.Compiled );
 
     /// <summary>
     /// 从字符串中解析出坐标信息

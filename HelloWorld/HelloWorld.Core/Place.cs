@@ -21,6 +21,20 @@ namespace HelloWorld
     /// </summary>
     public abstract BuildingDescriptor Building { get; set; }
 
+
+
+    /// <summary>
+    /// 正在进行的生产
+    /// </summary>
+    public abstract Producting Producting { get; set; }
+
+
+    /// <summary>
+    /// 正在进行的建造
+    /// </summary>
+    public abstract Constructing Constructing { get; set; }
+
+
     public object GetInfo( Player player )
     {
       return new

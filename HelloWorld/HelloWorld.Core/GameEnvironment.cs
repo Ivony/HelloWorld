@@ -35,6 +35,8 @@ namespace HelloWorld
     private static GameItemDataCollection<ConstructionDescriptor> _constructions;
 
 
+    private static Dictionary<BuildingDescriptor, HashSet<ConstructionDescriptor>> _constructionsMap = new Dictionary<BuildingDescriptor, HashSet<ConstructionDescriptor>>();
+    private static Dictionary<BuildingDescriptor, HashSet<ProductionDescription>> _productionsMap = new Dictionary<BuildingDescriptor, HashSet<ProductionDescription>>();
 
 
     public static void Initialize()
@@ -55,33 +57,69 @@ namespace HelloWorld
       _constructions = new GameItemDataCollection<ConstructionDescriptor>();
 
 
-      foreach ( var file in Directory.GetFiles( path, "*", SearchOption.AllDirectories ) )
+      foreach ( var file in Directory.GetFiles( path ) )
       {
-        var data = JObject.Parse( File.ReadAllText( file ) );
+        LoadData( file );
+      }
+      foreach ( var file in Directory.GetFiles( Path.Combine( path, "items" ) ) )
+      {
+        LoadData( file );
+      }
+      foreach ( var file in Directory.GetFiles( Path.Combine( path, "buildings" ) ) )
+      {
+        LoadData( file );
+      }
+      foreach ( var file in Directory.GetFiles( Path.Combine( path, "productions" ) ) )
+      {
+        LoadData( file );
+      }
+      foreach ( var file in Directory.GetFiles( Path.Combine( path, "constructions" ) ) )
+      {
+        LoadData( file );
+      }
+    }
 
-        var id = data.GuidValue( "ID" );
-        var type = data.Value<String>( "Type" );
+    private static void LoadData( string filepath )
+    {
+      var data = JObject.Parse( File.ReadAllText( filepath ) );
+
+      var id = data.GuidValue( "ID" );
+      var type = data.Value<String>( "Type" );
 
 
-        switch ( type )
-        {
-          case "Item":
-            _items.Add( ItemDescriptor.FromData( id, data ) );
-            break;
+      switch ( type )
+      {
+        case "Item":
+          _items.Add( ItemDescriptor.FromData( id, data ) );
+          break;
 
-          case "Building":
-            _buildings.Add( BuildingDescriptor.FromData( id, data ) );
-            break;
+        case "Building":
+          _buildings.Add( BuildingDescriptor.FromData( id, data ) );
+          break;
 
-          case "Construction":
-            _constructions.Add( ConstructionDescriptor.FromData( id, data ) );
-            break;
+        case "Construction":
+          var construction = ConstructionDescriptor.FromData( id, data );
+          _constructions.Add( construction );
 
-          case "Production":
-            _productions.Add( ProductionDescription.FromData( id, data ) );
-            break;
+          if ( _constructionsMap.ContainsKey( construction.OriginBuilding ) == false )
+            _constructionsMap.Add( construction.OriginBuilding, new HashSet<ConstructionDescriptor>() { construction } );
 
-        }
+          else
+            _constructionsMap[construction.OriginBuilding].Add( construction );
+          break;
+
+        case "Production":
+          var production = ProductionDescription.FromData( id, data );
+          _productions.Add( production );
+
+          if ( _constructionsMap.ContainsKey( production.Building ) == false )
+            _productionsMap.Add( production.Building, new HashSet<ProductionDescription>() { production } );
+
+          else
+            _productionsMap[production.Building].Add( production );
+
+          break;
+
       }
     }
 
@@ -157,5 +195,47 @@ namespace HelloWorld
 
       return _constructions[id];
     }
+
+
+
+    /// <summary>
+    /// 获取某个建筑可以进行的生产
+    /// </summary>
+    /// <param name="building"></param>
+    /// <returns></returns>
+    public static ProductionDescription[] GetProductions( BuildingDescriptor building )
+    {
+      if ( _productionsMap == null )
+        throw new InvalidOperationException( "游戏规则尚未初始化" );
+
+
+      HashSet<ProductionDescription> result;
+      if ( _productionsMap.TryGetValue( building, out result ) )
+        return result.ToArray();
+
+      else
+        return new ProductionDescription[0];
+    }
+
+
+    /// <summary>
+    /// 获取某个建筑可以进行的升级或者改造
+    /// </summary>
+    /// <param name="building"></param>
+    /// <returns></returns>
+    public static ConstructionDescriptor[] GetConstructions( BuildingDescriptor building )
+    {
+      if ( _constructionsMap == null )
+        throw new InvalidOperationException( "游戏规则尚未初始化" );
+
+
+      HashSet<ConstructionDescriptor> result;
+      if ( _constructionsMap.TryGetValue( building, out result ) )
+        return result.ToArray();
+
+      else
+        return new ConstructionDescriptor[0];
+    }
+
   }
 }

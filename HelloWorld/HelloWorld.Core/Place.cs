@@ -43,6 +43,11 @@ namespace HelloWorld
         Building,
         Constructing,
         Producting,
+        Actions = new
+        {
+          Constructions = GameEnvironment.GetConstructions( Building ),
+          Productions = GameEnvironment.GetProductions( Building ),
+        }
       };
     }
   }

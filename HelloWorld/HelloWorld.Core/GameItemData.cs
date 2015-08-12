@@ -33,7 +33,7 @@ namespace HelloWorld
 
     public override bool Equals( object obj )
     {
-      var item = obj as ItemDescriptor;
+      var item = obj as GameItemData;
 
       if ( item == null )
         return false;

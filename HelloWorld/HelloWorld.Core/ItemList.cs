@@ -31,5 +31,13 @@ namespace HelloWorld
     {
       return JObject.FromObject( this.ToDictionary( item => item.ItemDescriptor.Expression, item => item.Quantity ) ).ToString();
     }
+
+
+
+    public static implicit operator ItemList( Item[] items )
+    {
+      return new ItemList( items );
+    }
+
   }
 }

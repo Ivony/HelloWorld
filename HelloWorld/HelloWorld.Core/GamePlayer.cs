@@ -8,6 +8,17 @@ namespace HelloWorld
   public abstract class GamePlayer
   {
 
+
+    protected GamePlayer( Guid userId )
+    {
+      UserID = userId;
+    }
+
+    /// <summary>
+    /// 用户 ID
+    /// </summary>
+    public Guid UserID { get; private set; }
+
     /// <summary>
     /// 昵称
     /// </summary>
@@ -50,5 +61,21 @@ namespace HelloWorld
         Resources = Resources,
       };
     }
+
+
+    public override bool Equals( object obj )
+    {
+      var player = obj as GamePlayer;
+      if ( player == null )
+        return false;
+
+      return player.UserID == UserID;
+    }
+
+    public override int GetHashCode()
+    {
+      return UserID.GetHashCode();
+    }
+
   }
 }

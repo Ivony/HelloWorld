@@ -7,9 +7,8 @@ namespace HelloWorld
 {
   public abstract class GameDataService
   {
-    public abstract Task<Place> GetPlace( Coordinate coordinate );
+    public abstract Place GetPlace( Coordinate coordinate );
 
-
-    public abstract Task<GamePlayer> GetPlayer( Guid userId );
+    public abstract GamePlayer GetPlayer( Guid userId );
   }
 }

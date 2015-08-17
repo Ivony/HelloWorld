@@ -53,14 +53,20 @@ namespace HelloWorld
 
 
     /// <summary>
+    /// 地块的拥有者
+    /// </summary>
+    public abstract GamePlayer Owner { get; set; }
+
+
+    /// <summary>
     /// 收集地块上所有的资源
     /// </summary>
     /// <param name="player"></param>
-    public void Collect( GamePlayer player )
+    public void Collect()
     {
       lock ( SyncRoot )
       {
-        player.Resources.Collect( Resources );
+        Owner.Resources.Collect( Resources );
         Resources.Clear();
       }
     }

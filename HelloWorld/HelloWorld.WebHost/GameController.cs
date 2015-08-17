@@ -48,7 +48,7 @@ namespace HelloWorld.WebHost
         return null;
 
 
-      var place = await Host.DataService.GetPlace( Player.Initiation + position );
+      var place = Host.DataService.GetPlace( Player.Initiation + position );
 
       return place.GetInfo( Player );
     }

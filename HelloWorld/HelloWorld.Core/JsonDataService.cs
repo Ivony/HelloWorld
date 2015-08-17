@@ -30,15 +30,19 @@ namespace HelloWorld
     private const string _extensions = ".json";
 
 
+    /// <summary>
+    /// 数据文件根路径
+    /// </summary>
     public string DataRoot
     {
       get; private set;
     }
 
+
+
+
     private sealed class JsonDataItem : JObject
     {
-
-
       private JsonDataItem( string filepath )
       {
         _filepath = filepath;
@@ -111,25 +115,40 @@ namespace HelloWorld
     {
 
       private JsonDataItem data;
+      private JsonDataService dataService;
 
-      public JsonPlace( Coordinate coordinate, JsonDataItem jsonData )
+      public JsonPlace( JsonDataService service, Coordinate coordinate, JsonDataItem jsonData )
       {
         _coordinate = coordinate;
         data = jsonData;
-        resources = new ItemCollection( ItemListJsonConverter.FromJson( (JObject) data["Resources"] ), SaveItems );
+        dataService = service;
+        resources = new ItemCollection( ItemListJsonConverter.FromJson( (JObject) data["Resources"] ), SaveResources );
       }
 
+      /// <summary>
+      /// 地块上的建筑/地形
+      /// </summary>
       public override BuildingDescriptor Building
       {
         get { return GameEnvironment.GetBuilding( data.GuidValue( "Building" ) ); }
-
-        set
-        {
-          data["Building"] = value.Guid.ToString();
-        }
+        set { data["Building"] = value.Guid.ToString(); }
       }
 
-      private void SaveItems()
+
+      /// <summary>
+      /// 地块的所有者
+      /// </summary>
+      public override GamePlayer Owner
+      {
+        get { return dataService.GetPlayer( data.GuidValue( "Owner" ) ); }
+        set { data["Owner"] = value.UserID; }
+      }
+
+
+      /// <summary>
+      /// 保存 Resources 属性
+      /// </summary>
+      private void SaveResources()
       {
         data["Resources"] = ItemListJsonConverter.ToJson( resources );
       }
@@ -146,12 +165,18 @@ namespace HelloWorld
 
 
 
+      /// <summary>
+      /// 地块正在进行的建造
+      /// </summary>
       public override Constructing Constructing
       {
         get { return null; }
         set { }
       }
 
+      /// <summary>
+      /// 地块正在进行的生产
+      /// </summary>
       public override Producting Producting
       {
         get { return null; }
@@ -173,7 +198,7 @@ namespace HelloWorld
     {
       private JsonDataItem data;
 
-      public JsonPlayer( JsonDataItem jsonData )
+      public JsonPlayer( Guid userId, JsonDataItem jsonData ) : base( userId )
       {
         data = jsonData;
 
@@ -231,23 +256,57 @@ namespace HelloWorld
     }
 
 
-    public override Task<GamePlayer> GetPlayer( Guid userId )
+
+    private object _sync = new object();
+    private Dictionary<Guid, JsonPlayer> _players = new Dictionary<Guid, JsonPlayer>();
+    private Dictionary<Coordinate, JsonPlace> _places = new Dictionary<Coordinate, JsonPlace>();
+
+
+    /// <summary>
+    /// 获取一个玩家对象
+    /// </summary>
+    /// <param name="userId">用户ID</param>
+    /// <returns></returns>
+    public override GamePlayer GetPlayer( Guid userId )
     {
-      var filepath = Path.ChangeExtension( Path.Combine( playersDirectory, userId.ToString() ), _extensions );
+      lock ( _sync )
+      {
 
-      var data = JsonDataItem.LoadData( filepath, new { NickName = "Guest", Initiation = Coordinate.RandomCoordinate( 1000, 1000 ).ToString(), Resources = new ItemCollection() } );
+        JsonPlayer player;
+        if ( _players.TryGetValue( userId, out player ) )
+          return player;
 
-      return Task.FromResult( (GamePlayer) new JsonPlayer( data ) );
+
+        var filepath = Path.ChangeExtension( Path.Combine( playersDirectory, userId.ToString() ), _extensions );
+
+        var data = JsonDataItem.LoadData( filepath, new { NickName = "Guest", Initiation = Coordinate.RandomCoordinate( 1000, 1000 ).ToString(), Resources = new ItemCollection() } );
+
+        return new JsonPlayer( userId, data );
+      }
     }
 
 
-    public override Task<Place> GetPlace( Coordinate coordinate )
+    /// <summary>
+    /// 获取一个地块对象
+    /// </summary>
+    /// <param name="coordinate">地块坐标</param>
+    /// <returns></returns>
+    public override Place GetPlace( Coordinate coordinate )
     {
-      var filepath = Path.ChangeExtension( Path.Combine( placesDirectory, coordinate.ToString() ), _extensions );
+      lock ( _sync )
+      {
 
-      var data = JsonDataItem.LoadData( filepath, new { Building = Guid.Parse( "{EB0C8AE8-FC09-4874-9985-98C081F4D1B7}" ) } );
+        JsonPlace place;
+        if ( _places.TryGetValue( coordinate, out place ) )
+          return place;
 
-      return Task.FromResult( (Place) new JsonPlace( coordinate, data ) );
+
+        var filepath = Path.ChangeExtension( Path.Combine( placesDirectory, coordinate.ToString() ), _extensions );
+
+        var data = JsonDataItem.LoadData( filepath, new { Building = Guid.Parse( "{EB0C8AE8-FC09-4874-9985-98C081F4D1B7}" ) } );
+
+        return new JsonPlace( this, coordinate, data );
+      }
     }
 
 

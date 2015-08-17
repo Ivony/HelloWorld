@@ -47,7 +47,7 @@ namespace HelloWorld.WebHost
       if ( userId == null )
         throw new HttpResponseException( request.CreateErrorResponse( HttpStatusCode.Unauthorized, "Unauthorized" ) );
 
-      Player = await Host.DataService.GetPlayer( userId.Value );
+      Player = Host.DataService.GetPlayer( userId.Value );
     }
 
 

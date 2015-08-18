@@ -7,6 +7,7 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Reflection;
 
 namespace HelloWorld
 {
@@ -57,70 +58,98 @@ namespace HelloWorld
       _constructions = new GameItemDataCollection<ConstructionDescriptor>();
 
 
-      foreach ( var file in Directory.GetFiles( path ) )
-      {
+
+      var fileList = Directory.GetFiles( path )
+        .Concat( Directory.GetFiles( Path.Combine( path, "items" ) ) )
+        .Concat( Directory.GetFiles( Path.Combine( path, "buildings" ) ) )
+        .Concat( Directory.GetFiles( Path.Combine( path, "productions" ) ) )
+        .Concat( Directory.GetFiles( Path.Combine( path, "constructions" ) ) );
+
+
+
+      foreach ( var file in fileList )
         LoadData( file );
-      }
-      foreach ( var file in Directory.GetFiles( Path.Combine( path, "items" ) ) )
-      {
-        LoadData( file );
-      }
-      foreach ( var file in Directory.GetFiles( Path.Combine( path, "buildings" ) ) )
-      {
-        LoadData( file );
-      }
-      foreach ( var file in Directory.GetFiles( Path.Combine( path, "productions" ) ) )
-      {
-        LoadData( file );
-      }
-      foreach ( var file in Directory.GetFiles( Path.Combine( path, "constructions" ) ) )
-      {
-        LoadData( file );
-      }
+
     }
+
+
 
     private static void LoadData( string filepath )
     {
       var data = JObject.Parse( File.ReadAllText( filepath ) );
 
       var id = data.GuidValue( "ID" );
-      var type = data.Value<String>( "Type" );
+      var type = GetType( data.Value<String>( "Type" ) );
 
+
+      var instance = type.GetMethod( "FromData", BindingFlags.Static | BindingFlags.Public | BindingFlags.FlattenHierarchy ).Invoke( null, new object[] { id, data } );
+
+
+
+      var item = instance as ItemDescriptor;
+      if ( item != null )
+      {
+        _items.Add( item );
+        return;
+      }
+
+
+      var building = instance as BuildingDescriptor;
+      if ( building != null )
+      {
+        _buildings.Add( building );
+        return;
+      }
+
+
+      var construction = instance as ConstructionDescriptor;
+      if ( construction != null )
+      {
+        _constructions.Add( construction );
+
+        if ( _constructionsMap.ContainsKey( construction.RawBuilding ) == false )
+          _constructionsMap.Add( construction.RawBuilding, new HashSet<ConstructionDescriptor>() { construction } );
+
+        else
+          _constructionsMap[construction.RawBuilding].Add( construction );
+        return;
+      }
+
+
+      var production = instance as ProductionDescription;
+      if ( production != null )
+      {
+        _productions.Add( production );
+
+        if ( _constructionsMap.ContainsKey( production.Building ) == false )
+          _productionsMap.Add( production.Building, new HashSet<ProductionDescription>() { production } );
+
+        else
+          _productionsMap[production.Building].Add( production );
+        return;
+      }
+    }
+
+    private static Type GetType( string type )
+    {
 
       switch ( type )
       {
         case "Item":
-          _items.Add( ItemDescriptor.FromData( id, data ) );
-          break;
+          return typeof( ItemDescriptor );
 
         case "Building":
-          _buildings.Add( BuildingDescriptor.FromData( id, data ) );
-          break;
+          return typeof( BuildingDescriptor );
 
         case "Construction":
-          var construction = ConstructionDescriptor.FromData( id, data );
-          _constructions.Add( construction );
-
-          if ( _constructionsMap.ContainsKey( construction.RawBuilding ) == false )
-            _constructionsMap.Add( construction.RawBuilding, new HashSet<ConstructionDescriptor>() { construction } );
-
-          else
-            _constructionsMap[construction.RawBuilding].Add( construction );
-          break;
+          return typeof( ConstructionDescriptor );
 
         case "Production":
-          var production = ProductionDescription.FromData( id, data );
-          _productions.Add( production );
-
-          if ( _constructionsMap.ContainsKey( production.Building ) == false )
-            _productionsMap.Add( production.Building, new HashSet<ProductionDescription>() { production } );
-
-          else
-            _productionsMap[production.Building].Add( production );
-
-          break;
-
+          return typeof( ProductionDescription );
       }
+
+
+      throw new NotImplementedException();
     }
 
 

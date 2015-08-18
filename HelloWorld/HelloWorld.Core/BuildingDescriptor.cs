@@ -1,5 +1,6 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
+using System.Runtime.InteropServices;
+using Newtonsoft.Json.Linq;
 
 namespace HelloWorld
 {
@@ -7,6 +8,7 @@ namespace HelloWorld
   /// <summary>
   /// 建筑
   /// </summary>
+  [Guid( "D681EF16-D0D2-4B72-834B-5ADDB0867535" )]
   public class BuildingDescriptor : GameItemData
   {
 

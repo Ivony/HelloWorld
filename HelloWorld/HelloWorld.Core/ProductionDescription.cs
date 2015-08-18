@@ -1,8 +1,9 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace HelloWorld
 {
@@ -10,6 +11,7 @@ namespace HelloWorld
   /// <summary>
   /// 定义一个生产过程
   /// </summary>
+  [Guid( "AA393552-5020-4400-B565-FA613AF7A123" )]
   public sealed class ProductionDescription : GameItemData
   {
 

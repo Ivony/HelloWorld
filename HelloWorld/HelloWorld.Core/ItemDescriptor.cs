@@ -1,8 +1,10 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace HelloWorld
 {
@@ -11,6 +13,7 @@ namespace HelloWorld
   /// <summary>
   /// 定义一个物品描述信息
   /// </summary>
+  [Guid( "F2C8BA6C-EB73-4787-8A3D-7C7EF6BF5E23" )]
   public class ItemDescriptor : GameItemData
   {
 

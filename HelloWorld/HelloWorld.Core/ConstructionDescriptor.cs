@@ -1,14 +1,16 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace HelloWorld
 {
   /// <summary>
   /// 定义一个建造过程描述
   /// </summary>
+  [Guid( "019C6290-1E13-4757-985A-F00C47EF5787" )]
   public class ConstructionDescriptor : GameItemData
   {
 

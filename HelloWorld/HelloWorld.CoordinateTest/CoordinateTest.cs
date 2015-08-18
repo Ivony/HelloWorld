@@ -54,8 +54,16 @@ namespace HelloWorld.Test
       foreach ( var item in a.NearlyCoordinates() )
         Assert.AreEqual( item.Distance( a ), 1 );
 
-      foreach ( var item in a.NearlyCoordinates( 100 ) )
+      foreach ( var item in a.NearlyCoordinates( 10 ) )
         Assert.IsTrue( item.Distance( a ) <= 10 );
+
+      foreach ( var item in a.NearlyCoordinates( 3 ) )
+        Assert.IsTrue( item.Distance( a ) <= 3 );
+
+      Assert.AreEqual( a.NearlyCoordinates( 2 ).Length, 18 );
+      Assert.AreEqual( a.NearlyCoordinates( 3 ).Length, 36 );
+      Assert.AreEqual( a.NearlyCoordinates( 5 ).Length, 90 );
+
     }
 
 

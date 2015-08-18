@@ -9,9 +9,26 @@ namespace HelloWorld
   {
 
 
-    protected GamePlayer( Guid userId )
+    protected GamePlayer( GameDataService service, Guid userId )
     {
+      DataService = service;
       UserID = userId;
+    }
+
+
+    protected GameDataService DataService { get; private set; }
+
+
+    protected virtual void Initialize()
+    {
+      Workers = 10;
+      foreach ( var coordinate in Initiation.NearlyCoordinates( 3 ) )
+      {
+        var place = DataService.GetPlace( coordinate );
+        place.Owner = this;
+      }
+
+
     }
 
     /// <summary>

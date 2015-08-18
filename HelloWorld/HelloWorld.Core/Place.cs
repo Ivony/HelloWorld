@@ -11,20 +11,32 @@ namespace HelloWorld
   public abstract class Place
   {
 
-    protected Place()
+    protected Place( GameDataService service, Coordinate coordinate )
     {
+      DataService = service;
+      Coordinate = coordinate;
       SyncRoot = new object();
     }
+
+
+
 
     /// <summary>
     /// 获取用于同步的对象
     /// </summary>
     public object SyncRoot { get; private set; }
 
+
+    /// <summary>
+    /// 所使用的数据服务
+    /// </summary>
+    protected GameDataService DataService { get; private set; }
+
+
     /// <summary>
     /// 地块坐标
     /// </summary>
-    public abstract Coordinate Coordinate { get; }
+    public Coordinate Coordinate { get; private set; }
 
     /// <summary>
     /// 地块上的建筑

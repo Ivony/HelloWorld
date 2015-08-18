@@ -145,7 +145,12 @@ namespace HelloWorld
           return adjacents;
 
 
-        adjacents = new HashSet<Coordinate>( GetAdjacents( distance - 1 ).Except( GetAdjacents( distance - 2 ) ).SelectMany( item => GetAdjacents( 1 ) ) );
+        var temp1 = GetAdjacents( distance - 2 );
+        var temp2 = GetAdjacents( distance - 1 ).Except( temp1 );//得到外环
+        adjacents = new HashSet<Coordinate>( temp2.SelectMany( item => GetAdjacents( 1 ).Select( i => i + item ) ) );
+        adjacents.UnionWith( temp1 );
+        adjacents.ExceptWith( new[] { Origin } );
+
         return adjacentsCache[distance] = adjacents;
       }
 

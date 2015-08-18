@@ -115,15 +115,14 @@ namespace HelloWorld
     {
 
       private JsonDataItem data;
-      private JsonDataService dataService;
 
-      public JsonPlace( JsonDataService service, Coordinate coordinate, JsonDataItem jsonData )
+
+      public JsonPlace( JsonDataService service, Coordinate coordinate, JsonDataItem jsonData ) : base( service, coordinate )
       {
-        _coordinate = coordinate;
         data = jsonData;
-        dataService = service;
         resources = new ItemCollection( ItemListJsonConverter.FromJson( (JObject) data["Resources"] ), SaveResources );
       }
+
 
       /// <summary>
       /// 地块上的建筑/地形
@@ -140,8 +139,20 @@ namespace HelloWorld
       /// </summary>
       public override GamePlayer Owner
       {
-        get { return dataService.GetPlayer( data.GuidValue( "Owner" ) ); }
-        set { data["Owner"] = value.UserID; }
+        get
+        {
+          if ( data["Owner"] == null )
+            return null;
+          else
+            return DataService.GetPlayer( data.GuidValue( "Owner" ) );
+        }
+        set
+        {
+          if ( value == null )
+            data["Owner"] = null;
+          else
+            data["Owner"] = value.UserID;
+        }
       }
 
 
@@ -182,13 +193,6 @@ namespace HelloWorld
         get { return null; }
         set { }
       }
-
-
-
-      private Coordinate _coordinate;
-
-      public override Coordinate Coordinate { get { return _coordinate; } }
-
     }
 
 
@@ -196,12 +200,12 @@ namespace HelloWorld
 
     private class JsonPlayer : GamePlayer
     {
+
       private JsonDataItem data;
 
-      public JsonPlayer( Guid userId, JsonDataItem jsonData ) : base( userId )
+      public JsonPlayer( JsonDataService service, Guid userId, JsonDataItem jsonData ) : base( service, userId )
       {
         data = jsonData;
-
         resources = new ItemCollection( ItemListJsonConverter.FromJson( (JObject) jsonData["Resources"] ), SaveItems );
       }
 
@@ -253,6 +257,17 @@ namespace HelloWorld
       {
         return Task.CompletedTask;
       }
+
+
+      internal void Init()
+      {
+        if ( data["Init"] != null )
+        {
+          Initialize();
+          data.Remove( "Init" );
+          data.Save();
+        }
+      }
     }
 
 
@@ -279,9 +294,16 @@ namespace HelloWorld
 
         var filepath = Path.ChangeExtension( Path.Combine( playersDirectory, userId.ToString() ), _extensions );
 
-        var data = JsonDataItem.LoadData( filepath, new { NickName = "Guest", Initiation = GetInitiation(), Resources = new ItemCollection() } );
+        var data = JsonDataItem.LoadData( filepath, new { Nickname = "Guest", Initiation = GetInitiation(), Init = true, Resources = new ItemCollection() } );
 
-        return new JsonPlayer( userId, data );
+
+        player = new JsonPlayer( this, userId, data );
+        player.Init();
+
+
+        return player;
+
+
       }
     }
 

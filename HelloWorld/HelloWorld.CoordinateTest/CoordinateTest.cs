@@ -46,6 +46,18 @@ namespace HelloWorld.Test
 
 
 
+    [TestMethod]
+    public void RandomAdjacentsTest()
+    {
+      var a = Coordinate.RandomCoordinate( 100, 100 );
+
+      foreach ( var item in a.NearlyCoordinates() )
+        Assert.AreEqual( item.Distance( a ), 1 );
+
+      foreach ( var item in a.NearlyCoordinates( 100 ) )
+        Assert.IsTrue( item.Distance( a ) <= 10 );
+    }
+
 
 
   }

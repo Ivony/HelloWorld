@@ -279,7 +279,7 @@ namespace HelloWorld
 
         var filepath = Path.ChangeExtension( Path.Combine( playersDirectory, userId.ToString() ), _extensions );
 
-        var data = JsonDataItem.LoadData( filepath, new { NickName = "Guest", Initiation = Coordinate.RandomCoordinate( 1000, 1000 ).ToString(), Resources = new ItemCollection() } );
+        var data = JsonDataItem.LoadData( filepath, new { NickName = "Guest", Initiation = GetInitiation(), Resources = new ItemCollection() } );
 
         return new JsonPlayer( userId, data );
       }

@@ -107,6 +107,51 @@ namespace HelloWorld
 
 
 
+    private static readonly Dictionary<int, HashSet<Coordinate>> adjacentsCache = new Dictionary<int, HashSet<Coordinate>>()
+    {
+      { 1, new HashSet<Coordinate>( new[] { Coordinate.Create( -2, 0 ), Coordinate.Create( -1, 2 ), Coordinate.Create( 1, 2 ), Coordinate.Create( 2, 0 ), Coordinate.Create( 1, -2 ), Coordinate.Create( -1, -2 ) } ) }
+    };
+
+    private static object _sync = new object();
+
+
+    public Coordinate[] NearlyCoordinates( int distance = 1 )
+    {
+
+      if ( distance == 0 )
+        return new Coordinate[0];
+
+      if ( distance < 0 )
+        throw new ArgumentOutOfRangeException( "distance", "距离不能小于 0" );
+
+
+      return GetAdjacents( distance ).Select( item => this + item ).ToArray();
+    }
+
+
+    private static HashSet<Coordinate> _empty = new HashSet<Coordinate>();
+    private static HashSet<Coordinate> GetAdjacents( int distance )
+    {
+
+      if ( distance < 1 )
+        return _empty;
+
+      lock ( _sync )
+      {
+
+        HashSet<Coordinate> adjacents;
+
+        if ( adjacentsCache.TryGetValue( distance, out adjacents ) )
+          return adjacents;
+
+
+        adjacents = new HashSet<Coordinate>( GetAdjacents( distance - 1 ).Except( GetAdjacents( distance - 2 ) ).SelectMany( item => GetAdjacents( 1 ) ) );
+        return adjacentsCache[distance] = adjacents;
+      }
+
+    }
+
+
     /// <summary>
     /// 将坐标转换为字符串形式
     /// </summary>

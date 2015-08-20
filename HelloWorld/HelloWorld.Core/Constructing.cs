@@ -9,23 +9,14 @@ namespace HelloWorld
   /// <summary>
   /// 代表正在进行的一个建造过程
   /// </summary>
-  public class Constructing : GameActing
+  public class Constructing : GameActing<ConstructionDescriptor>
   {
 
-    public Constructing( DateTime startOn, Place place, ConstructionDescriptor construction ) : base( startOn, place )
-    {
-      Construction = construction;
-    }
+    public Constructing( ConstructionDescriptor construction ) : base( construction ) { }
 
 
-    public ConstructionDescriptor Construction { get; private set; }
+    public ConstructionDescriptor Construction { get { return base.Descriptor; } }
 
-
-
-    public override GameActingStatus Status
-    {
-      get { return GameActingStatus.Processing; }
-    }
 
     protected override void Complete()
     {

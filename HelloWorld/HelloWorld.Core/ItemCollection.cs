@@ -38,13 +38,25 @@ namespace HelloWorld
     /// </summary>
     /// <param name="data">物品数据</param>
     /// <param name="changeHandler">更改处理器</param>
-    public ItemCollection( Item[] data, Action changeHandler ) : this( data )
+    public ItemCollection( Item[] data, Action changeHandler )
+      : this( data )
     {
       ChangeHandler = changeHandler;
     }
 
 
     protected Action ChangeHandler { get; private set; }
+
+    
+    
+    public void AddItems( ItemList items )
+    {
+
+      foreach ( var i in items )
+        AddItems( i );
+
+    }
+
 
     public void AddItems( Item item )
     {
@@ -105,12 +117,12 @@ namespace HelloWorld
 
     IEnumerator<Item> IEnumerable<Item>.GetEnumerator()
     {
-      return ((ItemList) this).GetEnumerator();
+      return ( (ItemList) this ).GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()
     {
-      return ((ItemList) this).GetEnumerator();
+      return ( (ItemList) this ).GetEnumerator();
     }
 
 

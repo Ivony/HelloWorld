@@ -11,7 +11,7 @@ namespace HelloWorld
   /// 定义一个建造过程描述
   /// </summary>
   [Guid( "019C6290-1E13-4757-985A-F00C47EF5787" )]
-  public class ConstructionDescriptor : GameItemData
+  public class ConstructionDescriptor : GameActingDescriptor
   {
 
 
@@ -28,7 +28,7 @@ namespace HelloWorld
       {
         RawBuilding = GameEnvironment.GetBuilding( data.GuidValue( "RawBuilding" ) ),
         NewBuiding = GameEnvironment.GetBuilding( data.GuidValue( "NewBuilding" ) ),
-        ResourceRequirment = ResourceRequirment.FromData( (JObject) data["Requirment"] ),
+        Input = GameActingInvestmentDescriptor.FromData( (JObject) data["Input"] ),
       };
     }
 
@@ -47,7 +47,19 @@ namespace HelloWorld
     /// <summary>
     /// 生产过程所需资源描述
     /// </summary>
-    public ResourceRequirment ResourceRequirment { get; private set; }
+    public GameActingInvestmentDescriptor ResourceRequirment { get; private set; }
 
+
+    public GameActingInvestmentDescriptor Input { get; set; }
+
+    public override bool TryInvest( Place place )
+    {
+      throw new NotImplementedException();
+    }
+
+    public override void GetReturns( Place place )
+    {
+      place.Building = NewBuiding;
+    }
   }
 }

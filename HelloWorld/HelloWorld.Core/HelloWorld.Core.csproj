@@ -56,6 +56,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameActingDescriptor.cs" />
     <Compile Include="BuildingDescriptor.cs" />
     <Compile Include="Constructing.cs" />
     <Compile Include="ConstructionDescriptor.cs" />
@@ -75,10 +76,10 @@
     <Compile Include="Place.cs" />
     <Compile Include="GamePlayer.cs" />
     <Compile Include="Producting.cs" />
-    <Compile Include="ProductionDescription.cs" />
+    <Compile Include="ProductionDescriptor.cs" />
     <Compile Include="GameActing.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResourceRequirment.cs" />
+    <Compile Include="GameActingInvestmentDescriptor.cs" />
     <Compile Include="UserService.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -9,12 +9,19 @@ namespace HelloWorld
 
 
 
-  public class ResourceRequirment
+  /// <summary>
+  /// 定义游戏活动需要投入的资源描述
+  /// </summary>
+  public class GameActingInvestmentDescriptor
   {
 
-    public static ResourceRequirment FromData( JObject data )
+
+
+
+
+    public static GameActingInvestmentDescriptor FromData( JObject data )
     {
-      return new ResourceRequirment
+      return new GameActingInvestmentDescriptor
       {
         Items = ItemListJsonConverter.FromJson( (JObject) data["Items"] ),
         Time = data.TimeValue( "Time" ),

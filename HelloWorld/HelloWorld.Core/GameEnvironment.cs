@@ -32,12 +32,12 @@ namespace HelloWorld
 
     private static GameItemDataCollection<ItemDescriptor> _items;
     private static GameItemDataCollection<BuildingDescriptor> _buildings;
-    private static GameItemDataCollection<ProductionDescription> _productions;
+    private static GameItemDataCollection<ProductionDescriptor> _productions;
     private static GameItemDataCollection<ConstructionDescriptor> _constructions;
 
 
     private static Dictionary<BuildingDescriptor, HashSet<ConstructionDescriptor>> _constructionsMap = new Dictionary<BuildingDescriptor, HashSet<ConstructionDescriptor>>();
-    private static Dictionary<BuildingDescriptor, HashSet<ProductionDescription>> _productionsMap = new Dictionary<BuildingDescriptor, HashSet<ProductionDescription>>();
+    private static Dictionary<BuildingDescriptor, HashSet<ProductionDescriptor>> _productionsMap = new Dictionary<BuildingDescriptor, HashSet<ProductionDescriptor>>();
 
 
     public static void Initialize()
@@ -54,7 +54,7 @@ namespace HelloWorld
 
       _items = new GameItemDataCollection<ItemDescriptor>();
       _buildings = new GameItemDataCollection<BuildingDescriptor>();
-      _productions = new GameItemDataCollection<ProductionDescription>();
+      _productions = new GameItemDataCollection<ProductionDescriptor>();
       _constructions = new GameItemDataCollection<ConstructionDescriptor>();
 
 
@@ -116,13 +116,13 @@ namespace HelloWorld
       }
 
 
-      var production = instance as ProductionDescription;
+      var production = instance as ProductionDescriptor;
       if ( production != null )
       {
         _productions.Add( production );
 
         if ( _constructionsMap.ContainsKey( production.Building ) == false )
-          _productionsMap.Add( production.Building, new HashSet<ProductionDescription>() { production } );
+          _productionsMap.Add( production.Building, new HashSet<ProductionDescriptor>() { production } );
 
         else
           _productionsMap[production.Building].Add( production );
@@ -145,7 +145,7 @@ namespace HelloWorld
           return typeof( ConstructionDescriptor );
 
         case "Production":
-          return typeof( ProductionDescription );
+          return typeof( ProductionDescriptor );
       }
 
 
@@ -196,7 +196,7 @@ namespace HelloWorld
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public static ProductionDescription GetProduction( Guid id )
+    public static ProductionDescriptor GetProduction( Guid id )
     {
       if ( _productions == null )
         throw new InvalidOperationException( "游戏规则尚未初始化" );
@@ -232,18 +232,18 @@ namespace HelloWorld
     /// </summary>
     /// <param name="building"></param>
     /// <returns></returns>
-    public static ProductionDescription[] GetProductions( BuildingDescriptor building )
+    public static ProductionDescriptor[] GetProductions( BuildingDescriptor building )
     {
       if ( _productionsMap == null )
         throw new InvalidOperationException( "游戏规则尚未初始化" );
 
 
-      HashSet<ProductionDescription> result;
+      HashSet<ProductionDescriptor> result;
       if ( _productionsMap.TryGetValue( building, out result ) )
         return result.ToArray();
 
       else
-        return new ProductionDescription[0];
+        return new ProductionDescriptor[0];
     }
 
 

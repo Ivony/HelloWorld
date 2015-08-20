@@ -6,24 +6,18 @@ using System.Threading.Tasks;
 
 namespace HelloWorld
 {
-  public class Producting : GameActing
+  public class Producting : GameActing<ProductionDescriptor>
   {
 
-    public Producting( DateTime startOn, Place place, ProductionDescription production ) : base( startOn, place )
-    {
-      Production = production;
-    }
+    public Producting( ProductionDescriptor production ) : base( production ) { }
 
 
 
-    public override GameActingStatus Status { get { return GameActingStatus.Processing; } }
-
-
-    public ProductionDescription Production { get; private set; }
+    public ProductionDescriptor Production { get { return base.Descriptor; } }
 
     protected override void Complete()
     {
-      
+
     }
   }
 }

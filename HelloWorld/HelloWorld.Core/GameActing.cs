@@ -10,16 +10,37 @@ namespace HelloWorld
   /// <summary>
   /// 代表正在进行的一个活动
   /// </summary>
-  public abstract class GameActing
+  public abstract class GameActing<T> where T : GameActingInvestmentDescriptor
   {
 
-    protected GameActing( DateTime startOn, Place place )
+    protected GameActing( T descriptor )
+    {
+      Descriptor = descriptor;
+      Status = GameActingStatus.NotStarted;
+    }
+
+
+
+
+    protected T Descriptor { get; private set; }
+
+
+    internal void StartAt( Place place )
     {
 
-      StartOn = startOn;
+      if ( place == null )
+        throw new ArgumentNullException( "place" );
+
+      if ( place.Owner == null )
+        throw new ArgumentException( "不能在无主土地上开始", "place" );
+
+      StartOn = DateTime.UtcNow;
       Place = place;
 
+      Status = GameActingStatus.Processing;
     }
+
+
 
 
     /// <summary>
@@ -35,7 +56,7 @@ namespace HelloWorld
     /// <summary>
     /// 活动状态
     /// </summary>
-    public abstract GameActingStatus Status { get; }
+    public GameActingStatus Status { get; private set; }
 
 
     /// <summary>
@@ -53,6 +74,12 @@ namespace HelloWorld
   /// </summary>
   public sealed class GameActingStatus
   {
+
+
+    /// <summary>
+    /// 尚未开始
+    /// </summary>
+    public static readonly GameActingStatus NotStarted = new GameActingStatus( "NotStarted" );
 
     /// <summary>
     /// 正在进行

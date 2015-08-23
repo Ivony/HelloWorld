@@ -73,6 +73,12 @@ namespace HelloWorld
     }
 
 
+    public object GetInfo()
+    {
+      return this;
+    }
+
+
 
   }
 }

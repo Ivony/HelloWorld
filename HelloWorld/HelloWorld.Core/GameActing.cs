@@ -61,7 +61,7 @@ namespace HelloWorld
             throw new ArgumentException( "土地上已经存在一个正在进行的任务", "place" );
 
 
-          
+
           StartOn = DateTime.UtcNow;
           Place = place;
           Status = GameActingStatus.Processing;
@@ -172,6 +172,20 @@ namespace HelloWorld
 
       throw new NotImplementedException();
     }
+
+
+
+
+    public object GetInfo()
+    {
+      return new
+      {
+        ActingDescriptor = ActingDescriptor.GetInfo(),
+        StartOn,
+        Status = Status.ToString(),
+      };
+    }
+
   }
 
 

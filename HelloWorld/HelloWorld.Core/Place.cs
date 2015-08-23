@@ -85,13 +85,13 @@ namespace HelloWorld
       return new
       {
         Coordinate = Coordinate - player.Initiation,
-        Building,
+        Building = Building.GetInfo(),
         Resources,
-        Acting = Acting == null ? null : Acting.ToJson(),
+        Acting = Acting == null ? null : Acting.GetInfo(),
         Actions = new
         {
-          Constructions = GameEnvironment.GetConstructions( Building ),
-          Productions = GameEnvironment.GetProductions( Building ),
+          Constructions = GameEnvironment.GetConstructions( Building ).Select( item => item.GetInfo() ),
+          Productions = GameEnvironment.GetProductions( Building ).Select( item => item.GetInfo() ),
         },
         IsMine = Owner == player,
       };

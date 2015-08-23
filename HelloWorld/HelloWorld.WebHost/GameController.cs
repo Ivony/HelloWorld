@@ -76,7 +76,7 @@ namespace HelloWorld.WebHost
         return new
         {
           Success = true,
-          Acting = acting,
+          Acting = acting.GetInfo(),
         };
 
       else

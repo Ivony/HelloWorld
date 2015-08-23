@@ -21,6 +21,10 @@ namespace HelloWorld
 
     public static GameActingInvestmentDescriptor FromData( JObject data )
     {
+
+      if ( data == null )
+        return null;
+
       return new GameActingInvestmentDescriptor
       {
         Items = ItemListJsonConverter.FromJson( (JObject) data["Items"] ),

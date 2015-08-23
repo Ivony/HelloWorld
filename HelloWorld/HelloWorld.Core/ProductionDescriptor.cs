@@ -27,7 +27,7 @@ namespace HelloWorld
 
       return new ProductionDescriptor( guid, data )
       {
-        Building = GameEnvironment.GetBuilding( data.GuidValue( "Building" ) ),
+        Building = GameEnvironment.GetDataItem<BuildingDescriptor>( data.GuidValue( "Building" ) ),
         Requirment = GameActingInvestmentDescriptor.FromData( (JObject) data["Requirment"] ),
         Returns = ItemList.FromData( (JArray) data["Returns"] ),
       };

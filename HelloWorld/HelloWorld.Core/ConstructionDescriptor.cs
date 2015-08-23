@@ -26,8 +26,8 @@ namespace HelloWorld
 
       return new ConstructionDescriptor( guid, data )
       {
-        RawBuilding = GameEnvironment.GetBuilding( data.GuidValue( "RawBuilding" ) ),
-        NewBuiding = GameEnvironment.GetBuilding( data.GuidValue( "NewBuilding" ) ),
+        RawBuilding = GameEnvironment.GetDataItem<BuildingDescriptor>( data.GuidValue( "RawBuilding" ) ),
+        NewBuiding = GameEnvironment.GetDataItem<BuildingDescriptor>( data.GuidValue( "NewBuilding" ) ),
         Requirment = GameActingInvestmentDescriptor.FromData( (JObject) data["Input"] ),
       };
     }

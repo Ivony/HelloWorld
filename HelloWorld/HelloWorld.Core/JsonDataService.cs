@@ -131,7 +131,7 @@ namespace HelloWorld
       /// </summary>
       public override BuildingDescriptor Building
       {
-        get { return GameEnvironment.GetBuilding( data.GuidValue( "Building" ) ); }
+        get { return GameEnvironment.GetDataItem<BuildingDescriptor>( data.GuidValue( "Building" ) ); }
         set { data["Building"] = value.Guid.ToString(); }
       }
 
@@ -164,7 +164,7 @@ namespace HelloWorld
       {
         get
         {
-          return GameActing.FromData( (JObject) data["Acting"] );
+          return GameActing.FromData( DataService, (JObject) data["Acting"] );
         }
         set
         {

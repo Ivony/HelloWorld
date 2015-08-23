@@ -16,7 +16,7 @@ namespace HelloWorld
 
     public GameActing( GameActingDescriptor descriptor )
     {
-      Descriptor = descriptor;
+      ActingDescriptor = descriptor;
       Status = GameActingStatus.NotStarted;
       _sync = new object();
     }
@@ -30,7 +30,7 @@ namespace HelloWorld
     /// <summary>
     /// 活动的描述
     /// </summary>
-    public GameActingDescriptor Descriptor { get; private set; }
+    public GameActingDescriptor ActingDescriptor { get; private set; }
 
 
 
@@ -107,7 +107,7 @@ namespace HelloWorld
           if ( Place.Acting != this )
             throw new InvalidOperationException();
 
-          if ( Descriptor.TryComplete( this ) == false )
+          if ( ActingDescriptor.TryComplete( this ) == false )
             return Status;
 
           Place.Acting = null;
@@ -126,10 +126,15 @@ namespace HelloWorld
       {
         StartOn,
         Place = Place.Coordinate,
-        ActingDescriptor = Descriptor.Guid,
+        ActingDescriptor = ActingDescriptor.Guid,
         Status = Status.ToString(),
       } );
     }
+
+
+
+
+    private GameActing() { }
 
 
     /// <summary>
@@ -137,8 +142,28 @@ namespace HelloWorld
     /// </summary>
     /// <param name="jObject"></param>
     /// <returns></returns>
-    public static GameActing FromData( JObject jObject )
+    public static GameActing FromData( GameDataService dataService, JObject data )
     {
+
+      if ( data == null )
+        return null;
+
+
+      var startOn = data.Value<DateTime>( "StartOn" );
+      var place = dataService.GetPlace( data.CoordinateValue( "Place" ) );
+      var acting = GameEnvironment.GetDataItem<GameActingDescriptor>( data.GuidValue( "ActingDescriptor" ) );
+      var status = GameActingStatus.GetStatus( data.Value<string>( "Status" ) );
+
+
+      return new GameActing
+      {
+        StartOn = startOn,
+        Place = place,
+        ActingDescriptor = acting,
+        Status = status,
+      };
+
+
       throw new NotImplementedException();
     }
   }
@@ -199,5 +224,24 @@ namespace HelloWorld
       return status;
     }
 
+
+    public static GameActingStatus GetStatus( string str )
+    {
+      if ( str == null )
+        throw new ArgumentNullException( "str" );
+
+      else if ( str.Equals( NotStarted.status, StringComparison.OrdinalIgnoreCase ) )
+        return NotStarted;
+
+      else if ( str.Equals( Processing.status, StringComparison.OrdinalIgnoreCase ) )
+        return Processing;
+
+      else if ( str.Equals( Done.status, StringComparison.OrdinalIgnoreCase ) )
+        return Done;
+
+      else
+        throw new InvalidOperationException();
+
+    }
   }
 }

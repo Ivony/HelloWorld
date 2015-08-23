@@ -65,7 +65,6 @@ namespace HelloWorld
       lock ( SyncRoot )
       {
         Owner.Resources.Collect( Resources );
-        Resources.Clear();
       }
     }
 

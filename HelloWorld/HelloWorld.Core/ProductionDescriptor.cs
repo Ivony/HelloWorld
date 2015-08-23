@@ -53,6 +53,11 @@ namespace HelloWorld
     public ItemList Returns { get; private set; }
 
 
+    /// <summary>
+    /// 尝试在指定地块开始这个活动 
+    /// </summary>
+    /// <param name="place">要开始活动的地方</param>
+    /// <returns>正在进行的活动</returns>
     public override GameActing TryStartAt( Place place )
     {
       var acting = new GameActing<ProductionDescriptor>( this );
@@ -61,12 +66,19 @@ namespace HelloWorld
       return acting;
     }
 
+
+    /// <summary>
+    /// 检查活动是否已经完成，若已经完成则获取相应的收益
+    /// </summary>
+    /// <param name="acting">正在进行的活动</param>
+    /// <returns>活动是否已经完成</returns>
     public override bool TryComplete( GameActing acting )
     {
 
       if ( acting.StartOn + Requirment.Time > DateTime.UtcNow )
         return false;
 
+      acting.Place.Owner.Workers += Requirment.Workers;
       acting.Place.Owner.Resources.AddItems( Returns );
       return true;
     }

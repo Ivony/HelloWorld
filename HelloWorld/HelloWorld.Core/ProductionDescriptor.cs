@@ -60,7 +60,7 @@ namespace HelloWorld
     /// <returns>正在进行的活动</returns>
     public override GameActing TryStartAt( Place place )
     {
-      var acting = new GameActing<ProductionDescriptor>( this );
+      var acting = new GameActing( this );
       acting.StartAt( place );
 
       return acting;

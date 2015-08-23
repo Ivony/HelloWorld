@@ -55,6 +55,12 @@ namespace HelloWorld
     /// </summary>
     public abstract GamePlayer Owner { get; set; }
 
+    /// <summary>
+    /// 正在进行的活动
+    /// </summary>
+    public abstract GameActing Acting { get; set; }
+
+
 
     /// <summary>
     /// 收集地块上所有的资源
@@ -89,11 +95,5 @@ namespace HelloWorld
         }
       };
     }
-
-
-    /// <summary>
-    /// 正在进行的活动
-    /// </summary>
-    public GameActing Acting { get; set; }
   }
 }

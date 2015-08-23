@@ -60,7 +60,7 @@ namespace HelloWorld
     public override GameActing TryStartAt( Place place )
     {
 
-      var acting = new GameActing<ConstructionDescriptor>( this );
+      var acting = new GameActing( this );
 
       lock ( place )
       {

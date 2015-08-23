@@ -3,18 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace HelloWorld
 {
 
 
 
-  public abstract class GameActing
+  public class GameActing
   {
 
 
-    protected GameActing()
+    public GameActing( GameActingDescriptor descriptor )
     {
+      Descriptor = descriptor;
       Status = GameActingStatus.NotStarted;
       _sync = new object();
     }
@@ -25,8 +27,17 @@ namespace HelloWorld
     protected object SyncRoot { get { return _sync; } }
 
 
+    /// <summary>
+    /// 活动的描述
+    /// </summary>
+    public GameActingDescriptor Descriptor { get; private set; }
 
 
+
+    /// <summary>
+    /// 在指定地块开始这个活动
+    /// </summary>
+    /// <param name="place">要开始活动的地块</param>
     internal void StartAt( Place place )
     {
 
@@ -91,13 +102,12 @@ namespace HelloWorld
           return Status;
 
 
-
         lock ( Place )
         {
           if ( Place.Acting != this )
             throw new InvalidOperationException();
 
-          if ( TryComplete() == false )
+          if ( Descriptor.TryComplete( this ) == false )
             return Status;
 
           Place.Acting = null;
@@ -108,40 +118,32 @@ namespace HelloWorld
     }
 
 
+
+    public JObject ToJson()
+    {
+
+      return JObject.FromObject( new
+      {
+        StartOn,
+        Place = Place.Coordinate,
+        ActingDescriptor = Descriptor.Guid,
+        Status = Status.ToString(),
+      } );
+    }
+
+
     /// <summary>
-    /// 派生类实现此方法检查活动是否已完成
+    /// 从 JSON 数据中读取
     /// </summary>
-    protected abstract bool TryComplete();
-
-
-
+    /// <param name="jObject"></param>
+    /// <returns></returns>
+    public static GameActing FromData( JObject jObject )
+    {
+      throw new NotImplementedException();
+    }
   }
 
-  /// <summary>
-  /// 代表正在进行的一个活动
-  /// </summary>
-  public class GameActing<T> : GameActing where T : GameActingDescriptor
-  {
 
-    public GameActing( T descriptor )
-    {
-      Descriptor = descriptor;
-    }
-
-
-
-
-    protected T Descriptor { get; private set; }
-
-
-
-    protected override bool TryComplete()
-    {
-      return Descriptor.TryComplete( this );
-    }
-
-
-  }
 
 
 

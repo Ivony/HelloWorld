@@ -35,7 +35,8 @@ namespace HelloWorld
     /// </summary>
     public string DataRoot
     {
-      get; private set;
+      get;
+      private set;
     }
 
 
@@ -67,7 +68,7 @@ namespace HelloWorld
       /// </summary>
       public void Save()
       {
-        File.WriteAllText( _filepath, ((JObject) this).ToString( Formatting.None ) );
+        File.WriteAllText( _filepath, ( (JObject) this ).ToString( Formatting.None ) );
       }
 
 
@@ -117,7 +118,8 @@ namespace HelloWorld
       private JsonDataItem data;
 
 
-      public JsonPlace( JsonDataService service, Coordinate coordinate, JsonDataItem jsonData ) : base( service, coordinate )
+      public JsonPlace( JsonDataService service, Coordinate coordinate, JsonDataItem jsonData )
+        : base( service, coordinate )
       {
         data = jsonData;
         resources = new ItemCollection( ItemListJsonConverter.FromJson( (JObject) data["Resources"] ), SaveResources );
@@ -156,6 +158,26 @@ namespace HelloWorld
       }
 
 
+
+
+      public override GameActing Acting
+      {
+        get
+        {
+          return GameActing.FromData( (JObject) data["Acting"] );
+        }
+        set
+        {
+          if ( value == null )
+            data["Acting"] = null;
+          else
+            data["Acting"] = value.ToJson();
+        }
+      }
+
+
+
+
       /// <summary>
       /// 保存 Resources 属性
       /// </summary>
@@ -174,25 +196,6 @@ namespace HelloWorld
         get { return resources; }
       }
 
-
-
-      /// <summary>
-      /// 地块正在进行的建造
-      /// </summary>
-      public override Constructing Constructing
-      {
-        get { return null; }
-        set { }
-      }
-
-      /// <summary>
-      /// 地块正在进行的生产
-      /// </summary>
-      public override Producting Producting
-      {
-        get { return null; }
-        set { }
-      }
     }
 
 
@@ -203,7 +206,8 @@ namespace HelloWorld
 
       private JsonDataItem data;
 
-      public JsonPlayer( JsonDataService service, Guid userId, JsonDataItem jsonData ) : base( service, userId )
+      public JsonPlayer( JsonDataService service, Guid userId, JsonDataItem jsonData )
+        : base( service, userId )
       {
         data = jsonData;
         resources = new ItemCollection( ItemListJsonConverter.FromJson( (JObject) jsonData["Resources"] ), SaveItems );

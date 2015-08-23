@@ -44,20 +44,6 @@ namespace HelloWorld
     public abstract BuildingDescriptor Building { get; set; }
 
 
-
-    /// <summary>
-    /// 正在进行的生产
-    /// </summary>
-    public abstract Producting Producting { get; set; }
-
-
-    /// <summary>
-    /// 正在进行的建造
-    /// </summary>
-    public abstract Constructing Constructing { get; set; }
-
-
-
     /// <summary>
     /// 地块上存在的资源
     /// </summary>
@@ -96,8 +82,7 @@ namespace HelloWorld
         Coordinate = Coordinate - player.Initiation,
         Building,
         Resources,
-        Constructing,
-        Producting,
+        Acting,
         Actions = new
         {
           Constructions = GameEnvironment.GetConstructions( Building ),
@@ -105,5 +90,11 @@ namespace HelloWorld
         }
       };
     }
+
+
+    /// <summary>
+    /// 正在进行的活动
+    /// </summary>
+    public GameActing Acting { get; set; }
   }
 }

@@ -44,13 +44,13 @@ namespace HelloWorld
     public BuildingDescriptor NewBuiding { get; private set; }
 
 
+
     /// <summary>
-    /// 生产过程所需资源描述
+    /// 生产过程所投入的资源描述
     /// </summary>
-    public GameActingInvestmentDescriptor ResourceRequirment { get; private set; }
-
-
     public GameActingInvestmentDescriptor Input { get; set; }
+
+
 
     public override bool TryInvest( Place place )
     {

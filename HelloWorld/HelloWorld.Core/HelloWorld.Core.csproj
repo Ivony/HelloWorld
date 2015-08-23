@@ -58,7 +58,6 @@
   <ItemGroup>
     <Compile Include="GameActingDescriptor.cs" />
     <Compile Include="BuildingDescriptor.cs" />
-    <Compile Include="Constructing.cs" />
     <Compile Include="ConstructionDescriptor.cs" />
     <Compile Include="Coordinate.cs" />
     <Compile Include="CoordinateJsonConverter.cs" />
@@ -75,7 +74,6 @@
     <Compile Include="JValueExtensions.cs" />
     <Compile Include="Place.cs" />
     <Compile Include="GamePlayer.cs" />
-    <Compile Include="Producting.cs" />
     <Compile Include="ProductionDescriptor.cs" />
     <Compile Include="GameActing.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -7,37 +7,57 @@ using System.Threading.Tasks;
 namespace HelloWorld
 {
 
-  /// <summary>
-  /// 代表正在进行的一个活动
-  /// </summary>
-  public abstract class GameActing<T> where T : GameActingInvestmentDescriptor
+
+
+  public abstract class GameActing
   {
 
-    protected GameActing( T descriptor )
+
+    protected GameActing()
     {
-      Descriptor = descriptor;
       Status = GameActingStatus.NotStarted;
+      _sync = new object();
     }
 
 
+    private object _sync = new object();
+
+    protected object SyncRoot { get { return _sync; } }
 
 
-    protected T Descriptor { get; private set; }
 
 
     internal void StartAt( Place place )
     {
 
-      if ( place == null )
-        throw new ArgumentNullException( "place" );
+      lock ( SyncRoot )
+      {
 
-      if ( place.Owner == null )
-        throw new ArgumentException( "不能在无主土地上开始", "place" );
+        if ( place == null )
+          throw new ArgumentNullException( "place" );
 
-      StartOn = DateTime.UtcNow;
-      Place = place;
+        if ( Status != GameActingStatus.NotStarted )
+          throw new InvalidOperationException();
 
-      Status = GameActingStatus.Processing;
+
+        lock ( place.SyncRoot )
+        {
+
+          if ( place.Owner == null )
+            throw new ArgumentException( "不能在无主土地上开始", "place" );
+
+          if ( place.Acting != null )
+            throw new ArgumentException( "土地上已经存在一个正在进行的任务", "place" );
+
+
+          place.Acting = this;
+        }
+
+        StartOn = DateTime.UtcNow;
+        Place = place;
+
+        Status = GameActingStatus.Processing;
+      }
     }
 
 
@@ -56,13 +76,72 @@ namespace HelloWorld
     /// <summary>
     /// 活动状态
     /// </summary>
-    public GameActingStatus Status { get; private set; }
+    public GameActingStatus Status { get; protected set; }
+
 
 
     /// <summary>
-    /// 完成这个活动
+    /// 检查活动状态
     /// </summary>
-    protected abstract void Complete();
+    public GameActingStatus Check()
+    {
+      lock ( SyncRoot )
+      {
+        if ( Status == GameActingStatus.NotStarted )
+          return Status;
+
+
+
+        lock ( Place )
+        {
+          if ( Place.Acting != this )
+            throw new InvalidOperationException();
+
+          if ( IsComplete() == false )
+            return Status;
+
+          Place.Acting = null;
+        }
+
+        return Status = GameActingStatus.Done;
+      }
+    }
+
+
+    /// <summary>
+    /// 派生类实现此方法检查活动是否已完成
+    /// </summary>
+    protected abstract bool IsComplete();
+
+
+
+  }
+
+  /// <summary>
+  /// 代表正在进行的一个活动
+  /// </summary>
+  public class GameActing<T> : GameActing where T : GameActingDescriptor
+  {
+
+    public GameActing( T descriptor )
+    {
+      Descriptor = descriptor;
+    }
+
+
+
+
+    protected T Descriptor { get; private set; }
+
+
+
+    protected override bool IsComplete()
+    {
+
+      Descriptor.GetReturns( Place );
+
+      return true;
+    }
 
 
   }

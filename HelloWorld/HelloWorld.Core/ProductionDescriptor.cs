@@ -55,7 +55,10 @@ namespace HelloWorld
 
     public override bool TryInvest( Place place )
     {
-      throw new NotImplementedException();
+      var acting = new GameActing<ProductionDescriptor>( this );
+      acting.StartAt( place );
+
+      return true;
     }
 
     public override void GetReturns( Place place )

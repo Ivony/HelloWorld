@@ -176,6 +176,10 @@ namespace HelloWorld
 
 
 
+    /// <summary>
+    /// 获取可以展示给玩家的信息
+    /// </summary>
+    /// <returns>可以展示给玩家的信息</returns>
     public object GetInfo()
     {
       return new

@@ -81,8 +81,11 @@ namespace HelloWorld
       var id = data.GuidValue( "ID" );
       var type = GetType( data.Value<String>( "Type" ) );
 
+      var method = type.GetMethod( "FromData", BindingFlags.Static | BindingFlags.Public | BindingFlags.FlattenHierarchy );
+      if ( method == null )
+        return;
 
-      var instance = type.GetMethod( "FromData", BindingFlags.Static | BindingFlags.Public | BindingFlags.FlattenHierarchy ).Invoke( null, new object[] { id, data } );
+      var instance = method.Invoke( null, new object[] { id, data } );
 
 
 

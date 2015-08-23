@@ -15,7 +15,7 @@ namespace HelloWorld
 
     private BuildingDescriptor( Guid guid, JObject data ) : base( guid, data ) { }
 
-    internal static BuildingDescriptor FromData( Guid guid, JObject data )
+    public static BuildingDescriptor FromData( Guid guid, JObject data )
     {
       if ( data == null )
         return null;

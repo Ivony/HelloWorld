@@ -18,7 +18,7 @@ namespace HelloWorld
     private ConstructionDescriptor( Guid guid, JObject data ) : base( guid, data ) { }
 
 
-    internal static ConstructionDescriptor FromData( Guid guid, JObject data )
+    public static ConstructionDescriptor FromData( Guid guid, JObject data )
     {
 
       if ( data == null )

@@ -20,7 +20,7 @@ namespace HelloWorld
     private ItemDescriptor( Guid guid, JObject data ) : base( guid, data ) { }
 
 
-    internal static ItemDescriptor FromData( Guid guid, JObject data )
+    public static ItemDescriptor FromData( Guid guid, JObject data )
     {
 
       if ( data == null )

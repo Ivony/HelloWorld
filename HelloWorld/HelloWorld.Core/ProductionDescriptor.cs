@@ -19,7 +19,7 @@ namespace HelloWorld
     private ProductionDescriptor( Guid guid, JObject data ) : base( guid, data ) { }
 
 
-    internal static ProductionDescriptor FromData( Guid guid, JObject data )
+    public static ProductionDescriptor FromData( Guid guid, JObject data )
     {
 
       if ( data == null )

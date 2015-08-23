@@ -53,17 +53,22 @@ namespace HelloWorld
     public ItemList Returns { get; private set; }
 
 
-    public override bool TryInvest( Place place )
+    public override GameActing TryStartAt( Place place )
     {
       var acting = new GameActing<ProductionDescriptor>( this );
       acting.StartAt( place );
 
-      return true;
+      return acting;
     }
 
-    public override void GetReturns( Place place )
+    public override bool TryComplete( GameActing acting )
     {
-      place.Owner.Resources.AddItems( Returns );
+
+      if ( acting.StartOn + Requirment.Time > DateTime.UtcNow )
+        return false;
+
+      acting.Place.Owner.Resources.AddItems( Returns );
+      return true;
     }
   }
 }

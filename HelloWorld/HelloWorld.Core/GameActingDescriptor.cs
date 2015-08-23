@@ -23,14 +23,15 @@ namespace HelloWorld
     /// </summary>
     /// <param name="place">进行活动的地块</param>
     /// <returns>是否成功</returns>
-    public abstract bool TryInvest( Place place );
+    public abstract GameActing TryStartAt( Place place );
 
 
     /// <summary>
-    /// 在活动完成后，尝试获取活动的回报
+    /// 检查活动是否已经完成
     /// </summary>
-    /// <param name="place">进行活动的地块</param>
-    public abstract void GetReturns( Place place );
+    /// <param name="acting">正在进行的活动对象</param>
+    /// <returns>是否已经完成</returns>
+    public abstract bool TryComplete( GameActing acting );
 
   }
 }

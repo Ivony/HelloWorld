@@ -137,10 +137,7 @@ namespace HelloWorld
 
     protected override bool IsComplete()
     {
-
-      Descriptor.GetReturns( Place );
-
-      return true;
+      return Descriptor.TryComplete( this );
     }
 
 

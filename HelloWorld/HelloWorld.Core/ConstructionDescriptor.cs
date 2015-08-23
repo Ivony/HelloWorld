@@ -28,7 +28,7 @@ namespace HelloWorld
       {
         RawBuilding = GameEnvironment.GetBuilding( data.GuidValue( "RawBuilding" ) ),
         NewBuiding = GameEnvironment.GetBuilding( data.GuidValue( "NewBuilding" ) ),
-        Input = GameActingInvestmentDescriptor.FromData( (JObject) data["Input"] ),
+        Requirment = GameActingInvestmentDescriptor.FromData( (JObject) data["Input"] ),
       };
     }
 
@@ -48,18 +48,34 @@ namespace HelloWorld
     /// <summary>
     /// 生产过程所投入的资源描述
     /// </summary>
-    public GameActingInvestmentDescriptor Input { get; set; }
+    public GameActingInvestmentDescriptor Requirment { get; set; }
 
 
 
-    public override bool TryInvest( Place place )
+    public override GameActing TryStartAt( Place place )
     {
-      throw new NotImplementedException();
+
+      var acting = new GameActing<ConstructionDescriptor>( this );
+
+      lock ( place )
+      {
+        if ( place.Acting != null )
+          throw new InvalidOperationException();
+
+        acting.StartAt( place );
+      }
+
+      return acting;
     }
 
-    public override void GetReturns( Place place )
+    public override bool TryComplete( GameActing acting )
     {
-      place.Building = NewBuiding;
+
+      if ( acting.StartOn + Requirment.Time > DateTime.UtcNow )
+        return false;
+
+      acting.Place.Building = NewBuiding;
+      return true;
     }
   }
 }

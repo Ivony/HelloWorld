@@ -94,5 +94,33 @@ namespace HelloWorld
       return UserID.GetHashCode();
     }
 
+
+    public static bool operator ==( GamePlayer player1, GamePlayer player2 )
+    {
+
+      if ( object.ReferenceEquals( player1, null ) && object.ReferenceEquals( player2, null ) )
+        return true;
+
+      if ( object.ReferenceEquals( player1, null ) || object.ReferenceEquals( player2, null ) )
+        return false;
+
+      return player1.Equals( player2 );
+    }
+
+
+    public static bool operator !=( GamePlayer player1, GamePlayer player2 )
+    {
+
+      if ( object.ReferenceEquals( player1, null ) && object.ReferenceEquals( player2, null ) )
+        return false;
+
+      if ( object.ReferenceEquals( player1, null ) || object.ReferenceEquals( player2, null ) )
+        return true;
+
+      return player1.Equals( player2 ) == false;
+    }
+
+
+
   }
 }

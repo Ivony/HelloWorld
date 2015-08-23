@@ -86,8 +86,6 @@ namespace HelloWorld
       var construction = instance as ConstructionDescriptor;
       if ( construction != null )
       {
-        _collection.Add( construction );
-
         if ( _constructionsMap.ContainsKey( construction.RawBuilding ) == false )
           _constructionsMap.Add( construction.RawBuilding, new HashSet<ConstructionDescriptor>() { construction } );
 
@@ -100,8 +98,6 @@ namespace HelloWorld
       var production = instance as ProductionDescriptor;
       if ( production != null )
       {
-        _collection.Add( production );
-
         if ( _constructionsMap.ContainsKey( production.Building ) == false )
           _productionsMap.Add( production.Building, new HashSet<ProductionDescriptor>() { production } );
 

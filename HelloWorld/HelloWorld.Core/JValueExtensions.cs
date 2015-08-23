@@ -14,7 +14,9 @@ namespace HelloWorld
     /// </summary>
     public static Guid GuidValue( this JObject obj, string name )
     {
-      return Guid.Parse( obj.Value<string>( name ) );
+      var value = obj[name] as JValue;
+      return GuidValue( value );
+
     }
 
 
@@ -25,7 +27,17 @@ namespace HelloWorld
     /// <returns></returns>
     public static Guid GuidValue( this JValue value )
     {
-      return Guid.Parse( value.Value<string>() );
+      if ( value == null )
+        throw new InvalidCastException();
+
+      if ( value.Type == JTokenType.Guid )
+        return value.Value<Guid>();
+
+      else if ( value.Type == JTokenType.String )
+        return Guid.Parse( value.Value<string>() );
+
+      else
+        throw new InvalidCastException();
     }
 
 

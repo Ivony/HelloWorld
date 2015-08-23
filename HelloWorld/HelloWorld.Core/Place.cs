@@ -87,12 +87,13 @@ namespace HelloWorld
         Coordinate = Coordinate - player.Initiation,
         Building,
         Resources,
-        Acting,
+        Acting = Acting == null ? null : Acting.ToJson(),
         Actions = new
         {
           Constructions = GameEnvironment.GetConstructions( Building ),
           Productions = GameEnvironment.GetProductions( Building ),
-        }
+        },
+        IsMine = Owner == player,
       };
     }
   }

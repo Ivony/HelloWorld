@@ -61,13 +61,15 @@ namespace HelloWorld
             throw new ArgumentException( "土地上已经存在一个正在进行的任务", "place" );
 
 
+          
+          StartOn = DateTime.UtcNow;
+          Place = place;
+          Status = GameActingStatus.Processing;
+
+
           place.Acting = this;
         }
 
-        StartOn = DateTime.UtcNow;
-        Place = place;
-
-        Status = GameActingStatus.Processing;
       }
     }
 
@@ -125,7 +127,7 @@ namespace HelloWorld
       return JObject.FromObject( new
       {
         StartOn,
-        Place = Place.Coordinate,
+        Place = Place == null ? null : Place.Coordinate,
         ActingDescriptor = ActingDescriptor.Guid,
         Status = Status.ToString(),
       } );
@@ -149,8 +151,12 @@ namespace HelloWorld
         return null;
 
 
+      Place place = null;
+      if ( data["Place"] != null && data["Place"].Type != JTokenType.Null )
+        place = dataService.GetPlace( data.CoordinateValue( "Place" ) );
+
+
       var startOn = data.Value<DateTime>( "StartOn" );
-      var place = dataService.GetPlace( data.CoordinateValue( "Place" ) );
       var acting = GameEnvironment.GetDataItem<GameActingDescriptor>( data.GuidValue( "ActingDescriptor" ) );
       var status = GameActingStatus.GetStatus( data.Value<string>( "Status" ) );
 

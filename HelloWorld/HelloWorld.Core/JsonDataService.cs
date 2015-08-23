@@ -132,7 +132,7 @@ namespace HelloWorld
       public override BuildingDescriptor Building
       {
         get { return GameEnvironment.GetDataItem<BuildingDescriptor>( data.GuidValue( "Building" ) ); }
-        set { data["Building"] = value.Guid.ToString(); }
+        set { data["Building"] = value.Guid.ToString( "D" ); }
       }
 
 
@@ -296,7 +296,7 @@ namespace HelloWorld
           return player;
 
 
-        var filepath = Path.ChangeExtension( Path.Combine( playersDirectory, userId.ToString() ), _extensions );
+        var filepath = Path.ChangeExtension( Path.Combine( playersDirectory, userId.ToString( "D" ) ), _extensions );
 
         var data = JsonDataItem.LoadData( filepath, new { Nickname = "Guest", Initiation = GetInitiation(), Init = true, Resources = new ItemCollection() } );
 

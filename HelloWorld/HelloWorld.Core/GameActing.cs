@@ -97,7 +97,7 @@ namespace HelloWorld
           if ( Place.Acting != this )
             throw new InvalidOperationException();
 
-          if ( IsComplete() == false )
+          if ( TryComplete() == false )
             return Status;
 
           Place.Acting = null;
@@ -111,7 +111,7 @@ namespace HelloWorld
     /// <summary>
     /// 派生类实现此方法检查活动是否已完成
     /// </summary>
-    protected abstract bool IsComplete();
+    protected abstract bool TryComplete();
 
 
 
@@ -135,7 +135,7 @@ namespace HelloWorld
 
 
 
-    protected override bool IsComplete()
+    protected override bool TryComplete()
     {
       return Descriptor.TryComplete( this );
     }

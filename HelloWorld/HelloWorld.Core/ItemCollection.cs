@@ -45,29 +45,39 @@ namespace HelloWorld
     }
 
 
-    protected Action ChangeHandler { get; private set; }
 
-    
-    
-    public void AddItems( ItemList items )
+    private void OnChanged()
     {
-
-      foreach ( var i in items )
-        AddItems( i );
-
+      if ( ChangeHandler != null )
+        ChangeHandler();
     }
 
 
-    public void AddItems( Item item )
+    protected Action ChangeHandler { get; private set; }
+
+
+
+    /// <summary>
+    /// 添加物品项
+    /// </summary>
+    /// <param name="items">要添加的物品项</param>
+    public void AddItems( ItemList items )
     {
-      AddItems( item.ItemDescriptor, item.Quantity );
+
+      lock ( _sync )
+      {
+        foreach ( var i in items )
+          AddItemsInternal( i.ItemDescriptor, i.Quantity );
+
+        OnChanged();
+      }
     }
 
 
     /// <summary>
     /// 收集另一个物品容器中的所有物品，并清空他。
     /// </summary>
-    /// <param name="items"></param>
+    /// <param name="items">物品容器</param>
     public void Collect( ItemCollection items )
     {
 
@@ -76,11 +86,22 @@ namespace HelloWorld
         lock ( _sync )
         {
           foreach ( var item in items )
-            AddItems( item );
+            AddItemsInternal( item.ItemDescriptor, item.Quantity );
 
           items.Clear();
+          OnChanged();
         }
       }
+    }
+
+
+    /// <summary>
+    /// 添加物品项
+    /// </summary>
+    /// <param name="item">要添加的物品项</param>
+    public void AddItems( Item item )
+    {
+      AddItems( item.ItemDescriptor, item.Quantity );
     }
 
 
@@ -89,31 +110,96 @@ namespace HelloWorld
 
       lock ( _sync )
       {
-        if ( _collection.ContainsKey( item ) )
-          _collection[item] += quantity;
+        AddItemsInternal( item, quantity );
 
-        else
-          _collection.Add( item, quantity );
-
-        if ( ChangeHandler != null )
-          ChangeHandler();
+        OnChanged();
       }
     }
 
-    public void RemoveItems( ItemDescriptor item, int quantity )
+    private void AddItemsInternal( ItemDescriptor item, int quantity )
+    {
+      if ( _collection.ContainsKey( item ) )
+        _collection[item] += quantity;
+
+      else
+        _collection.Add( item, quantity );
+
+    }
+
+
+
+
+
+    /// <summary>
+    /// 尝试移除指定物品列表
+    /// </summary>
+    /// <param name="items">要移除的物品列表</param>
+    /// <returns>是否成功</returns>
+    public bool RemoveItems( ItemList items )
     {
       lock ( _sync )
       {
-        if ( _collection.ContainsKey( item ) && _collection[item] >= quantity )
-          _collection[item] -= quantity;
+
+        if ( items.All( i => this._collection.ContainsKey( i.ItemDescriptor ) && this._collection[i.ItemDescriptor] >= i.Quantity ) )
+        {
+          foreach ( var i in items )
+            RemoveItemsInternal( i.ItemDescriptor, i.Quantity );
+
+          OnChanged();
+          return true;
+        }
 
         else
-          throw new InvalidOperationException();
-
-        if ( ChangeHandler != null )
-          ChangeHandler();
+          return false;
       }
     }
+
+
+
+    /// <summary>
+    /// 尝试移除指定的物品
+    /// </summary>
+    /// <param name="item">要移除的物品</param>
+    /// <returns>是否成功</returns>
+    public bool RemoveItems( Item item )
+    {
+      return RemoveItems( item.ItemDescriptor, item.Quantity );
+    }
+
+
+    /// <summary>
+    /// 尝试移除指定的物品
+    /// </summary>
+    /// <param name="item">要移除的物品</param>
+    /// <returns>是否成功</returns>
+    public bool RemoveItems( ItemDescriptor item, int quantity )
+    {
+      lock ( _sync )
+      {
+        if ( RemoveItemsInternal( item, quantity ) )
+        {
+          OnChanged();
+          return true;
+        }
+
+        else
+          return false;
+      }
+    }
+
+
+    private bool RemoveItemsInternal( ItemDescriptor item, int quantity )
+    {
+      if ( _collection.ContainsKey( item ) && _collection[item] < quantity )
+        return false;
+
+      _collection[item] -= quantity;
+      return true;
+    }
+
+
+
+
 
     IEnumerator<Item> IEnumerable<Item>.GetEnumerator()
     {
@@ -145,6 +231,8 @@ namespace HelloWorld
         _collection.Clear();
       }
     }
+
+
 
   }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HelloWorld
 {
-  public abstract class GameItemData
+  public abstract class GameDateItem
   {
 
 
@@ -15,7 +15,7 @@ namespace HelloWorld
     public Guid Guid { get; private set; }
 
 
-    protected GameItemData( Guid guid, JObject data )
+    protected GameDateItem( Guid guid, JObject data )
     {
       if ( data == null )
         throw new ArgumentNullException( "data" );
@@ -33,7 +33,7 @@ namespace HelloWorld
 
     public override bool Equals( object obj )
     {
-      var item = obj as GameItemData;
+      var item = obj as GameDateItem;
 
       if ( item == null )
         return false;

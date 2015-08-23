@@ -20,9 +20,9 @@ namespace HelloWorld
   {
 
 
-    private class GameItemDataCollection : KeyedCollection<Guid, GameItemData>
+    private class GameDataItemCollection : KeyedCollection<Guid, GameDateItem>
     {
-      protected override Guid GetKeyForItem( GameItemData item )
+      protected override Guid GetKeyForItem( GameDateItem item )
       {
         return item.Guid;
       }
@@ -31,7 +31,7 @@ namespace HelloWorld
 
 
 
-    private static GameItemDataCollection _collection;
+    private static GameDataItemCollection _collection;
 
     private static Dictionary<BuildingDescriptor, HashSet<ConstructionDescriptor>> _constructionsMap = new Dictionary<BuildingDescriptor, HashSet<ConstructionDescriptor>>();
     private static Dictionary<BuildingDescriptor, HashSet<ProductionDescriptor>> _productionsMap = new Dictionary<BuildingDescriptor, HashSet<ProductionDescriptor>>();
@@ -47,6 +47,8 @@ namespace HelloWorld
 
       if ( path == null || Directory.Exists( path ) == false )
         throw new InvalidOperationException( "无法找到游戏规则配置" );
+
+      _collection = new GameDataItemCollection();
 
 
 
@@ -77,7 +79,7 @@ namespace HelloWorld
       if ( method == null )
         return;
 
-      var instance = (GameItemData) method.Invoke( null, new object[] { id, data } );
+      var instance = (GameDateItem) method.Invoke( null, new object[] { id, data } );
       _collection.Add( instance );
 
 
@@ -138,7 +140,7 @@ namespace HelloWorld
 
 
 
-    public static GameItemData GetDataItem( Guid id )
+    public static GameDateItem GetDataItem( Guid id )
     {
 
       if ( _collection == null )
@@ -154,7 +156,7 @@ namespace HelloWorld
 
 
 
-    public static T GetDataItem<T>( Guid id ) where T : GameItemData
+    public static T GetDataItem<T>( Guid id ) where T : GameDateItem
     {
 
       var result = GetDataItem( id ) as T;

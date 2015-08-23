@@ -13,7 +13,7 @@ namespace HelloWorld
   /// 定义一个物品描述信息
   /// </summary>
   [Guid( "F2C8BA6C-EB73-4787-8A3D-7C7EF6BF5E23" )]
-  public class ItemDescriptor : GameItemData
+  public class ItemDescriptor : GameDateItem
   {
 
 

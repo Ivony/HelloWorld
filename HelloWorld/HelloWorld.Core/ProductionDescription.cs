@@ -29,6 +29,7 @@ namespace HelloWorld
       {
         Building = GameEnvironment.GetBuilding( data.GuidValue( "Building" ) ),
         Requirment = ResourceRequirment.FromData( (JObject) data["Requirment"] ),
+        Output = ItemListJsonConverter.FromJson( (JObject) data["Output"] ),
       };
     }
 
@@ -44,5 +45,12 @@ namespace HelloWorld
     /// 生产所需资源列表
     /// </summary>
     public ResourceRequirment Requirment { get; private set; }
+
+
+    /// <summary>
+    /// 产出列表
+    /// </summary>
+    public ItemList Output { get; private set; }
+
   }
 }

@@ -21,9 +21,26 @@ namespace HelloWorld
 
     public ProductionDescription Production { get; private set; }
 
+
+    /// <summary>
+    /// 活动完成
+    /// </summary>
     protected override void Complete()
     {
-      
+      lock ( Place.SyncRoot )
+      {
+        if ( Place.Producting != this )
+          throw new InvalidOperationException();
+
+        if ( Place.Owner == null )
+          throw new InvalidOperationException();
+
+        Place.Resources.AddItems( Production.Output );
+        Place.Producting = null;
+        Place.Owner.Workers += Production.Requirment.Workers;
+
+        Dispose();
+      }
     }
   }
 }

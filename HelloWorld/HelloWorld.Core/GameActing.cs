@@ -10,7 +10,7 @@ namespace HelloWorld
   /// <summary>
   /// 代表正在进行的一个活动
   /// </summary>
-  public abstract class GameActing
+  public abstract class GameActing : IDisposable
   {
 
     protected GameActing( DateTime startOn, Place place )
@@ -44,6 +44,16 @@ namespace HelloWorld
     protected abstract void Complete();
 
 
+    protected bool Disposed { get; private set; }
+
+    /// <summary>
+    /// 销毁活动对象
+    /// </summary>
+    public virtual void Dispose()
+    {
+      Place = null;
+      Disposed = true;
+    }
   }
 
 
@@ -53,6 +63,11 @@ namespace HelloWorld
   /// </summary>
   public sealed class GameActingStatus
   {
+
+    /// <summary>
+    /// 尚未开始
+    /// </summary>
+    public static readonly GameActingStatus NotStarted = new GameActingStatus( "NotStarted" );
 
     /// <summary>
     /// 正在进行

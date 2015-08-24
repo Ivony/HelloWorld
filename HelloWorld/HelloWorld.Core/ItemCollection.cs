@@ -33,6 +33,7 @@ namespace HelloWorld
         AddItems( i );
     }
 
+
     /// <summary>
     /// 初始化一个物品容器
     /// </summary>
@@ -46,10 +47,20 @@ namespace HelloWorld
 
     protected Action ChangeHandler { get; private set; }
 
+
+
     public void AddItems( Item item )
     {
       AddItems( item.ItemDescriptor, item.Quantity );
     }
+
+
+    public void AddItems( ItemList items )
+    {
+      foreach ( var i in items )
+        AddItems( i );
+    }
+
 
 
     /// <summary>

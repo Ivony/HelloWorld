@@ -18,11 +18,8 @@ namespace HelloWorld
       {
         var initiation = Coordinate.RandomCoordinate( 1000, 1000 );
 
-        foreach ( var item in initiation.NearlyCoordinates( 6 ) )
-        {
-          if ( GetPlace( item ).Owner != null )
-            continue;
-        }
+        if ( initiation.NearlyCoordinates( 6 ).Any( item => GetPlace( item ).Owner != null ) )
+          continue;
 
         return initiation;
       }

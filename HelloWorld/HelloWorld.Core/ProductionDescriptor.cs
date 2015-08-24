@@ -7,49 +7,50 @@ using Newtonsoft.Json.Linq;
 
 namespace HelloWorld
 {
+
   /// <summary>
-  /// 定义一个建造过程描述
+  /// 定义一个生产过程
   /// </summary>
-  [Guid( "019C6290-1E13-4757-985A-F00C47EF5787" )]
-  public class ConstructionDescriptor : GameActingDescriptor
+  [Guid( "AA393552-5020-4400-B565-FA613AF7A123" )]
+  public sealed class ProductionDescriptor : GameActingDescriptor
   {
 
 
-    private ConstructionDescriptor( Guid guid, JObject data ) : base( guid, data ) { }
+    private ProductionDescriptor( Guid guid, JObject data ) : base( guid, data ) { }
 
 
-    public static ConstructionDescriptor FromData( Guid guid, JObject data )
+    public static ProductionDescriptor FromData( Guid guid, JObject data )
     {
 
       if ( data == null )
         return null;
 
-      return new ConstructionDescriptor( guid, data )
+      return new ProductionDescriptor( guid, data )
       {
-        RawBuilding = GameEnvironment.GetDataItem<BuildingDescriptor>( data.GuidValue( "RawBuilding" ) ),
-        NewBuiding = GameEnvironment.GetDataItem<BuildingDescriptor>( data.GuidValue( "NewBuilding" ) ),
-        Requirment = GameActingInvestmentDescriptor.FromData( (JObject) data["Input"] ),
+        Building = GameEnvironment.GetDataItem<BuildingDescriptor>( data.GuidValue( "Building" ) ),
+        Requirment = GameActingInvestmentDescriptor.FromData( (JObject) data["Requirment"] ),
+        Returns = ItemList.FromData( (JArray) data["Returns"] ),
       };
     }
 
-    /// <summary>
-    /// 原建筑
-    /// </summary>
-    public BuildingDescriptor RawBuilding { get; private set; }
-
 
     /// <summary>
-    /// 新建筑
+    /// 此生产过程所依赖的建筑/场所
     /// </summary>
-    public BuildingDescriptor NewBuiding { get; private set; }
+    public BuildingDescriptor Building { get; private set; }
 
 
 
     /// <summary>
-    /// 生产过程所投入的资源描述
+    /// 生产所需资源列表
     /// </summary>
-    public GameActingInvestmentDescriptor Requirment { get; set; }
+    public GameActingInvestmentDescriptor Requirment { get; private set; }
 
+
+    /// <summary>
+    /// 生产结束后的回报
+    /// </summary>
+    public ItemList Returns { get; private set; }
 
 
     /// <summary>
@@ -59,19 +60,12 @@ namespace HelloWorld
     /// <returns>正在进行的活动</returns>
     public override GameActing TryStartAt( Place place )
     {
-
       var acting = new GameActing( this );
-
-      lock ( place )
-      {
-        if ( place.Acting != null )
-          throw new InvalidOperationException();
-
-        acting.StartAt( place );
-      }
+      acting.StartAt( place );
 
       return acting;
     }
+
 
     /// <summary>
     /// 检查活动是否已经完成，若已经完成则获取相应的收益
@@ -85,7 +79,7 @@ namespace HelloWorld
         return false;
 
       acting.Place.Owner.Workers += Requirment.Workers;
-      acting.Place.Building = NewBuiding;
+      acting.Place.Owner.Resources.AddItems( Returns );
       return true;
     }
   }

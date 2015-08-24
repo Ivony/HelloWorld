@@ -25,12 +25,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
+    <DebugType>full</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -56,14 +59,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameActingDescriptor.cs" />
     <Compile Include="BuildingDescriptor.cs" />
-    <Compile Include="Constructing.cs" />
     <Compile Include="ConstructionDescriptor.cs" />
     <Compile Include="Coordinate.cs" />
     <Compile Include="CoordinateJsonConverter.cs" />
     <Compile Include="GameDataService.cs" />
     <Compile Include="GameEnvironment.cs" />
-    <Compile Include="GameItemData.cs" />
+    <Compile Include="GameDateItem.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="ItemCollection.cs" />
     <Compile Include="ItemDescriptor.cs" />
@@ -74,11 +77,10 @@
     <Compile Include="JValueExtensions.cs" />
     <Compile Include="Place.cs" />
     <Compile Include="GamePlayer.cs" />
-    <Compile Include="Producting.cs" />
-    <Compile Include="ProductionDescription.cs" />
+    <Compile Include="ProductionDescriptor.cs" />
     <Compile Include="GameActing.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResourceRequirment.cs" />
+    <Compile Include="GameActingInvestmentDescriptor.cs" />
     <Compile Include="UserService.cs" />
   </ItemGroup>
   <ItemGroup>

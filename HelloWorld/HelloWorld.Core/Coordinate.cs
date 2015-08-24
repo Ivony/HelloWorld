@@ -240,5 +240,33 @@ namespace HelloWorld
     }
 
 
+
+    public static bool operator ==( Coordinate a, Coordinate b )
+    {
+
+      if ( object.ReferenceEquals( a, null ) && object.ReferenceEquals( b, null ) )
+        return true;
+
+      if ( object.ReferenceEquals( a, null ) || object.ReferenceEquals( b, null ) )
+        return false;
+
+      return a.Equals( b );
+    }
+
+
+    public static bool operator !=( Coordinate a, Coordinate b )
+    {
+
+      if ( object.ReferenceEquals( a, null ) && object.ReferenceEquals( b, null ) )
+        return false;
+
+      if ( object.ReferenceEquals( a, null ) || object.ReferenceEquals( b, null ) )
+        return true;
+
+      return a.Equals( b ) == false;
+    }
+
+
+
   }
 }

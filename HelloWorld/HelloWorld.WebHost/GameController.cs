@@ -43,15 +43,49 @@ namespace HelloWorld.WebHost
     [HttpGet]
     public async Task<object> Place( string coordinate )
     {
+      return ( await GetPlace( coordinate ) ).GetInfo( Player );
+    }
+
+    private async Task<Place> GetPlace( string coordinate )
+    {
       var position = Coordinate.Parse( coordinate );
       if ( position.Distance( Coordinate.Origin ) > 1 )
         return null;
 
 
-      var place = Host.DataService.GetPlace( Player.Initiation + position );
-
-      return place.GetInfo( Player );
+      return Host.DataService.GetPlace( Player.Initiation + position );
     }
+
+
+
+    [HttpGet]
+    public async Task<object> Acting( string coordinate, Guid id )
+    {
+
+      var place = await GetPlace( coordinate );
+      if ( place == null || place.Owner != Player )
+        throw new InvalidOperationException( "不能在不是自己的领土上进行活动" );
+
+
+
+
+      var gameItem = GameEnvironment.GetDataItem<GameActingDescriptor>( id );
+      var acting = gameItem.TryStartAt( place );
+
+      if ( acting != null )
+        return new
+        {
+          Success = true,
+          Acting = acting.GetInfo(),
+        };
+
+      else
+        return new
+        {
+          Success = false,
+        };
+    }
+
 
 
 

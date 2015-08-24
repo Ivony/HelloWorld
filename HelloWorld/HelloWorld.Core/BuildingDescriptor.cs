@@ -9,13 +9,13 @@ namespace HelloWorld
   /// 建筑
   /// </summary>
   [Guid( "D681EF16-D0D2-4B72-834B-5ADDB0867535" )]
-  public class BuildingDescriptor : GameItemData
+  public class BuildingDescriptor : GameDateItem
   {
 
 
     private BuildingDescriptor( Guid guid, JObject data ) : base( guid, data ) { }
 
-    internal static BuildingDescriptor FromData( Guid guid, JObject data )
+    public static BuildingDescriptor FromData( Guid guid, JObject data )
     {
       if ( data == null )
         return null;

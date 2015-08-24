@@ -20,9 +20,9 @@ namespace HelloWorld
   {
 
 
-    private class GameItemDataCollection<T> : KeyedCollection<Guid, T> where T : GameItemData
+    private class GameDataItemCollection : KeyedCollection<Guid, GameDateItem>
     {
-      protected override Guid GetKeyForItem( T item )
+      protected override Guid GetKeyForItem( GameDateItem item )
       {
         return item.Guid;
       }
@@ -30,14 +30,11 @@ namespace HelloWorld
     }
 
 
-    private static GameItemDataCollection<ItemDescriptor> _items;
-    private static GameItemDataCollection<BuildingDescriptor> _buildings;
-    private static GameItemDataCollection<ProductionDescription> _productions;
-    private static GameItemDataCollection<ConstructionDescriptor> _constructions;
 
+    private static GameDataItemCollection _collection;
 
     private static Dictionary<BuildingDescriptor, HashSet<ConstructionDescriptor>> _constructionsMap = new Dictionary<BuildingDescriptor, HashSet<ConstructionDescriptor>>();
-    private static Dictionary<BuildingDescriptor, HashSet<ProductionDescription>> _productionsMap = new Dictionary<BuildingDescriptor, HashSet<ProductionDescription>>();
+    private static Dictionary<BuildingDescriptor, HashSet<ProductionDescriptor>> _productionsMap = new Dictionary<BuildingDescriptor, HashSet<ProductionDescriptor>>();
 
 
     public static void Initialize()
@@ -51,11 +48,8 @@ namespace HelloWorld
       if ( path == null || Directory.Exists( path ) == false )
         throw new InvalidOperationException( "无法找到游戏规则配置" );
 
+      _collection = new GameDataItemCollection();
 
-      _items = new GameItemDataCollection<ItemDescriptor>();
-      _buildings = new GameItemDataCollection<BuildingDescriptor>();
-      _productions = new GameItemDataCollection<ProductionDescription>();
-      _constructions = new GameItemDataCollection<ConstructionDescriptor>();
 
 
 
@@ -81,32 +75,17 @@ namespace HelloWorld
       var id = data.GuidValue( "ID" );
       var type = GetType( data.Value<String>( "Type" ) );
 
-
-      var instance = type.GetMethod( "FromData", BindingFlags.Static | BindingFlags.Public | BindingFlags.FlattenHierarchy ).Invoke( null, new object[] { id, data } );
-
-
-
-      var item = instance as ItemDescriptor;
-      if ( item != null )
-      {
-        _items.Add( item );
+      var method = type.GetMethod( "FromData", BindingFlags.Static | BindingFlags.Public | BindingFlags.FlattenHierarchy );
+      if ( method == null )
         return;
-      }
 
-
-      var building = instance as BuildingDescriptor;
-      if ( building != null )
-      {
-        _buildings.Add( building );
-        return;
-      }
+      var instance = (GameDateItem) method.Invoke( null, new object[] { id, data } );
+      _collection.Add( instance );
 
 
       var construction = instance as ConstructionDescriptor;
       if ( construction != null )
       {
-        _constructions.Add( construction );
-
         if ( _constructionsMap.ContainsKey( construction.RawBuilding ) == false )
           _constructionsMap.Add( construction.RawBuilding, new HashSet<ConstructionDescriptor>() { construction } );
 
@@ -116,19 +95,19 @@ namespace HelloWorld
       }
 
 
-      var production = instance as ProductionDescription;
+      var production = instance as ProductionDescriptor;
       if ( production != null )
       {
-        _productions.Add( production );
-
         if ( _constructionsMap.ContainsKey( production.Building ) == false )
-          _productionsMap.Add( production.Building, new HashSet<ProductionDescription>() { production } );
+          _productionsMap.Add( production.Building, new HashSet<ProductionDescriptor>() { production } );
 
         else
           _productionsMap[production.Building].Add( production );
         return;
       }
     }
+
+
 
     private static Type GetType( string type )
     {
@@ -145,7 +124,7 @@ namespace HelloWorld
           return typeof( ConstructionDescriptor );
 
         case "Production":
-          return typeof( ProductionDescription );
+          return typeof( ProductionDescriptor );
       }
 
 
@@ -155,74 +134,32 @@ namespace HelloWorld
 
 
 
-    /// <summary>
-    /// 获取一个物品描述
-    /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
-    public static ItemDescriptor GetItem( Guid id )
+
+
+    public static GameDateItem GetDataItem( Guid id )
     {
-      if ( _items == null )
+
+      if ( _collection == null )
         throw new InvalidOperationException( "游戏规则尚未初始化" );
 
 
-      if ( _items.Contains( id ) == false )
-        throw new InvalidDataException( "未注册的物品 ID: " + id );
+      if ( _collection.Contains( id ) == false )
+        throw new InvalidDataException( "未注册的游戏数据 ID: " + id );
 
-      return _items[id];
+
+      return _collection[id];
     }
 
 
-    /// <summary>
-    /// 获取一个建筑描述
-    /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
-    public static BuildingDescriptor GetBuilding( Guid id )
+
+    public static T GetDataItem<T>( Guid id ) where T : GameDateItem
     {
-      if ( _buildings == null )
-        throw new InvalidOperationException( "游戏规则尚未初始化" );
 
+      var result = GetDataItem( id ) as T;
+      if ( result == null )
+        throw new InvalidDataException( "游戏数据注册类型错误 ID: " + id );
 
-      if ( _buildings.Contains( id ) == false )
-        throw new InvalidDataException( "未注册的建筑 ID: " + id );
-
-      return _buildings[id];
-    }
-
-
-    /// <summary>
-    /// 获取一条生产规则
-    /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
-    public static ProductionDescription GetProduction( Guid id )
-    {
-      if ( _productions == null )
-        throw new InvalidOperationException( "游戏规则尚未初始化" );
-
-
-      if ( _productions.Contains( id ) == false )
-        throw new InvalidDataException( "未注册的生产规则 ID: " + id );
-
-      return _productions[id];
-    }
-
-    /// <summary>
-    /// 获取一条建造规则
-    /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
-    public static ConstructionDescriptor GetConstruction( Guid id )
-    {
-      if ( _constructions == null )
-        throw new InvalidOperationException( "游戏规则尚未初始化" );
-
-
-      if ( _constructions.Contains( id ) == false )
-        throw new InvalidDataException( "未注册的建造规则 ID: " + id );
-
-      return _constructions[id];
+      return result;
     }
 
 
@@ -232,18 +169,18 @@ namespace HelloWorld
     /// </summary>
     /// <param name="building"></param>
     /// <returns></returns>
-    public static ProductionDescription[] GetProductions( BuildingDescriptor building )
+    public static ProductionDescriptor[] GetProductions( BuildingDescriptor building )
     {
       if ( _productionsMap == null )
         throw new InvalidOperationException( "游戏规则尚未初始化" );
 
 
-      HashSet<ProductionDescription> result;
+      HashSet<ProductionDescriptor> result;
       if ( _productionsMap.TryGetValue( building, out result ) )
         return result.ToArray();
 
       else
-        return new ProductionDescription[0];
+        return new ProductionDescriptor[0];
     }
 
 

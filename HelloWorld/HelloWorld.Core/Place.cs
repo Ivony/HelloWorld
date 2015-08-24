@@ -44,20 +44,6 @@ namespace HelloWorld
     public abstract BuildingDescriptor Building { get; set; }
 
 
-
-    /// <summary>
-    /// 正在进行的生产
-    /// </summary>
-    public abstract Producting Producting { get; set; }
-
-
-    /// <summary>
-    /// 正在进行的建造
-    /// </summary>
-    public abstract Constructing Constructing { get; set; }
-
-
-
     /// <summary>
     /// 地块上存在的资源
     /// </summary>
@@ -69,6 +55,12 @@ namespace HelloWorld
     /// </summary>
     public abstract GamePlayer Owner { get; set; }
 
+    /// <summary>
+    /// 正在进行的活动
+    /// </summary>
+    public abstract GameActing Acting { get; set; }
+
+
 
     /// <summary>
     /// 收集地块上所有的资源
@@ -79,7 +71,6 @@ namespace HelloWorld
       lock ( SyncRoot )
       {
         Owner.Resources.Collect( Resources );
-        Resources.Clear();
       }
     }
 
@@ -94,15 +85,15 @@ namespace HelloWorld
       return new
       {
         Coordinate = Coordinate - player.Initiation,
-        Building,
+        Building = Building.GetInfo(),
         Resources,
-        Constructing,
-        Producting,
+        Acting = Acting == null ? null : Acting.GetInfo(),
         Actions = new
         {
-          Constructions = GameEnvironment.GetConstructions( Building ),
-          Productions = GameEnvironment.GetProductions( Building ),
-        }
+          Constructions = GameEnvironment.GetConstructions( Building ).Select( item => item.GetInfo() ),
+          Productions = GameEnvironment.GetProductions( Building ).Select( item => item.GetInfo() ),
+        },
+        IsMine = Owner == player,
       };
     }
   }

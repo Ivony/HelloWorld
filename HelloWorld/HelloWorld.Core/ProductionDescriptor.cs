@@ -70,14 +70,9 @@ namespace HelloWorld
         if ( place.Acting != null )
           throw new InvalidOperationException();
 
-        if ( place.Owner.Workers < Requirment.Workers )
+        if ( Requirment.TryInvest( place ) == false )
           return null;
 
-        if ( place.Owner.Resources.RemoveItems( Requirment.Items ) == false )
-          return null;
-
-
-        place.Owner.Workers -= Requirment.Workers;
         acting.StartAt( place );
       }
 
@@ -96,7 +91,6 @@ namespace HelloWorld
       if ( acting.StartOn + Requirment.Time > DateTime.UtcNow )
         return false;
 
-      acting.Place.Owner.Workers += Requirment.Workers;
       acting.Place.Owner.Resources.AddItems( Returns );
       return true;
     }

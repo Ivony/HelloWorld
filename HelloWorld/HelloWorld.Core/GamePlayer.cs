@@ -21,7 +21,6 @@ namespace HelloWorld
 
     protected virtual void Initialize()
     {
-      Workers = 10;
       foreach ( var coordinate in Initiation.NearlyCoordinates( 3 ) )
       {
         var place = DataService.GetPlace( coordinate );
@@ -46,11 +45,6 @@ namespace HelloWorld
     /// </summary>
     public abstract Coordinate Initiation { get; }
 
-
-    /// <summary>
-    /// 工人数量
-    /// </summary>
-    public abstract int Workers { get; set; }
 
     /// <summary>
     /// 资源数量

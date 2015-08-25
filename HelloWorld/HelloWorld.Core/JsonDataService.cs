@@ -68,7 +68,7 @@ namespace HelloWorld
       /// </summary>
       public void Save()
       {
-        File.WriteAllText( _filepath, ( (JObject) this ).ToString( Formatting.None ) );
+        File.WriteAllText( _filepath, ((JObject) this).ToString( Formatting.None ) );
       }
 
 
@@ -235,15 +235,6 @@ namespace HelloWorld
         get { return data.CoordinateValue( "Initiation" ); }
       }
 
-      /// <summary>
-      /// 工人数量
-      /// </summary>
-      public override int Workers
-      {
-        get { return data.Value<int>( "Workers" ); }
-
-        set { data["Workers"] = value; }
-      }
 
 
       private ItemCollection resources;

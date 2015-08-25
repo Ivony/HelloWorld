@@ -50,21 +50,10 @@ namespace HelloWorld
     /// <returns>是否成功扣除所需物品</returns>
     public bool TryInvest( Place place )
     {
-
       lock ( place.SyncRoot )
       {
-        if ( place.Owner.Workers < Workers )
-          return false;
-
-        if ( place.Owner.Resources.RemoveItems( Items ) == false )
-          return false;
-
-        place.Owner.Workers -= Workers;
-        return true;
-
-
+        return place.Owner.Resources.RemoveItems( Items );
       }
-
     }
   }
 }

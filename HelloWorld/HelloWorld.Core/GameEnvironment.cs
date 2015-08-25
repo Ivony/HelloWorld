@@ -20,9 +20,9 @@ namespace HelloWorld
   {
 
 
-    private class GameDataItemCollection : KeyedCollection<Guid, GameDateItem>
+    private class GameDataItemCollection : KeyedCollection<Guid, GameDataItem>
     {
-      protected override Guid GetKeyForItem( GameDateItem item )
+      protected override Guid GetKeyForItem( GameDataItem item )
       {
         return item.Guid;
       }
@@ -79,7 +79,7 @@ namespace HelloWorld
       if ( method == null )
         return;
 
-      var instance = (GameDateItem) method.Invoke( null, new object[] { id, data } );
+      var instance = (GameDataItem) method.Invoke( null, new object[] { id, data } );
       _collection.Add( instance );
 
 
@@ -136,7 +136,7 @@ namespace HelloWorld
 
 
 
-    public static GameDateItem GetDataItem( Guid id )
+    public static GameDataItem GetDataItem( Guid id )
     {
 
       if ( _collection == null )
@@ -152,7 +152,7 @@ namespace HelloWorld
 
 
 
-    public static T GetDataItem<T>( Guid id ) where T : GameDateItem
+    public static T GetDataItem<T>( Guid id ) where T : GameDataItem
     {
 
       var result = GetDataItem( id ) as T;

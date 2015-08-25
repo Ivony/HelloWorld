@@ -164,7 +164,10 @@ namespace HelloWorld
       {
         get
         {
-          return GameActing.FromData( DataService, (JObject) data["Acting"] );
+          if ( data["Acting"] == null || data["Acting"].Type == JTokenType.Null )
+            return null;
+          else
+            return GameActing.FromData( DataService, (JObject) data["Acting"] );
         }
         set
         {

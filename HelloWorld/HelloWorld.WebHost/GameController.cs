@@ -60,6 +60,9 @@ namespace HelloWorld.WebHost
       if ( place.Owner != Player )
         return null;
 
+
+      place.Check();
+
       return place;
     }
 

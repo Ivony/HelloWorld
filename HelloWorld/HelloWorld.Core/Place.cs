@@ -62,6 +62,22 @@ namespace HelloWorld
 
 
 
+
+    /// <summary>
+    /// 对地块执行例行检查，处理例行事项
+    /// </summary>
+    public void Check()
+    {
+      lock ( SyncRoot )
+      {
+        Collect();
+
+        if ( Acting != null )
+          Acting.Check();
+      }
+    }
+
+
     /// <summary>
     /// 收集地块上所有的资源
     /// </summary>

@@ -63,6 +63,8 @@ namespace HelloWorld
     /// <param name="items">要添加的物品项</param>
     public void AddItems( ItemList items )
     {
+      if ( items == null )
+        return;
 
       lock ( _sync )
       {
@@ -77,18 +79,20 @@ namespace HelloWorld
     /// <summary>
     /// 收集另一个物品容器中的所有物品，并清空他。
     /// </summary>
-    /// <param name="items">物品容器</param>
-    public void Collect( ItemCollection items )
+    /// <param name="collection">物品容器</param>
+    public void Collect( ItemCollection collection )
     {
+      if ( collection == null )
+        throw new ArgumentNullException( "collection" );
 
-      lock ( items._sync )
+      lock ( collection._sync )
       {
         lock ( _sync )
         {
-          foreach ( var item in items )
+          foreach ( var item in collection )
             AddItemsInternal( item.ItemDescriptor, item.Quantity );
 
-          items.Clear();
+          collection.Clear();
           OnChanged();
         }
       }
@@ -101,12 +105,25 @@ namespace HelloWorld
     /// <param name="item">要添加的物品项</param>
     public void AddItems( Item item )
     {
+      if ( item == null )
+        return;
+
       AddItems( item.ItemDescriptor, item.Quantity );
     }
 
 
     public void AddItems( ItemDescriptor item, int quantity )
     {
+
+      if ( item == null )
+        throw new ArgumentNullException( "item" );
+
+      if ( quantity < 0 )
+        throw new ArgumentOutOfRangeException( "quantity" );
+
+      if ( quantity == 0 )
+        return;
+
 
       lock ( _sync )
       {
@@ -118,6 +135,13 @@ namespace HelloWorld
 
     private void AddItemsInternal( ItemDescriptor item, int quantity )
     {
+      if ( item == null )
+        throw new ArgumentNullException( "item" );
+
+      if ( quantity <= 0 )
+        throw new ArgumentOutOfRangeException( "quantity" );
+
+
       if ( _collection.ContainsKey( item ) )
         _collection[item] += quantity;
 
@@ -137,6 +161,10 @@ namespace HelloWorld
     /// <returns>是否成功</returns>
     public bool RemoveItems( ItemList items )
     {
+
+      if ( items == null )
+        return true;
+
       lock ( _sync )
       {
 
@@ -163,6 +191,9 @@ namespace HelloWorld
     /// <returns>是否成功</returns>
     public bool RemoveItems( Item item )
     {
+      if ( item == null )
+        return true;
+
       return RemoveItems( item.ItemDescriptor, item.Quantity );
     }
 
@@ -174,6 +205,16 @@ namespace HelloWorld
     /// <returns>是否成功</returns>
     public bool RemoveItems( ItemDescriptor item, int quantity )
     {
+      if ( item == null )
+        throw new ArgumentNullException( "item" );
+
+      if ( quantity < 0 )
+        throw new ArgumentOutOfRangeException( "quantity" );
+
+      if ( quantity == 0 )
+        return true;
+
+
       lock ( _sync )
       {
         if ( RemoveItemsInternal( item, quantity ) )
@@ -190,6 +231,12 @@ namespace HelloWorld
 
     private bool RemoveItemsInternal( ItemDescriptor item, int quantity )
     {
+      if ( item == null )
+        throw new ArgumentNullException( "item" );
+
+      if ( quantity <= 0 )
+        throw new ArgumentOutOfRangeException( "quantity" );
+
       if ( _collection.ContainsKey( item ) && _collection[item] < quantity )
         return false;
 
@@ -203,12 +250,12 @@ namespace HelloWorld
 
     IEnumerator<Item> IEnumerable<Item>.GetEnumerator()
     {
-      return ( (ItemList) this ).GetEnumerator();
+      return ((ItemList) this).GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()
     {
-      return ( (ItemList) this ).GetEnumerator();
+      return ((ItemList) this).GetEnumerator();
     }
 
 

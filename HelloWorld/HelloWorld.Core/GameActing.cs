@@ -106,7 +106,7 @@ namespace HelloWorld
 
         lock ( Place )
         {
-          if ( Place.Acting != this )
+          if ( this.Equals( Place.Acting ) == false )
             throw new InvalidOperationException();
 
           if ( ActingDescriptor.TryComplete( this ) == false )
@@ -168,9 +168,40 @@ namespace HelloWorld
         ActingDescriptor = acting,
         Status = status,
       };
+    }
 
 
-      throw new NotImplementedException();
+
+    public override bool Equals( object obj )
+    {
+      var acting = obj as GameActing;
+      if ( acting == null )
+        return false;
+
+
+      if ( acting.Status != this.Status )
+        return false;
+
+
+      if ( Status == GameActingStatus.Processing )
+      {
+
+        if ( acting.Place != this.Place )
+          return false;
+
+        if ( acting.ActingDescriptor != this.ActingDescriptor )
+          throw new InvalidOperationException();
+
+        return true;
+      }
+
+      return acting.ActingDescriptor == this.ActingDescriptor;
+    }
+
+
+    public override int GetHashCode()
+    {
+      return Status.GetHashCode() ^ ActingDescriptor.GetHashCode() ^ Place.GetHashCode();
     }
 
 

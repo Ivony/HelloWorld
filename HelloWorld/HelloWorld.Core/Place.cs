@@ -112,5 +112,25 @@ namespace HelloWorld
         IsMine = Owner == player,
       };
     }
+
+
+
+    public override bool Equals( object obj )
+    {
+      var place = obj as Place;
+
+      if ( place == null )
+        return false;
+
+
+      return place.Coordinate == this.Coordinate;
+    }
+
+    public override int GetHashCode()
+    {
+      return Coordinate.GetHashCode();
+    }
+
+
   }
 }

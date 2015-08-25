@@ -29,7 +29,7 @@ namespace HelloWorld
       {
         Building = GameEnvironment.GetDataItem<BuildingDescriptor>( data.GuidValue( "Building" ) ),
         Requirment = GameActingInvestmentDescriptor.FromData( (JObject) data["Requirment"] ),
-        Returns = ItemList.FromData( (JArray) data["Returns"] ),
+        Returns = ItemListJsonConverter.FromJson( (JObject) data["Returns"] ),
       };
     }
 

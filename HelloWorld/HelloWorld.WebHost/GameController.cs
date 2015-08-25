@@ -43,17 +43,24 @@ namespace HelloWorld.WebHost
     [HttpGet]
     public async Task<object> Place( string coordinate )
     {
-      return ( await GetPlace( coordinate ) ).GetInfo( Player );
+      var place = await GetPlace( coordinate );
+
+      if ( place == null )
+        return null;
+
+      else
+        return place.GetInfo( Player );
     }
 
     private async Task<Place> GetPlace( string coordinate )
     {
       var position = Coordinate.Parse( coordinate );
-      if ( position.Distance( Coordinate.Origin ) > 1 )
+
+      var place = Host.DataService.GetPlace( Player.Initiation + position );
+      if ( place.Owner != Player )
         return null;
 
-
-      return Host.DataService.GetPlace( Player.Initiation + position );
+      return place;
     }
 
 

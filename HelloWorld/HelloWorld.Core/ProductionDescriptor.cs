@@ -60,8 +60,26 @@ namespace HelloWorld
     /// <returns>正在进行的活动</returns>
     public override GameActing TryStartAt( Place place )
     {
+      if ( place == null )
+        throw new ArgumentNullException( "place" );
+
       var acting = new GameActing( this );
-      acting.StartAt( place );
+
+      lock ( place )
+      {
+        if ( place.Acting != null )
+          throw new InvalidOperationException();
+
+        if ( place.Owner.Workers < Requirment.Workers )
+          return null;
+
+        if ( place.Owner.Resources.RemoveItems( Requirment.Items ) == false )
+          return null;
+
+
+        place.Owner.Workers -= Requirment.Workers;
+        acting.StartAt( place );
+      }
 
       return acting;
     }

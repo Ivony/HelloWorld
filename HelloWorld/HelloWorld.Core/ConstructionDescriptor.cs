@@ -69,6 +69,14 @@ namespace HelloWorld
         if ( place.Acting != null )
           throw new InvalidOperationException();
 
+        if ( place.Owner.Workers < Requirment.Workers )
+          return null;
+
+        if ( place.Owner.Resources.RemoveItems( Requirment.Items ) == false )
+          return null;
+
+
+        place.Owner.Workers -= Requirment.Workers;
         acting.StartAt( place );
       }
 

@@ -68,7 +68,6 @@ namespace HelloWorld
       return new
       {
         Nickname,
-        Workers,
         Resources = Resources,
       };
     }

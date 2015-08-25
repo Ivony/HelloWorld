@@ -86,11 +86,11 @@ namespace HelloWorld
       var construction = instance as ConstructionDescriptor;
       if ( construction != null )
       {
-        if ( _constructionsMap.ContainsKey( construction.RawBuilding ) == false )
-          _constructionsMap.Add( construction.RawBuilding, new HashSet<ConstructionDescriptor>() { construction } );
+        if ( _constructionsMap.ContainsKey( construction.Building ) == false )
+          _constructionsMap.Add( construction.Building, new HashSet<ConstructionDescriptor>() { construction } );
 
         else
-          _constructionsMap[construction.RawBuilding].Add( construction );
+          _constructionsMap[construction.Building].Add( construction );
         return;
       }
 

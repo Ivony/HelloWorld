@@ -47,6 +47,13 @@ namespace HelloWorld
     }
 
 
+    /// <summary>
+    /// 尝试创建坐标对象
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="coordinate"></param>
+    /// <returns>是否成功</returns>
     public static bool TryCreate( int x, int y, out Coordinate coordinate )
     {
 
@@ -115,6 +122,11 @@ namespace HelloWorld
     private static object _sync = new object();
 
 
+    /// <summary>
+    /// 获取临近的坐标
+    /// </summary>
+    /// <param name="distance"></param>
+    /// <returns></returns>
     public Coordinate[] NearlyCoordinates( int distance = 1 )
     {
 
@@ -129,12 +141,11 @@ namespace HelloWorld
     }
 
 
-    private static HashSet<Coordinate> _empty = new HashSet<Coordinate>();
     private static HashSet<Coordinate> GetAdjacents( int distance )
     {
 
       if ( distance < 1 )
-        return _empty;
+        return new HashSet<Coordinate>();
 
       lock ( _sync )
       {

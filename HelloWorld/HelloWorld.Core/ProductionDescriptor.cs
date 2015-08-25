@@ -82,5 +82,15 @@ namespace HelloWorld
       acting.Place.Owner.Resources.AddItems( Returns );
       return true;
     }
+
+    public override object GetInfo()
+    {
+      return new
+      {
+        Guid,
+        Returns,
+        Requirment,
+      };
+    }
   }
 }

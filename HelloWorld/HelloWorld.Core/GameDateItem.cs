@@ -73,7 +73,7 @@ namespace HelloWorld
     }
 
 
-    public object GetInfo()
+    public virtual object GetInfo()
     {
       return this;
     }

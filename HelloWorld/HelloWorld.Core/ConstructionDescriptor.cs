@@ -26,22 +26,22 @@ namespace HelloWorld
 
       return new ConstructionDescriptor( guid, data )
       {
-        RawBuilding = GameEnvironment.GetDataItem<BuildingDescriptor>( data.GuidValue( "RawBuilding" ) ),
-        NewBuiding = GameEnvironment.GetDataItem<BuildingDescriptor>( data.GuidValue( "NewBuilding" ) ),
+        Building = GameEnvironment.GetDataItem<BuildingDescriptor>( data.GuidValue( "RawBuilding" ) ),
+        Returns = GameEnvironment.GetDataItem<BuildingDescriptor>( data.GuidValue( "NewBuilding" ) ),
         Requirment = GameActingInvestmentDescriptor.FromData( (JObject) data["Input"] ),
       };
     }
 
     /// <summary>
-    /// 原建筑
+    /// 依赖的地形/建筑
     /// </summary>
-    public BuildingDescriptor RawBuilding { get; private set; }
+    public BuildingDescriptor Building { get; private set; }
 
 
     /// <summary>
-    /// 新建筑
+    /// 产出建筑
     /// </summary>
-    public BuildingDescriptor NewBuiding { get; private set; }
+    public BuildingDescriptor Returns { get; private set; }
 
 
 
@@ -59,6 +59,8 @@ namespace HelloWorld
     /// <returns>正在进行的活动</returns>
     public override GameActing TryStartAt( Place place )
     {
+      if ( place == null )
+        throw new ArgumentNullException( "place" );
 
       var acting = new GameActing( this );
 
@@ -85,8 +87,19 @@ namespace HelloWorld
         return false;
 
       acting.Place.Owner.Workers += Requirment.Workers;
-      acting.Place.Building = NewBuiding;
+      acting.Place.Building = Returns;
       return true;
     }
+
+    public override object GetInfo()
+    {
+      return new
+      {
+        Guid,
+        Returns,
+        Requirment,
+      };
+    }
+
   }
 }

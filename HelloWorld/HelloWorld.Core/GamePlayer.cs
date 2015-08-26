@@ -21,13 +21,14 @@ namespace HelloWorld
 
     protected virtual void Initialize()
     {
+      DataService.GetPlace( Initiation ).Owner = this;
+
+
       foreach ( var coordinate in Initiation.NearlyCoordinates( 3 ) )
       {
         var place = DataService.GetPlace( coordinate );
         place.Owner = this;
       }
-
-
     }
 
     /// <summary>

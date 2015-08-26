@@ -14,10 +14,11 @@ namespace HelloWorld
   {
 
 
-    public GameActing( GameActingDescriptor descriptor )
+    public GameActing( GameActingDescriptor descriptor, Action<GameActing> changeHandler = null )
     {
       ActingDescriptor = descriptor;
       Status = GameActingStatus.NotStarted;
+      ChangeHandler = changeHandler;
       _sync = new object();
     }
 
@@ -25,6 +26,13 @@ namespace HelloWorld
     private object _sync = new object();
 
     protected object SyncRoot { get { return _sync; } }
+
+
+    /// <summary>
+    /// 当发生修改时需要调用的方法
+    /// </summary>
+    protected Action<GameActing> ChangeHandler { get; private set; }
+
 
 
     /// <summary>
@@ -100,7 +108,7 @@ namespace HelloWorld
     {
       lock ( SyncRoot )
       {
-        if ( Status == GameActingStatus.NotStarted )
+        if ( Status == GameActingStatus.NotStarted || Status == GameActingStatus.Done )
           return Status;
 
 
@@ -115,9 +123,21 @@ namespace HelloWorld
           Place.Acting = null;
         }
 
-        return Status = GameActingStatus.Done;
+        Status = GameActingStatus.Done;
+        OnChanged();
+
+        return Status;
       }
     }
+
+
+
+    protected void OnChanged()
+    {
+      if ( ChangeHandler != null )
+        ChangeHandler( this );
+    }
+
 
 
 

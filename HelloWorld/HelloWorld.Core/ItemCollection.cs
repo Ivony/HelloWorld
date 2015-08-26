@@ -27,20 +27,17 @@ namespace HelloWorld
 
 
 
-    public ItemCollection( Item[] data )
-    {
-      foreach ( var i in data )
-        AddItems( i );
-    }
-
     /// <summary>
     /// 初始化一个物品容器
     /// </summary>
     /// <param name="data">物品数据</param>
     /// <param name="changeHandler">更改处理器</param>
-    public ItemCollection( Item[] data, Action changeHandler )
-      : this( data )
+    public ItemCollection( Item[] data, Action<ItemCollection> changeHandler = null )
     {
+      foreach ( var i in data )
+        AddItemsInternal( i.ItemDescriptor, i.Quantity );
+
+
       ChangeHandler = changeHandler;
     }
 
@@ -49,11 +46,11 @@ namespace HelloWorld
     private void OnChanged()
     {
       if ( ChangeHandler != null )
-        ChangeHandler();
+        ChangeHandler( this );
     }
 
 
-    protected Action ChangeHandler { get; private set; }
+    protected Action<ItemCollection> ChangeHandler { get; private set; }
 
 
 

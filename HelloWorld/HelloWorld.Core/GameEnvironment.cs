@@ -37,12 +37,12 @@ namespace HelloWorld
     private static Dictionary<BuildingDescriptor, HashSet<ProductionDescriptor>> _productionsMap = new Dictionary<BuildingDescriptor, HashSet<ProductionDescriptor>>();
 
 
-    public static void Initialize()
+    public static void Initialize( ITypeResolver typeResolver )
     {
-      Initialize( ConfigurationManager.AppSettings["GamePath"] );
+      Initialize( ConfigurationManager.AppSettings["GamePath"], typeResolver );
     }
 
-    public static void Initialize( string path )
+    public static void Initialize( string path, ITypeResolver typeResolver )
     {
 
       if ( path == null || Directory.Exists( path ) == false )
@@ -62,18 +62,24 @@ namespace HelloWorld
 
 
       foreach ( var file in fileList )
-        LoadData( file );
+        LoadData( file, typeResolver );
 
     }
 
 
 
-    private static void LoadData( string filepath )
+    private static void LoadData( string filepath, ITypeResolver typeResolver )
     {
       var data = JObject.Parse( File.ReadAllText( filepath ) );
 
       var id = data.GuidValue( "ID" );
-      var type = GetType( data.Value<String>( "Type" ) );
+      var type = typeResolver.GetType( data.Value<String>( "Type" ) );
+
+      if ( type == null )
+        return;
+
+      if ( type.IsAssignableFrom( typeof( GameDataItem ) ) == false )
+        return;
 
       var method = type.GetMethod( "FromData", BindingFlags.Static | BindingFlags.Public | BindingFlags.FlattenHierarchy );
       if ( method == null )
@@ -109,10 +115,16 @@ namespace HelloWorld
 
 
 
-    private static Type GetType( string type )
+    private static Type GetType( string typeName )
     {
+      var type = Type.GetType( typeName );
+      if ( type == null )
+        return null;
 
-      switch ( type )
+      if ( type.IsAssignableFrom( typeof( GameDataItem ) ) == false )
+        return null;
+
+      switch ( typeName )
       {
         case "Item":
           return typeof( ItemDescriptor );

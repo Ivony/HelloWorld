@@ -26,7 +26,10 @@ namespace HelloWorld.WebHost
       UserService = new JsonUserService( dataRoot );
       DataService = new JsonDataService( dataRoot );
 
-      GameEnvironment.Initialize();
+
+      var typeResolver = new HttpRuntimeTypeResolver( configuration.Services.GetAssembliesResolver() );
+
+      GameEnvironment.Initialize( typeResolver );
 
 
       configuration.Services.Replace( typeof( IContentNegotiator ), new JsonContentNegotiator() );

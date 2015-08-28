@@ -37,13 +37,25 @@ namespace HelloWorld
     private static Dictionary<BuildingDescriptor, HashSet<ProductionDescriptor>> _productionsMap = new Dictionary<BuildingDescriptor, HashSet<ProductionDescriptor>>();
 
 
-    public static void Initialize( ITypeResolver typeResolver )
+    /// <summary>
+    /// 初始化游戏环境
+    /// </summary>
+    /// <param name="typeResolver"></param>
+    public static void Initialize( ITypeResolver typeResolver = null )
     {
       Initialize( ConfigurationManager.AppSettings["GamePath"], typeResolver );
     }
 
+    /// <summary>
+    /// 初始化游戏环境
+    /// </summary>
+    /// <param name="path"></param>
+    /// <param name="typeResolver"></param>
     public static void Initialize( string path, ITypeResolver typeResolver )
     {
+
+      typeResolver = typeResolver ?? new TypeResolver();
+
 
       if ( path == null || Directory.Exists( path ) == false )
         throw new InvalidOperationException( "无法找到游戏规则配置" );

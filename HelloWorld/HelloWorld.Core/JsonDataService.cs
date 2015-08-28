@@ -122,7 +122,7 @@ namespace HelloWorld
         : base( service, coordinate )
       {
         data = jsonData;
-        resources = new ItemCollection( ItemListJsonConverter.FromJson( (JObject) data["Resources"] ), SaveResources );
+        resources = new ItemCollection( ItemListJsonConverter.FromJson( (JObject) data["Resources"] ), collection => SaveResources() );
       }
 
 
@@ -213,7 +213,7 @@ namespace HelloWorld
         : base( service, userId )
       {
         data = jsonData;
-        resources = new ItemCollection( ItemListJsonConverter.FromJson( (JObject) jsonData["Resources"] ), SaveItems );
+        resources = new ItemCollection( ItemListJsonConverter.FromJson( (JObject) jsonData["Resources"] ), collection => SaveItems() );
       }
 
       private void SaveItems()

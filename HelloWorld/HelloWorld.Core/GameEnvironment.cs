@@ -33,8 +33,7 @@ namespace HelloWorld
 
     private static GameDataItemCollection _collection;
 
-    private static Dictionary<BuildingDescriptor, HashSet<ConstructionDescriptor>> _constructionsMap = new Dictionary<BuildingDescriptor, HashSet<ConstructionDescriptor>>();
-    private static Dictionary<BuildingDescriptor, HashSet<ProductionDescriptor>> _productionsMap = new Dictionary<BuildingDescriptor, HashSet<ProductionDescriptor>>();
+    private static Dictionary<BuildingDescriptor, HashSet<ActionDescriptor>> _actionMap = new Dictionary<BuildingDescriptor, HashSet<ActionDescriptor>>();
 
 
     /// <summary>
@@ -90,7 +89,7 @@ namespace HelloWorld
       if ( type == null )
         return;
 
-      if ( type.IsAssignableFrom( typeof( GameDataItem ) ) == false )
+      if ( typeof( GameDataItem ).IsAssignableFrom( type ) == false )
         return;
 
       var method = type.GetMethod( "FromData", BindingFlags.Static | BindingFlags.Public | BindingFlags.FlattenHierarchy );
@@ -101,60 +100,17 @@ namespace HelloWorld
       _collection.Add( instance );
 
 
-      var construction = instance as ConstructionDescriptor;
-      if ( construction != null )
-      {
-        if ( _constructionsMap.ContainsKey( construction.Building ) == false )
-          _constructionsMap.Add( construction.Building, new HashSet<ConstructionDescriptor>() { construction } );
-
-        else
-          _constructionsMap[construction.Building].Add( construction );
-        return;
-      }
-
-
-      var production = instance as ProductionDescriptor;
+      var production = instance as ActionDescriptor;
       if ( production != null )
       {
-        if ( _constructionsMap.ContainsKey( production.Building ) == false )
-          _productionsMap.Add( production.Building, new HashSet<ProductionDescriptor>() { production } );
+        if ( _actionMap.ContainsKey( production.Building ) == false )
+          _actionMap.Add( production.Building, new HashSet<ActionDescriptor>() { production } );
 
         else
-          _productionsMap[production.Building].Add( production );
+          _actionMap[production.Building].Add( production );
         return;
       }
     }
-
-
-
-    private static Type GetType( string typeName )
-    {
-      var type = Type.GetType( typeName );
-      if ( type == null )
-        return null;
-
-      if ( type.IsAssignableFrom( typeof( GameDataItem ) ) == false )
-        return null;
-
-      switch ( typeName )
-      {
-        case "Item":
-          return typeof( ItemDescriptor );
-
-        case "Building":
-          return typeof( BuildingDescriptor );
-
-        case "Construction":
-          return typeof( ConstructionDescriptor );
-
-        case "Production":
-          return typeof( ProductionDescriptor );
-      }
-
-
-      throw new NotImplementedException();
-    }
-
 
 
 
@@ -193,38 +149,18 @@ namespace HelloWorld
     /// </summary>
     /// <param name="building"></param>
     /// <returns></returns>
-    public static ProductionDescriptor[] GetProductions( BuildingDescriptor building )
+    public static ActionDescriptor[] GetActions( BuildingDescriptor building )
     {
-      if ( _productionsMap == null )
+      if ( _actionMap == null )
         throw new InvalidOperationException( "游戏规则尚未初始化" );
 
 
-      HashSet<ProductionDescriptor> result;
-      if ( _productionsMap.TryGetValue( building, out result ) )
+      HashSet<ActionDescriptor> result;
+      if ( _actionMap.TryGetValue( building, out result ) )
         return result.ToArray();
 
       else
-        return new ProductionDescriptor[0];
-    }
-
-
-    /// <summary>
-    /// 获取某个建筑可以进行的升级或者改造
-    /// </summary>
-    /// <param name="building"></param>
-    /// <returns></returns>
-    public static ConstructionDescriptor[] GetConstructions( BuildingDescriptor building )
-    {
-      if ( _constructionsMap == null )
-        throw new InvalidOperationException( "游戏规则尚未初始化" );
-
-
-      HashSet<ConstructionDescriptor> result;
-      if ( _constructionsMap.TryGetValue( building, out result ) )
-        return result.ToArray();
-
-      else
-        return new ConstructionDescriptor[0];
+        return new ActionDescriptor[0];
     }
 
   }

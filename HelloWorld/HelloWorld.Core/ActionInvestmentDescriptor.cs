@@ -12,24 +12,23 @@ namespace HelloWorld
   /// <summary>
   /// 定义游戏活动需要投入的资源描述
   /// </summary>
-  public class GameActingInvestmentDescriptor
+  public class ActionInvestmentDescriptor
   {
 
 
 
 
 
-    public static GameActingInvestmentDescriptor FromData( JObject data )
+    public static ActionInvestmentDescriptor FromData( JObject data )
     {
 
       if ( data == null )
         return null;
 
-      return new GameActingInvestmentDescriptor
+      return new ActionInvestmentDescriptor
       {
         Items = ItemListJsonConverter.FromJson( (JObject) data["Items"] ),
         Time = data.TimeValue( "Time" ),
-        Workers = data.Value<int>( "Workers" ),
       };
     }
 
@@ -37,8 +36,6 @@ namespace HelloWorld
     public ItemList Items { get; private set; }
 
     public TimeSpan Time { get; private set; }
-
-    public int Workers { get; private set; }
 
 
 

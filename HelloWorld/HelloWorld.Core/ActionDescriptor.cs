@@ -7,49 +7,50 @@ using Newtonsoft.Json.Linq;
 
 namespace HelloWorld
 {
+
   /// <summary>
-  /// 定义一个建造过程描述
+  /// 游戏活动过程的具体实现
   /// </summary>
-  [Guid( "019C6290-1E13-4757-985A-F00C47EF5787" )]
-  public class ConstructionDescriptor : GameActingDescriptor
+  [Guid( "AA393552-5020-4400-B565-FA613AF7A123" )]
+  public sealed class ActionDescriptor : ActionDescriptorBase
   {
 
 
-    private ConstructionDescriptor( Guid guid, JObject data ) : base( guid, data ) { }
+    private ActionDescriptor( Guid guid, JObject data ) : base( guid, data ) { }
 
 
-    public static ConstructionDescriptor FromData( Guid guid, JObject data )
+    public static ActionDescriptor FromData( Guid guid, JObject data )
     {
 
       if ( data == null )
         return null;
 
-      return new ConstructionDescriptor( guid, data )
+      return new ActionDescriptor( guid, data )
       {
         Building = GameEnvironment.GetDataItem<BuildingDescriptor>( data.GuidValue( "Building" ) ),
-        Returns = GameEnvironment.GetDataItem<BuildingDescriptor>( data.GuidValue( "Returns" ) ),
-        Requirment = GameActingInvestmentDescriptor.FromData( (JObject) data["Requirment"] ),
+        Requirment = ActionInvestmentDescriptor.FromData( (JObject) data["Requirment"] ),
+        Returns = ActionReturnsDescriptor.FromData( (JObject) data["Returns"] ),
       };
     }
 
+
     /// <summary>
-    /// 依赖的地形/建筑
+    /// 此生产过程所依赖的建筑/场所
     /// </summary>
     public BuildingDescriptor Building { get; private set; }
 
 
-    /// <summary>
-    /// 产出建筑
-    /// </summary>
-    public BuildingDescriptor Returns { get; private set; }
-
-
 
     /// <summary>
-    /// 生产过程所投入的资源描述
+    /// 生产所需资源列表
     /// </summary>
-    public GameActingInvestmentDescriptor Requirment { get; set; }
+    public ActionInvestmentDescriptor Requirment { get; private set; }
 
+
+    /// <summary>
+    /// 生产结束后的回报
+    /// </summary>
+    public ActionReturnsDescriptor Returns { get; private set; }
 
 
     /// <summary>
@@ -78,6 +79,7 @@ namespace HelloWorld
       return acting;
     }
 
+
     /// <summary>
     /// 检查活动是否已经完成，若已经完成则获取相应的收益
     /// </summary>
@@ -89,7 +91,12 @@ namespace HelloWorld
       if ( acting.StartOn + Requirment.Time > DateTime.UtcNow )
         return false;
 
-      acting.Place.Building = Returns;
+      if ( Returns.Items != null )
+        acting.Place.Owner.Resources.AddItems( Returns.Items );
+
+      if ( Returns.Building != null )
+        acting.Place.Building = Returns.Building;
+
       return true;
     }
 
@@ -102,6 +109,5 @@ namespace HelloWorld
         Requirment,
       };
     }
-
   }
 }

@@ -19,7 +19,7 @@ namespace HelloWorld.WebHost
 
     public Type GetType( string typeName )
     {
-      var types = assemblies.Select( a => a.GetType( typeName ) ).Take( 2 ).ToArray();
+      var types = assemblies.Select( a => a.GetType( typeName ) ).Where( type => type != null ).Take( 2 ).ToArray();
 
       if ( types.Length == 0 )
         return null;

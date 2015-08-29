@@ -14,7 +14,7 @@ namespace HelloWorld
   {
 
 
-    public GameActing( GameActingDescriptor descriptor, Action<GameActing> changeHandler = null )
+    public GameActing( ActionDescriptorBase descriptor, Action<GameActing> changeHandler = null )
     {
       ActingDescriptor = descriptor;
       Status = GameActingStatus.NotStarted;
@@ -38,7 +38,7 @@ namespace HelloWorld
     /// <summary>
     /// 活动的描述
     /// </summary>
-    public GameActingDescriptor ActingDescriptor { get; private set; }
+    public ActionDescriptorBase ActingDescriptor { get; private set; }
 
 
 
@@ -177,7 +177,7 @@ namespace HelloWorld
 
 
       var startOn = data.Value<DateTime>( "StartOn" );
-      var acting = GameEnvironment.GetDataItem<GameActingDescriptor>( data.GuidValue( "ActingDescriptor" ) );
+      var acting = GameEnvironment.GetDataItem<ActionDescriptorBase>( data.GuidValue( "ActingDescriptor" ) );
       var status = GameActingStatus.GetStatus( data.Value<string>( "Status" ) );
 
 

@@ -79,7 +79,7 @@ namespace HelloWorld.WebHost
 
 
 
-      var gameItem = GameEnvironment.GetDataItem<GameActingDescriptor>( id );
+      var gameItem = GameEnvironment.GetDataItem<ActionDescriptorBase>( id );
       var acting = gameItem.TryStartAt( place );
 
       if ( acting != null )

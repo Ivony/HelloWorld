@@ -104,11 +104,7 @@ namespace HelloWorld
         Building = Building.GetInfo(),
         Resources,
         Acting = Acting == null ? null : Acting.GetInfo(),
-        Actions = new
-        {
-          Constructions = GameEnvironment.GetConstructions( Building ).Select( item => item.GetInfo() ),
-          Productions = GameEnvironment.GetProductions( Building ).Select( item => item.GetInfo() ),
-        },
+        Actions = GameEnvironment.GetActions( Building ).Select( item => item.GetInfo() ),
         IsMine = Owner == player,
       };
     }

@@ -12,11 +12,11 @@ namespace HelloWorld
   /// <summary>
   /// 一个游戏活动的描述
   /// </summary>
-  public abstract class GameActingDescriptor : GameDataItem
+  public abstract class ActionDescriptorBase : GameDataItem
   {
 
 
-    protected GameActingDescriptor( Guid guid, JObject data ) : base( guid, data ) { }
+    protected ActionDescriptorBase( Guid guid, JObject data ) : base( guid, data ) { }
 
     /// <summary>
     /// 尝试对指定地块进行投入来进行这个活动

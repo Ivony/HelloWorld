@@ -29,7 +29,6 @@ namespace HelloWorld.WebHost
 
       var typeResolver = new HttpRuntimeTypeResolver( configuration.Services.GetAssembliesResolver() );
 
-      GameEnvironment.Initialize( typeResolver );
 
 
       configuration.Services.Replace( typeof( IContentNegotiator ), new JsonContentNegotiator() );

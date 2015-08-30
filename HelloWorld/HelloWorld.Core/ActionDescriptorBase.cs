@@ -12,7 +12,7 @@ namespace HelloWorld
   /// <summary>
   /// 一个游戏活动的描述
   /// </summary>
-  public abstract class ActionDescriptorBase : GameDataItem
+  public abstract class ActionDescriptorBase : GameRuleDataItem
   {
 
 

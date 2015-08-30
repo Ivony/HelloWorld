@@ -68,7 +68,7 @@ namespace HelloWorld
       /// </summary>
       public void Save()
       {
-        File.WriteAllText( _filepath, ((JObject) this).ToString( Formatting.None ) );
+        File.WriteAllText( _filepath, ( (JObject) this ).ToString( Formatting.None ) );
       }
 
 
@@ -131,7 +131,7 @@ namespace HelloWorld
       /// </summary>
       public override BuildingDescriptor Building
       {
-        get { return GameEnvironment.GetDataItem<BuildingDescriptor>( data.GuidValue( "Building" ) ); }
+        get { return GameHost.GameRules.GetDataItem<BuildingDescriptor>( data.GuidValue( "Building" ) ); }
         set { data["Building"] = value.Guid.ToString( "D" ); }
       }
 
@@ -261,7 +261,7 @@ namespace HelloWorld
       {
         if ( data["Init"] != null )
         {
-          Initialize();
+          GameHost.GameRules.InitializePlayer( this );
           data.Remove( "Init" );
           data.Save();
         }
@@ -292,7 +292,7 @@ namespace HelloWorld
 
         var filepath = Path.ChangeExtension( Path.Combine( playersDirectory, userId.ToString( "D" ) ), _extensions );
 
-        var data = JsonDataItem.LoadData( filepath, new { Nickname = "Guest", Initiation = GetInitiation(), Init = true, Resources = new ItemCollection() } );
+        var data = JsonDataItem.LoadData( filepath, new { Nickname = "Guest", Initiation = GameHost.GameRules.GetInitiation(), Init = true, Resources = new ItemCollection() } );
 
 
         player = new JsonPlayer( this, userId, data );
@@ -323,7 +323,7 @@ namespace HelloWorld
 
         var filepath = Path.ChangeExtension( Path.Combine( placesDirectory, coordinate.ToString() ), _extensions );
 
-        var data = JsonDataItem.LoadData( filepath, new { Building = Guid.Parse( "{EB0C8AE8-FC09-4874-9985-98C081F4D1B7}" ) } );
+        var data = JsonDataItem.LoadData( filepath, new { Building = GameHost.GameRules.InitiationBuilding.Guid } );
 
         return new JsonPlace( this, coordinate, data );
       }

@@ -27,7 +27,7 @@ namespace HelloWorld
 
       return new ActionDescriptor( guid, data )
       {
-        Building = GameEnvironment.GetDataItem<BuildingDescriptor>( data.GuidValue( "Building" ) ),
+        Building = GameHost.GameRules.GetDataItem<BuildingDescriptor>( data.GuidValue( "Building" ) ),
         Requirment = ActionInvestmentDescriptor.FromData( (JObject) data["Requirment"] ),
         Returns = ActionReturnsDescriptor.FromData( (JObject) data["Returns"] ),
       };

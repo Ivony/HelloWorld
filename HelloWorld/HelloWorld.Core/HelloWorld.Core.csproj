@@ -65,8 +65,11 @@
     <Compile Include="CoordinateJsonConverter.cs" />
     <Compile Include="ActionReturnsDescriptor.cs" />
     <Compile Include="GameDataService.cs" />
-    <Compile Include="GameEnvironment.cs" />
-    <Compile Include="GameDataItem.cs" />
+    <Compile Include="GameHost.cs" />
+    <Compile Include="GameRules.cs" />
+    <Compile Include="GameRuleDataItem.cs" />
+    <Compile Include="GameRulesBase.cs" />
+    <Compile Include="JsonDataResolver.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="ItemCollection.cs" />
     <Compile Include="ItemDescriptor.cs" />

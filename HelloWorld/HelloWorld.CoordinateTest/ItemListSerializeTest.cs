@@ -11,7 +11,7 @@ namespace HelloWorld.Test
 
     public ItemListSerializeTest()
     {
-      GameEnvironment.Initialize( @"C:\Data\Game" );
+      //GameRules.Initialize( @"C:\Data\Game" );
     }
 
 
@@ -19,7 +19,7 @@ namespace HelloWorld.Test
     public void SerializeTest()
     {
 
-      var item1 = new Item( GameEnvironment.GetDataItem<ItemDescriptor>( Guid.Parse( "{5962E351-33CA-4968-90A3-8AF6C8847180}" ) ), 100 );
+      var item1 = new Item( GameHost.GameRules.GetDataItem<ItemDescriptor>( Guid.Parse( "{5962E351-33CA-4968-90A3-8AF6C8847180}" ) ), 100 );
       var collection = new ItemCollection();
 
       collection.AddItems( item1 );

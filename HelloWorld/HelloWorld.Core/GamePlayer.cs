@@ -19,18 +19,6 @@ namespace HelloWorld
     protected GameDataService DataService { get; private set; }
 
 
-    protected virtual void Initialize()
-    {
-      DataService.GetPlace( Initiation ).Owner = this;
-
-
-      foreach ( var coordinate in Initiation.NearlyCoordinates( 3 ) )
-      {
-        var place = DataService.GetPlace( coordinate );
-        place.Owner = this;
-      }
-    }
-
     /// <summary>
     /// 用户 ID
     /// </summary>

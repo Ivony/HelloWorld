@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HelloWorld
 {
-  public abstract class GameDataItem
+  public abstract class GameRuleDataItem
   {
 
 
@@ -15,7 +15,7 @@ namespace HelloWorld
     public Guid Guid { get; private set; }
 
 
-    protected GameDataItem( Guid guid, JObject data )
+    protected GameRuleDataItem( Guid guid, JObject data )
     {
       if ( data == null )
         throw new ArgumentNullException( "data" );
@@ -33,7 +33,7 @@ namespace HelloWorld
 
     public override bool Equals( object obj )
     {
-      var item = obj as GameDataItem;
+      var item = obj as GameRuleDataItem;
 
       if ( item == null )
         return false;
@@ -47,7 +47,7 @@ namespace HelloWorld
     }
 
 
-    public static bool operator ==( GameDataItem a, GameDataItem b )
+    public static bool operator ==( GameRuleDataItem a, GameRuleDataItem b )
     {
 
       if ( object.ReferenceEquals( a, null ) && object.ReferenceEquals( b, null ) )
@@ -60,7 +60,7 @@ namespace HelloWorld
     }
 
 
-    public static bool operator !=( GameDataItem a, GameDataItem b )
+    public static bool operator !=( GameRuleDataItem a, GameRuleDataItem b )
     {
 
       if ( object.ReferenceEquals( a, null ) && object.ReferenceEquals( b, null ) )

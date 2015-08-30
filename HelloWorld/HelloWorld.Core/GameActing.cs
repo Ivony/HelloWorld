@@ -177,7 +177,7 @@ namespace HelloWorld
 
 
       var startOn = data.Value<DateTime>( "StartOn" );
-      var acting = GameEnvironment.GetDataItem<ActionDescriptorBase>( data.GuidValue( "ActingDescriptor" ) );
+      var acting = GameHost.GameRules.GetDataItem<ActionDescriptorBase>( data.GuidValue( "ActingDescriptor" ) );
       var status = GameActingStatus.GetStatus( data.Value<string>( "Status" ) );
 
 

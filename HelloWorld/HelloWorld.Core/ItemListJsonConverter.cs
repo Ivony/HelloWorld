@@ -40,7 +40,7 @@ namespace HelloWorld
       else
         id = property.Name;
 
-      return new Item( GameEnvironment.GetDataItem<ItemDescriptor>( Guid.Parse( id ) ), property.Value.Value<int>() );
+      return new Item( GameHost.GameRules.GetDataItem<ItemDescriptor>( Guid.Parse( id ) ), property.Value.Value<int>() );
     }
 
     public override void WriteJson( JsonWriter writer, object value, JsonSerializer serializer )

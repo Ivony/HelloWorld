@@ -28,7 +28,7 @@ namespace HelloWorld
       return new ActionReturnsDescriptor
       {
         Items = ItemListJsonConverter.FromJson( (JObject) data["Items"] ),
-        Building = GameEnvironment.GetDataItem<BuildingDescriptor>( data.Value<Guid>( "Building" ) ),
+        Building = GameHost.GameRules.GetDataItem<BuildingDescriptor>( data.Value<Guid>( "Building" ) ),
       };
     }
 

@@ -15,6 +15,20 @@ namespace HelloWorld
 
     private BuildingDescriptor( Guid guid, JObject data ) : base( guid, data ) { }
 
+    protected BuildingDescriptor( BuildingDescriptor building )
+      : this( building.Guid, building.Data )
+    {
+      Name = building.Name;
+      Description = building.Description;
+    }
+
+
+    /// <summary>
+    /// 从数据中加载 BuildingDescriptor 对象
+    /// </summary>
+    /// <param name="guid"></param>
+    /// <param name="data"></param>
+    /// <returns></returns>
     public static BuildingDescriptor FromData( Guid guid, JObject data )
     {
       if ( data == null )

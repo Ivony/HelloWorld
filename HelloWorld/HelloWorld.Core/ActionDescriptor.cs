@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 
@@ -12,7 +13,7 @@ namespace HelloWorld
   /// 游戏活动过程的具体实现
   /// </summary>
   [Guid( "AA393552-5020-4400-B565-FA613AF7A123" )]
-  public sealed class ActionDescriptor : ActionDescriptorBase
+  public class ActionDescriptor : ActionDescriptorBase
   {
 
 
@@ -25,13 +26,32 @@ namespace HelloWorld
       if ( data == null )
         return null;
 
-      return new ActionDescriptor( guid, data )
+      var instance = new ActionDescriptor( guid, data )
       {
+        Name = data.Value<string>( "Name" ),
+        Description = data.Value<string>( "Description" ),
         Building = GameHost.GameRules.GetDataItem<BuildingDescriptor>( data.GuidValue( "Building" ) ),
         Requirment = ActionInvestmentDescriptor.FromData( (JObject) data["Requirment"] ),
         Returns = ActionReturnsDescriptor.FromData( (JObject) data["Returns"] ),
       };
+
+
+      if ( instance.Name == null )
+        instance.Name = instance.DefaultName();
+
+
+      if ( instance.Description == null )
+        instance.Description = instance.DefaultDescription();
+
+
+      return instance;
+
     }
+
+    public string Name { get; private set; }
+
+
+    public string Description { get; private set; }
 
 
     /// <summary>
@@ -105,9 +125,42 @@ namespace HelloWorld
       return new
       {
         Guid,
-        Returns,
+        Name,
+        Description,
         Requirment,
+        Returns,
       };
     }
+
+
+
+
+    protected virtual string DefaultName()
+    {
+      var builder = new StringBuilder();
+
+      if ( Returns.Building != null )
+        builder.AppendFormat( "建造 {0}", Returns.Building.Name );
+
+
+      else if ( Returns.Items != null && Returns.Items.Any() )
+        builder.AppendFormat( "生产 {0}", string.Join( "、", Returns.Items.Select( i => i.ItemDescriptor.Name ) ) );
+
+
+      return builder.ToString();
+    }
+
+
+
+
+    protected virtual string DefaultDescription()
+    {
+      return DefaultName();
+    }
+
+
+
+
+
   }
 }

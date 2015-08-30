@@ -1,15 +1,15 @@
 {
   "ID": "FD2D3261-84D6-4A50-A9A1-B6CF6C146422",
   "Type": "HelloWorld.ActingDescriptor",
-  "Building": "eb0c8ae8-fc09-4874-9985-98c081f4d1b7",
+  "Building": "EB0C8AE8-FC09-4874-9985-98C081F4D1B7",
   "Returns":
-  { 
-    "Building":"EF85D7E2-EAEF-406C-A15B-85D6A59C0B77"
+  {
+    "Building": "EF85D7E2-EAEF-406C-A15B-85D6A59C0B77"
   },
-   
+
   "Requirment":
   {
     "Items": { "5962E351-33CA-4968-90A3-8AF6C8847180": 20 },
-    "Time": "00:10:00",
+    "Time": "00:10:00"
   }
 }

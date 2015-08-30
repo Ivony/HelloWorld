@@ -33,7 +33,8 @@ namespace HelloWorld
     /// </summary>
     public string Name
     {
-      get; private set;
+      get;
+      private set;
     }
 
     /// <summary>
@@ -41,7 +42,19 @@ namespace HelloWorld
     /// </summary>
     public string Description
     {
-      get; private set;
+      get;
+      private set;
     }
+
+
+    /// <summary>
+    /// 系统定期调用此方法通知建筑物检查自己的状态，或者执行相应的事件
+    /// </summary>
+    /// <param name="place">建筑物所在的地块</param>
+    public virtual void Check( Place place )
+    {
+
+    }
+
   }
 }

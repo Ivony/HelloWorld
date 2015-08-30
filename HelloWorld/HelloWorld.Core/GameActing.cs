@@ -112,16 +112,14 @@ namespace HelloWorld
           return Status;
 
 
-        lock ( Place )
-        {
-          if ( this.Equals( Place.Acting ) == false )
-            throw new InvalidOperationException();
+        if ( this.Equals( Place.Acting ) == false )
+          throw new InvalidOperationException();
 
-          if ( ActingDescriptor.TryComplete( this ) == false )
-            return Status;
+        if ( ActingDescriptor.TryComplete( this ) == false )
+          return Status;
 
-          Place.Acting = null;
-        }
+        Place.Acting = null;
+
 
         Status = GameActingStatus.Done;
         OnChanged();

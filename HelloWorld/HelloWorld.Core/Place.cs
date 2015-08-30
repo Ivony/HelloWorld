@@ -74,6 +74,9 @@ namespace HelloWorld
 
         if ( Acting != null )
           Acting.Check();
+
+        Building.Check( this );
+
       }
     }
 

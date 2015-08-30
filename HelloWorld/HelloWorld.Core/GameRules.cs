@@ -50,6 +50,9 @@ namespace HelloWorld
       {
 
         var item = LoadData( dataItem );
+        if ( item == null )
+          continue;
+
         _collection.Add( item );
 
 

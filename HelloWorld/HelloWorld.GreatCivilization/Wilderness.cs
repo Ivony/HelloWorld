@@ -14,8 +14,28 @@ namespace HelloWorld.GreatCivilization
     private Wilderness( BuildingDescriptor building ) : base( building ) { }
 
 
+
+
     public override void Check( Place place )
     {
+
+      for ( int i = 0; i < ( DateTime.UtcNow - place.CheckPoint ).Minutes; i++ )
+      {
+        var r = GameHost.Random( 100 );
+        if ( r < 1 )
+        {
+          place.Building = GameHost.GameRules.GetDataItem<BuildingDescriptor>( new Guid( "8105A10F-1E11-4FF0-B2D2-1FD910258648" ) );
+          break;
+        }
+        else if ( r < 3 )
+        {
+          place.Building = GameHost.GameRules.GetDataItem<BuildingDescriptor>( new Guid( "C6E4329A-D722-439C-B846-F0EADF388AD9" ) );
+          break;
+        }
+
+
+      }
+
 
     }
 

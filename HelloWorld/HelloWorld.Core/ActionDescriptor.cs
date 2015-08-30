@@ -144,8 +144,17 @@ namespace HelloWorld
 
 
       else if ( Returns.Items != null && Returns.Items.Any() )
-        builder.AppendFormat( "生产 {0}", string.Join( "、", Returns.Items.Select( i => i.ItemDescriptor.Name ) ) );
+      {
 
+        if ( Requirment.Items != null && Requirment.Items.Any() )
+          builder.Append( "生产 " );
+
+        else
+          builder.Append( "收获 " );
+
+        
+        builder.Append( string.Join( "、", Returns.Items.Select( i => i.ItemDescriptor.Name ) ) );
+      }
 
       return builder.ToString();
     }

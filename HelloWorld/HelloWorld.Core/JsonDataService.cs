@@ -180,6 +180,14 @@ namespace HelloWorld
 
 
 
+      public override DateTime CheckPoint
+      {
+        get { return data.Value<DateTime>( "CheckPoint" ); }
+        set { data["CheckPoint"] = value; }
+      }
+
+
+
 
       /// <summary>
       /// 保存 Resources 属性
@@ -323,7 +331,7 @@ namespace HelloWorld
 
         var filepath = Path.ChangeExtension( Path.Combine( placesDirectory, coordinate.ToString() ), _extensions );
 
-        var data = JsonDataItem.LoadData( filepath, new { Building = GameHost.GameRules.InitiationBuilding.Guid } );
+        var data = JsonDataItem.LoadData( filepath, new { Building = GameHost.GameRules.InitiationBuilding.Guid, CheckPoint = DateTime.UtcNow } );
 
         return new JsonPlace( this, coordinate, data );
       }

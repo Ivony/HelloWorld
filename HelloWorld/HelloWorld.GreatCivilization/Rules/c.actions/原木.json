@@ -1,13 +1,14 @@
 {
-  "ID": "8E9FCE5F-1F2A-45A2-B1A3-68D520B0F61B",
+  "ID": "{E79DD83B-2368-4FF1-A718-FF33018D3CD9}",
   "Type": "HelloWorld.ActionDescriptor",
   "Building": "C6E4329A-D722-439C-B846-F0EADF388AD9",
   "Returns":
   {
     "Items":
     {
-      "5962E351-33CA-4968-90A3-8AF6C8847180": 100
+      "DA338526-872E-4A76-890A-D8C7F8454F1E": 100
     },
+
     "Bulding": "eb0c8ae8-fc09-4874-9985-98c081f4d1b7"
 
   },

@@ -45,5 +45,21 @@ namespace HelloWorld
 
     public static GameDataService DataService { get; private set; }
 
+
+    private static Random random = new Random( DateTime.Now.Millisecond );
+
+    private static object _sync = new object();
+
+
+    /// <summary>
+    /// 获取一个小于指定整数的随机整数数
+    /// </summary>
+    /// <param name="maxValue">指定整数</param>
+    /// <returns></returns>
+    public static int Random( int maxValue )
+    {
+      lock ( _sync )
+        return random.Next( maxValue );
+    }
   }
 }

@@ -61,6 +61,11 @@ namespace HelloWorld
     public abstract GameActing Acting { get; set; }
 
 
+    /// <summary>
+    /// 上次检查时间
+    /// </summary>
+    public abstract DateTime CheckPoint { get; set; }
+
 
 
     /// <summary>
@@ -77,6 +82,8 @@ namespace HelloWorld
 
         Building.Check( this );
 
+
+        CheckPoint = DateTime.UtcNow;
       }
     }
 

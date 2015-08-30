@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GreatCivilizationRules.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -47,6 +48,13 @@
       <Project>{aca162fb-f382-475e-885a-c137929b2f31}</Project>
       <Name>HelloWorld.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Rules\b.buildings\草垛.json" />
+    <EmbeddedResource Include="Rules\b.buildings\荒原.json" />
+    <EmbeddedResource Include="Rules\c.constructions\杂草.json" />
+    <EmbeddedResource Include="Rules\a.items\杂草.json" />
+    <EmbeddedResource Include="Rules\c.constructions\割草.json" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

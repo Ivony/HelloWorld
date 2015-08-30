@@ -33,12 +33,23 @@ namespace HelloWorld
 
     public abstract GameRuleDataItem GetDataItem( Guid id );
 
-
-
-    public virtual T GetDataItem<T>( Guid id ) where T : GameRuleDataItem
+    public virtual GameRuleDataItem GetDataItem( Guid? id )
     {
+      if ( id == null )
+        return null;
 
-      var result = GetDataItem( id ) as T;
+      else
+        return GetDataItem( id.Value );
+    }
+
+
+
+    public virtual T GetDataItem<T>( Guid? id ) where T : GameRuleDataItem
+    {
+      if ( id == null )
+        return null;
+
+      var result = GetDataItem( id.Value ) as T;
       if ( result == null )
         throw new InvalidDataException( "游戏数据注册类型错误 ID: " + id );
 

@@ -7,6 +7,7 @@ using System.Net.Http.Formatting;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.Http;
+using HelloWorld.GreatCivilization;
 
 namespace HelloWorld.WebHost
 {
@@ -28,6 +29,10 @@ namespace HelloWorld.WebHost
 
 
       var typeResolver = new HttpRuntimeTypeResolver( configuration.Services.GetAssembliesResolver() );
+
+
+      var rules = new GreatCivilizationRules( typeResolver );
+      GameHost.Initialize( rules, DataService );
 
 
 

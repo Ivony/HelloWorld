@@ -29,7 +29,7 @@ namespace HelloWorld
     private IJsonDataResolver _dataResolver;
     private ITypeResolver _typeResolver;
 
-    protected GameRules( IJsonDataResolver dataResolver, ITypeResolver typeResolver = null )
+    protected GameRules( IJsonDataResolver dataResolver = null, ITypeResolver typeResolver = null )
     {
       _dataResolver = dataResolver ?? new JsonDataResolver();
       _typeResolver = typeResolver ?? new TypeResolver();
@@ -42,6 +42,9 @@ namespace HelloWorld
     /// </summary>
     public override void Initialize()
     {
+
+      _collection = new GameRuleDataItemCollection();
+
 
       foreach ( var dataItem in LoadRulesData() )
       {
@@ -155,13 +158,6 @@ namespace HelloWorld
     }
 
 
-
-
-    private BuildingDescriptor _initiationBuilding;
-    /// <summary>
-    /// 初始建筑
-    /// </summary>
-    public override BuildingDescriptor InitiationBuilding { get { return _initiationBuilding; } }
 
 
 

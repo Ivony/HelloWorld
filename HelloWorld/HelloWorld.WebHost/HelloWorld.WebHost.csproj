@@ -110,6 +110,10 @@
       <Project>{aca162fb-f382-475e-885a-c137929b2f31}</Project>
       <Name>HelloWorld.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\HelloWorld.GreatCivilization\HelloWorld.GreatCivilization.csproj">
+      <Project>{6e6a59cb-8901-435a-ae10-5a4085fa89e9}</Project>
+      <Name>HelloWorld.GreatCivilization</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup>

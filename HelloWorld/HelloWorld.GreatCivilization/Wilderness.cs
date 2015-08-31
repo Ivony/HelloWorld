@@ -19,7 +19,7 @@ namespace HelloWorld.GreatCivilization
     public override void Check( Place place )
     {
 
-      for ( int i = 0; i < ( DateTime.UtcNow - place.CheckPoint ).Minutes; i++ )
+      for ( int i = 0; i < (DateTime.UtcNow - place.CheckPoint).Minutes; i++ )
       {
         var r = GameHost.Random( 100 );
         if ( r < 1 )
@@ -40,7 +40,7 @@ namespace HelloWorld.GreatCivilization
     }
 
 
-    public static Wilderness FromData( Guid guid, JObject data )
+    public new static Wilderness FromData( Guid guid, JObject data )
     {
 
       var building = BuildingDescriptor.FromData( guid, data );

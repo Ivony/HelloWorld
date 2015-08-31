@@ -16,7 +16,7 @@ namespace HelloWorld
 
     public GameActing( ActionDescriptorBase descriptor, Action<GameActing> changeHandler = null )
     {
-      ActingDescriptor = descriptor;
+      ActionDescriptor = descriptor;
       Status = GameActingStatus.NotStarted;
       ChangeHandler = changeHandler;
       _sync = new object();
@@ -38,7 +38,7 @@ namespace HelloWorld
     /// <summary>
     /// 活动的描述
     /// </summary>
-    public ActionDescriptorBase ActingDescriptor { get; private set; }
+    public ActionDescriptorBase ActionDescriptor { get; private set; }
 
 
 
@@ -115,7 +115,7 @@ namespace HelloWorld
         if ( this.Equals( Place.Acting ) == false )
           throw new InvalidOperationException();
 
-        if ( ActingDescriptor.TryComplete( this ) == false )
+        if ( ActionDescriptor.TryComplete( this ) == false )
           return Status;
 
         Place.Acting = null;
@@ -146,7 +146,7 @@ namespace HelloWorld
       {
         StartOn,
         Place = Place == null ? null : Place.Coordinate,
-        ActingDescriptor = ActingDescriptor.Guid,
+        ActingDescriptor = ActionDescriptor.Guid,
         Status = Status.ToString(),
       } );
     }
@@ -175,7 +175,7 @@ namespace HelloWorld
 
 
       var startOn = data.Value<DateTime>( "StartOn" );
-      var acting = GameHost.GameRules.GetDataItem<ActionDescriptorBase>( data.GuidValue( "ActingDescriptor" ) );
+      var action = GameHost.GameRules.GetDataItem<ActionDescriptorBase>( data.GuidValue( "ActingDescriptor" ) );
       var status = GameActingStatus.GetStatus( data.Value<string>( "Status" ) );
 
 
@@ -183,7 +183,7 @@ namespace HelloWorld
       {
         StartOn = startOn,
         Place = place,
-        ActingDescriptor = acting,
+        ActionDescriptor = action,
         Status = status,
       };
     }
@@ -207,19 +207,19 @@ namespace HelloWorld
         if ( acting.Place != this.Place )
           return false;
 
-        if ( acting.ActingDescriptor != this.ActingDescriptor )
+        if ( acting.ActionDescriptor != this.ActionDescriptor )
           throw new InvalidOperationException();
 
         return true;
       }
 
-      return acting.ActingDescriptor == this.ActingDescriptor;
+      return acting.ActionDescriptor == this.ActionDescriptor;
     }
 
 
     public override int GetHashCode()
     {
-      return Status.GetHashCode() ^ ActingDescriptor.GetHashCode() ^ Place.GetHashCode();
+      return Status.GetHashCode() ^ ActionDescriptor.GetHashCode() ^ Place.GetHashCode();
     }
 
 
@@ -233,7 +233,7 @@ namespace HelloWorld
     {
       return new
       {
-        ActingDescriptor = ActingDescriptor.GetInfo(),
+        ActingDescriptor = ActionDescriptor.GetInfo(),
         StartOn,
         Status = Status.ToString(),
       };

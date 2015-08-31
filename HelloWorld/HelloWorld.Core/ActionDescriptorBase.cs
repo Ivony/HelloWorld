@@ -16,6 +16,12 @@ namespace HelloWorld
   {
 
 
+
+    public abstract string Name { get; }
+
+    public abstract string Description { get; }
+
+
     protected ActionDescriptorBase( Guid guid, JObject data ) : base( guid, data ) { }
 
     /// <summary>

@@ -28,30 +28,37 @@ namespace HelloWorld
 
       var instance = new ActionDescriptor( guid, data )
       {
-        Name = data.Value<string>( "Name" ),
-        Description = data.Value<string>( "Description" ),
         Building = GameHost.GameRules.GetDataItem<BuildingDescriptor>( data.GuidValue( "Building" ) ),
         Requirment = ActionInvestmentDescriptor.FromData( (JObject) data["Requirment"] ),
         Returns = ActionReturnsDescriptor.FromData( (JObject) data["Returns"] ),
       };
 
 
-      if ( instance.Name == null )
-        instance.Name = instance.DefaultName();
+      if ( data.Value<string>( "Name" ) == null )
+        instance._name = instance.DefaultName();
+      else
+        instance._name = data.Value<string>( "Name" );
 
 
-      if ( instance.Description == null )
-        instance.Description = instance.DefaultDescription();
+
+      if ( data.Value<string>( "Description" ) == null )
+        instance._description = instance.DefaultDescription();
+      else
+        instance._name = data.Value<string>( "Description" );
+
 
 
       return instance;
 
     }
 
-    public string Name { get; private set; }
+
+    private string _name;
+    public override string Name { get { return _name; } }
 
 
-    public string Description { get; private set; }
+    private string _description;
+    public override string Description { get { return _description; } }
 
 
     /// <summary>
@@ -152,7 +159,7 @@ namespace HelloWorld
         else
           builder.Append( "收获 " );
 
-        
+
         builder.Append( string.Join( "、", Returns.Items.Select( i => i.ItemDescriptor.Name ) ) );
       }
 

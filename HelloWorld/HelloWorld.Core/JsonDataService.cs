@@ -68,7 +68,7 @@ namespace HelloWorld
       /// </summary>
       public void Save()
       {
-        File.WriteAllText( _filepath, ( (JObject) this ).ToString( Formatting.None ) );
+        File.WriteAllText( _filepath, ((JObject) this).ToString( Formatting.None ) );
       }
 
 
@@ -143,10 +143,12 @@ namespace HelloWorld
       {
         get
         {
-          if ( data["Owner"] == null )
+          var owner = data.GuidValue( "Owner" );
+          if ( owner == null )
             return null;
+
           else
-            return DataService.GetPlayer( data.GuidValue( "Owner" ) );
+            return DataService.GetPlayer( owner.Value );
         }
         set
         {

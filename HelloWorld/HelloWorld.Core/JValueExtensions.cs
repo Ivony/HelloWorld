@@ -9,14 +9,15 @@ namespace HelloWorld
 {
   public static class JValueExtensions
   {
+
+
     /// <summary>
     /// 获取 GUID 类型的值
     /// </summary>
-    public static Guid GuidValue( this JObject obj, string name )
+    public static Guid? GuidValue( this JObject obj, string name )
     {
       var value = obj[name] as JValue;
       return GuidValue( value );
-
     }
 
 
@@ -25,10 +26,11 @@ namespace HelloWorld
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    public static Guid GuidValue( this JValue value )
+    public static Guid? GuidValue( this JValue value )
     {
-      if ( value == null )
-        throw new InvalidCastException();
+      if ( value == null || value.Type == JTokenType.Null )
+        return null;
+
 
       if ( value.Type == JTokenType.Guid )
         return value.Value<Guid>();

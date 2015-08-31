@@ -82,6 +82,7 @@
     <Compile Include="GamePlayer.cs" />
     <Compile Include="ActionDescriptor.cs" />
     <Compile Include="GameActing.cs" />
+    <Compile Include="Probability.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ActionInvestmentDescriptor.cs" />
     <Compile Include="ResourceDataResolver.cs" />

@@ -21,17 +21,21 @@ namespace HelloWorld.GreatCivilization
 
     public override void Check( Place place )
     {
+
+
+
       var times = (int) (DateTime.UtcNow - place.CheckPoint).TotalMinutes;
       for ( int i = 0; i < times; i++ )
       {
-        if ( Probability.IfHit( 2 / 100d, () => place.Building = GameHost.GameRules.GetDataItem<BuildingDescriptor>( forestId ) ) )
-          break;
-
-        if ( Probability.IfHit( 5 / 100d, () => place.Building = GameHost.GameRules.GetDataItem<BuildingDescriptor>( grasslandId ) ) )
-          break;
+        if ( Probability.IfHit( 2 / 100d, () => place.Building = GameHost.GameRules.GetDataItem<BuildingDescriptor>( forestId ) )
+          || Probability.IfHit( 5 / 100d, () => place.Building = GameHost.GameRules.GetDataItem<BuildingDescriptor>( grasslandId ) )
+          )
+        {
+          place.CheckPoint = place.CheckPoint.AddMinutes( i + 1 );
+          place.Check();
+          return;
+        }
       }
-
-      base.Check( place );
     }
 
 

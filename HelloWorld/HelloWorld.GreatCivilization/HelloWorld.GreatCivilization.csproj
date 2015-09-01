@@ -55,9 +55,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Rules\b.buildings\草垛.json" />
     <EmbeddedResource Include="Rules\b.buildings\荒原.json" />
-    <EmbeddedResource Include="Rules\c.actions\草垛.json" />
     <EmbeddedResource Include="Rules\a.items\杂草.json" />
     <EmbeddedResource Include="Rules\c.actions\杂草.json" />
   </ItemGroup>

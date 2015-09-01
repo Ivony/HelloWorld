@@ -19,6 +19,14 @@ namespace HelloWorld
 
     private ItemDescriptor( Guid guid, JObject data ) : base( guid, data ) { }
 
+    protected ItemDescriptor( ItemDescriptor instance ) : this( instance.Guid, instance.Data )
+    {
+
+      Name = instance.Name;
+      Description = instance.Description;
+
+    }
+
 
     public static ItemDescriptor FromData( Guid guid, JObject data )
     {

@@ -2,8 +2,8 @@
   "ID": "{24A31C20-C84C-4626-9A9A-F5387967FAD9}",
   "Type": "HelloWorld.ActionDescriptor",
   "Building": "C6E4329A-D722-439C-B846-F0EADF388AD9",
-  "Name": "¸î²İ",
-  "Description": "ËäÈ»»áÆÆ»µ²İÔ­£¬µ«ÊÇ´º·ç´µÓÖÉúÂï¡£",
+  "Name": "å‰²è‰",
+  "Description": "è™½ç„¶ä¼šç ´åè‰åŸï¼Œä½†æ˜¯æ˜¥é£å¹åˆç”Ÿå˜›ã€‚",
   "Returns":
   {
     "Items":

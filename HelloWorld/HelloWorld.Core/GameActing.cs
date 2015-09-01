@@ -231,12 +231,19 @@ namespace HelloWorld
     /// <returns>可以展示给玩家的信息</returns>
     public object GetInfo()
     {
-      return new
+      var data = JObject.FromObject( new
       {
         ActingDescriptor = ActionDescriptor.GetInfo(),
         StartOn,
         Status = Status.ToString(),
-      };
+      } );
+
+      var descriptor = ActionDescriptor as ActionDescriptor;
+
+      if ( descriptor != null )
+        data["CompletTime"] = StartOn + descriptor.Requirment.Time;
+
+      return data;
     }
 
   }

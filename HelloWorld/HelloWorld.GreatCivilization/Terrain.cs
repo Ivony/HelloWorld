@@ -34,6 +34,13 @@ namespace HelloWorld.GreatCivilization
         return;
 
 
+      if ( Guid == forestId )
+      {
+        place.CheckPoint = DateTime.UtcNow;
+        return;
+      }
+
+
       var times = (int) ( DateTime.UtcNow - place.CheckPoint ).TotalMinutes;
       for ( int i = 0; i < times; i++ )
       {
@@ -62,14 +69,8 @@ namespace HelloWorld.GreatCivilization
       else if ( Guid == marshId )
         return Probability.IfHit( 5d / 1000d, () => place.Building = GameHost.GameRules.GetDataItem<BuildingDescriptor>( wildernessId ) );
 
-      else if ( Guid == forestId )
+      else
         return false;
-
-
-
-
-
-      throw new NotImplementedException();
     }
 
 

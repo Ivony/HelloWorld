@@ -24,10 +24,10 @@ namespace HelloWorld.GreatCivilization
       var times = (int) (DateTime.UtcNow - place.CheckPoint).TotalMinutes;
       for ( int i = 0; i < times; i++ )
       {
-        if ( Probability.IfHit( 1 / 100d, () => GameHost.GameRules.GetDataItem<BuildingDescriptor>( forestId ) ) )
+        if ( Probability.IfHit( 1 / 100d, () => place.Building = GameHost.GameRules.GetDataItem<BuildingDescriptor>( forestId ) ) )
           break;
 
-        if ( Probability.IfHit( 5 / 100d, () => GameHost.GameRules.GetDataItem<BuildingDescriptor>( grasslandId ) ) )
+        if ( Probability.IfHit( 5 / 100d, () => place.Building = GameHost.GameRules.GetDataItem<BuildingDescriptor>( grasslandId ) ) )
           break;
       }
 

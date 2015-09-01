@@ -75,6 +75,7 @@
     <EmbeddedResource Include="Rules\c.actions\采石.json" />
     <EmbeddedResource Include="Rules\b.buildings\茅屋.json" />
     <EmbeddedResource Include="Rules\b.buildings\工场.json" />
+    <EmbeddedResource Include="Rules\a.items\金砖.json" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

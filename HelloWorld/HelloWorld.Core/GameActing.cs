@@ -119,6 +119,7 @@ namespace HelloWorld
           return Status;
 
         Place.Acting = null;
+        Place.CheckPoint = DateTime.UtcNow;
 
 
         Status = GameActingStatus.Done;

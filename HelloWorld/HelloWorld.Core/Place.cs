@@ -81,9 +81,6 @@ namespace HelloWorld
           Acting.Check();
 
         Building.Check( this );
-
-
-        CheckPoint = DateTime.UtcNow;
       }
     }
 

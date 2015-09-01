@@ -68,6 +68,8 @@ namespace HelloWorld
     public virtual void Check( Place place )
     {
 
+      place.CheckPoint = DateTime.UtcNow;
+
     }
 
   }

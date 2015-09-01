@@ -27,7 +27,7 @@ namespace HelloWorld.GreatCivilization
         if ( Probability.IfHit( 1 / 100d, () => GameHost.GameRules.GetDataItem<BuildingDescriptor>( forestId ) ) )
           break;
 
-        if ( Probability.IfHit( 1 / 100d, () => GameHost.GameRules.GetDataItem<BuildingDescriptor>( grasslandId ) ) )
+        if ( Probability.IfHit( 5 / 100d, () => GameHost.GameRules.GetDataItem<BuildingDescriptor>( grasslandId ) ) )
           break;
       }
 

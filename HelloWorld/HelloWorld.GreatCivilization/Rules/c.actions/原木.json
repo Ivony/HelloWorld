@@ -2,6 +2,8 @@
   "ID": "{E79DD83B-2368-4FF1-A718-FF33018D3CD9}",
   "Type": "HelloWorld.ActionDescriptor",
   "Building": "{8105A10F-1E11-4FF0-B2D2-1FD910258648}",
+  "Name": "伐木",
+  "Description": "虽然会破坏森林，但是没事树还是会长出来的",
   "Returns":
   {
     "Items":

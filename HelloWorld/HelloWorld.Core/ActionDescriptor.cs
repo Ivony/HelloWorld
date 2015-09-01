@@ -114,8 +114,9 @@ namespace HelloWorld
     /// <returns>活动是否已经完成</returns>
     public override bool TryComplete( GameActing acting )
     {
+      var completedOn = acting.StartOn + Requirment.Time;
 
-      if ( acting.StartOn + Requirment.Time > DateTime.UtcNow )
+      if ( completedOn > DateTime.UtcNow )
         return false;
 
       if ( Returns.Items != null )
@@ -124,6 +125,8 @@ namespace HelloWorld
       if ( Returns.Building != null )
         acting.Place.Building = Returns.Building;
 
+
+      acting.Place.CheckPoint = completedOn;
       return true;
     }
 

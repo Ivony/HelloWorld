@@ -66,7 +66,7 @@ namespace HelloWorld
 
           else
             _actionMap[action.Building].Add( action );
-          return;
+          continue;
         }
       }
     }

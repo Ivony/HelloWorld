@@ -30,6 +30,7 @@ namespace HelloWorld
     private const string _extensions = ".json";
 
 
+
     /// <summary>
     /// 数据文件根路径
     /// </summary>
@@ -281,8 +282,8 @@ namespace HelloWorld
 
 
     private object _sync = new object();
-    private Dictionary<Guid, JsonPlayer> _players = new Dictionary<Guid, JsonPlayer>();
-    private Dictionary<Coordinate, JsonPlace> _places = new Dictionary<Coordinate, JsonPlace>();
+    private Dictionary<Guid, JsonPlayer> players = new Dictionary<Guid, JsonPlayer>();
+    private Dictionary<Coordinate, JsonPlace> places = new Dictionary<Coordinate, JsonPlace>();
 
 
     /// <summary>
@@ -296,7 +297,7 @@ namespace HelloWorld
       {
 
         JsonPlayer player;
-        if ( _players.TryGetValue( userId, out player ) )
+        if ( players.TryGetValue( userId, out player ) )
           return player;
 
 
@@ -309,7 +310,7 @@ namespace HelloWorld
         player.Init();
 
 
-        return player;
+        return players[userId] = player;
 
 
       }
@@ -327,7 +328,7 @@ namespace HelloWorld
       {
 
         JsonPlace place;
-        if ( _places.TryGetValue( coordinate, out place ) )
+        if ( places.TryGetValue( coordinate, out place ) )
           return place;
 
 
@@ -335,7 +336,7 @@ namespace HelloWorld
 
         var data = JsonDataItem.LoadData( filepath, new { Building = GameHost.GameRules.InitiationBuilding.Guid, CheckPoint = DateTime.UtcNow } );
 
-        return new JsonPlace( this, coordinate, data );
+        return places[coordinate] = new JsonPlace( this, coordinate, data );
       }
     }
 

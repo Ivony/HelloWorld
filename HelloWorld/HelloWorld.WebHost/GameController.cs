@@ -53,9 +53,7 @@ namespace HelloWorld.WebHost
 
     private async Task<Place> GetPlace( string coordinate )
     {
-      var position = Coordinate.Parse( coordinate );
-
-      var place = Host.DataService.GetPlace( Player.Initiation + position );
+      var place = Player.GetPlace( Coordinate.Parse( coordinate ) );
       if ( place.Owner != Player )
         return null;
 

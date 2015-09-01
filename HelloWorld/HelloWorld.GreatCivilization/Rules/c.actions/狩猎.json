@@ -2,18 +2,18 @@
   "ID": "{E79DD83B-2368-4FF1-A718-FF33018D3CD9}",
   "Type": "HelloWorld.ActionDescriptor",
   "Building": "{8105A10F-1E11-4FF0-B2D2-1FD910258648}",
+  "Name": "狩猎以获得食物",
+  "Description": "看，那里有只猫，那是老虎你这个猪。",
   "Returns":
   {
     "Items":
     {
-      "DA338526-872E-4A76-890A-D8C7F8454F1E": 100
-    },
-
-    "Bulding": "{eb0c8ae8-fc09-4874-9985-98c081f4d1b7}"
+      "{A0D89750-1DCA-4B05-A8A2-43CF55CD91A3}": 20
+    }
 
   },
   "Requirment":
   {
-    "Time": "01:40:00"
+    "Time": "00:20:00"
   }
 }

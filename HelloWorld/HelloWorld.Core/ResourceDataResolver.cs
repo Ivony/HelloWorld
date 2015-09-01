@@ -22,7 +22,7 @@ namespace HelloWorld
     }
 
 
-    public JObject LoadDataObject( string name )
+    JObject IJsonDataResolver.LoadDataObject( string name )
     {
 
       var stream = _assemblies.Select( a => a.GetManifestResourceStream( name ) ).FirstOrDefault();
@@ -30,7 +30,7 @@ namespace HelloWorld
 
     }
 
-    public IEnumerable<JObject> LoadAllData()
+    IEnumerable<JObject> IJsonDataResolver.LoadAllData()
     {
       foreach ( var stream in _assemblies.SelectMany( a => a.GetManifestResourceNames().OrderBy( name => name ).Select( name => a.GetManifestResourceStream( name ) ) ) )
       {

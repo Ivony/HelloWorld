@@ -1,5 +1,5 @@
 {
-  "ID": "8E9FCE5F-1F2A-45A2-B1A3-68D520B0F61B",
+  "ID": "{24A31C20-C84C-4626-9A9A-F5387967FAD9}",
   "Type": "HelloWorld.ActionDescriptor",
   "Building": "C6E4329A-D722-439C-B846-F0EADF388AD9",
   "Returns":
@@ -13,6 +13,6 @@
   },
   "Requirment":
   {
-    "Time": "00:10:00"
+    "Time": "01:00:00"
   }
 }

@@ -1,0 +1,19 @@
+{
+  "ID": "{EBDD34D3-9C2B-4AA4-B091-04F4749943E4}",
+  "Type": "HelloWorld.ActionDescriptor",
+  "Building": "{C6E4329A-D722-439C-B846-F0EADF388AD9}",
+  "Name": "采蘑菇以获得食物",
+  "Description": "采姑娘的小蘑菇，采了一筐小姑娘",
+  "Returns":
+  {
+    "Items":
+    {
+      "{A0D89750-1DCA-4B05-A8A2-43CF55CD91A3}": 10
+    }
+
+  },
+  "Requirment":
+  {
+    "Time": "00:10:00"
+  }
+}

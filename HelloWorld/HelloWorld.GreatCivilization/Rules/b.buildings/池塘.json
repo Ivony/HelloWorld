@@ -1,6 +1,6 @@
 {
   "ID": "{EC5B8863-0A10-4D29-A238-B9A26C705765}",
-  "Type": "HelloWorld.BuildingDescriptor",
+  "Type": "HelloWorld.GreatCivilization.Terrain",
   "Name": "池塘",
   "Description": "生产队里养了一群小鸭子，呱呱呱呱呱呱呱呱。"
 

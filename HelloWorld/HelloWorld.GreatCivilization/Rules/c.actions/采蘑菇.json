@@ -2,8 +2,8 @@
   "ID": "{EBDD34D3-9C2B-4AA4-B091-04F4749943E4}",
   "Type": "HelloWorld.ActionDescriptor",
   "Building": "{C6E4329A-D722-439C-B846-F0EADF388AD9}",
-  "Name": "采蘑菇以获得食物",
-  "Description": "采姑娘的小蘑菇，采了一筐小姑娘",
+  "Name": "閲囪槕鑿囦互鑾峰緱椋熺墿",
+  "Description": "閲囧濞樼殑灏忚槕鑿囷紝閲囦簡涓�绛愬皬濮戝",
   "Returns":
   {
     "Items":

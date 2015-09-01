@@ -44,7 +44,7 @@ namespace HelloWorld
       if ( data.Value<string>( "Description" ) == null )
         instance._description = instance.DefaultDescription();
       else
-        instance._name = data.Value<string>( "Description" );
+        instance._description = data.Value<string>( "Description" );
 
 
 

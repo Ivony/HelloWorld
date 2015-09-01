@@ -1,9 +1,9 @@
 {
-  "ID": "{E79DD83B-2368-4FF1-A718-FF33018D3CD9}",
+  "ID": "{C6E6CE69-E1DE-4B47-A35A-5F9FC84B8C78}",
   "Type": "HelloWorld.ActionDescriptor",
   "Building": "{8105A10F-1E11-4FF0-B2D2-1FD910258648}",
-  "Name": "á÷ÁÔÒÔ»ñµÃÊ³Îï",
-  "Description": "¿´£¬ÄÇÀïÓĞÖ»Ã¨£¬ÄÇÊÇÀÏ»¢ÄãÕâ¸öÖí¡£",
+  "Name": "ç‹©çŒä»¥è·å¾—é£Ÿç‰©",
+  "Description": "çœ‹ï¼Œé‚£é‡Œæœ‰åªçŒ«ï¼Œé‚£æ˜¯è€è™ä½ è¿™ä¸ªçŒªã€‚",
   "Returns":
   {
     "Items":

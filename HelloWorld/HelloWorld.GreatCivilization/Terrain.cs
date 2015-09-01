@@ -41,7 +41,7 @@ namespace HelloWorld.GreatCivilization
       }
 
 
-      var times = (int) ( DateTime.UtcNow - place.CheckPoint ).TotalMinutes;
+      var times = (int) ( DateTime.UtcNow - place.CheckPoint ).TotalMinutes / 5;//每五分钟一次改变的机会
       for ( int i = 0; i < times; i++ )
       {
         if ( TerrainChanged( place ) )
@@ -64,7 +64,7 @@ namespace HelloWorld.GreatCivilization
         return Probability.IfHit( 1d / 100d, () => place.Building = GameHost.GameRules.GetDataItem<BuildingDescriptor>( forestId ) );
 
       else if ( Guid == poolId )
-        return Probability.IfHit( 1d / 1000d, () => place.Building = GameHost.GameRules.GetDataItem<BuildingDescriptor>( marshId ) );
+        return Probability.IfHit( 1d / 2000d, () => place.Building = GameHost.GameRules.GetDataItem<BuildingDescriptor>( marshId ) );
 
       else if ( Guid == marshId )
         return Probability.IfHit( 5d / 1000d, () => place.Building = GameHost.GameRules.GetDataItem<BuildingDescriptor>( wildernessId ) );

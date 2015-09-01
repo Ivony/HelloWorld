@@ -94,7 +94,6 @@
   <ItemGroup>
     <Compile Include="ControllerBase.cs" />
     <Compile Include="GameExtensions.cs" />
-    <Compile Include="MyAuthorizeFilter.cs" />
     <Compile Include="GameController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

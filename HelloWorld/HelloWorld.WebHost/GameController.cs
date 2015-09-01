@@ -7,7 +7,6 @@ using System.Web.Http;
 
 namespace HelloWorld.WebHost
 {
-  [MyAuthorizeFilter]
   public class GameController : ControllerBase
   {
 

@@ -21,8 +21,8 @@ namespace HelloWorld.GreatCivilization
 
     public override void Check( Place place )
     {
-
-      for ( int i = 0; i < ( DateTime.UtcNow - place.CheckPoint ).Minutes; i++ )
+      var times = (int) (DateTime.UtcNow - place.CheckPoint).TotalMinutes;
+      for ( int i = 0; i < times; i++ )
       {
         if ( Probability.IfHit( 1 / 100d, () => GameHost.GameRules.GetDataItem<BuildingDescriptor>( forestId ) ) )
           break;

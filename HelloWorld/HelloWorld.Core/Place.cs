@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace HelloWorld
 {
@@ -105,15 +106,28 @@ namespace HelloWorld
     /// <returns></returns>
     public object GetInfo( GamePlayer player )
     {
-      return new
+
+      var coordinate = Coordinate - player.Initiation;
+
+
+      var data = JObject.FromObject(
+      new
       {
-        Coordinate = Coordinate - player.Initiation,
+        Coordinate = coordinate,
         Building = Building.GetInfo(),
         Resources,
-        Acting = Acting == null ? null : Acting.GetInfo(),
-        Actions = GameHost.GameRules.GetActions( this ).Select( item => item.GetInfo() ),
         IsMine = Owner == player,
-      };
+
+        Nearly = coordinate.NearlyCoordinates(),
+      } );
+
+      if ( Acting == null )
+        data["Actions"] = JArray.FromObject( GameHost.GameRules.GetActions( this ).Select( item => item.GetInfo() ) );
+
+      else
+        data["Action"] = JObject.FromObject( Acting.GetInfo() );
+
+      return data;
     }
 
 
@@ -129,12 +143,21 @@ namespace HelloWorld
       return place.Coordinate == this.Coordinate;
     }
 
+
+    /// <summary>
+    /// 重写 GetHashCode 方法，用坐标作为地块标识
+    /// </summary>
+    /// <returns></returns>
     public override int GetHashCode()
     {
       return Coordinate.GetHashCode();
     }
 
 
+    /// <summary>
+    /// 重写 ToString 方法，输出地块坐标
+    /// </summary>
+    /// <returns></returns>
     public override string ToString()
     {
       return Coordinate.ToString();

@@ -27,8 +27,8 @@ namespace HelloWorld.GreatCivilization
       var times = (int) (DateTime.UtcNow - place.CheckPoint).TotalMinutes;
       for ( int i = 0; i < times; i++ )
       {
-        if ( Probability.IfHit( 2 / 100d, () => place.Building = GameHost.GameRules.GetDataItem<BuildingDescriptor>( forestId ) )
-          || Probability.IfHit( 5 / 100d, () => place.Building = GameHost.GameRules.GetDataItem<BuildingDescriptor>( grasslandId ) )
+        if ( Probability.IfHit( 1.5d / 100d, () => place.Building = GameHost.GameRules.GetDataItem<BuildingDescriptor>( forestId ) )
+          || Probability.IfHit( 3d / 100d, () => place.Building = GameHost.GameRules.GetDataItem<BuildingDescriptor>( grasslandId ) )
           )
         {
           place.CheckPoint = place.CheckPoint.AddMinutes( i + 1 );

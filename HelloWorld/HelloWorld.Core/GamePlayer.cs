@@ -49,6 +49,17 @@ namespace HelloWorld
 
 
     /// <summary>
+    /// 根据玩家原点相对坐标获取地块
+    /// </summary>
+    /// <param name="coordinate">相对坐标</param>
+    /// <returns></returns>
+    public Place GetPlace( Coordinate coordinate )
+    {
+      return DataService.GetPlace( Initiation + coordinate );
+    }
+
+
+    /// <summary>
     /// 获取可以用于显示的玩家信息
     /// </summary>
     /// <returns></returns>

@@ -134,7 +134,7 @@ namespace HelloWorld
       {
         StartOn,
         Place = Place == null ? null : Place.Coordinate,
-        ActingDescriptor = ActionDescriptor.Guid,
+        ActionDescriptor = ActionDescriptor.Guid,
         Status = Status.ToString(),
       } );
     }
@@ -221,14 +221,14 @@ namespace HelloWorld
     {
       var data = JObject.FromObject( new
       {
-        ActingDescriptor = ActionDescriptor.GetInfo(),
+        ActionDescriptor = ActionDescriptor.GetInfo(),
         StartOn,
         Status = Status.ToString(),
       } );
 
       var descriptor = ActionDescriptor as ActionDescriptor;
       if ( descriptor != null )
-        data["Remaining"] = (StartOn + descriptor.Requirment.Time) - DateTime.UtcNow;
+        data["Remaining"] = ( StartOn + descriptor.Requirment.Time ) - DateTime.UtcNow;
 
       return data;
     }

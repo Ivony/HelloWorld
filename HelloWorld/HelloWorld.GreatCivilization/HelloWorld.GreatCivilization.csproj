@@ -80,12 +80,12 @@
     <EmbeddedResource Include="Rules\a.items\石斧.json" />
     <EmbeddedResource Include="Rules\a.items\石矛.json" />
     <EmbeddedResource Include="Rules\a.items\木棍.json" />
-    <EmbeddedResource Include="Rules\c.actions\工场.json" />
-    <EmbeddedResource Include="Rules\c.actions\木棍.json" />
-    <EmbeddedResource Include="Rules\c.actions\石斧.json" />
-    <EmbeddedResource Include="Rules\c.actions\石矛.json" />
+    <EmbeddedResource Include="Rules\c.actions\建筑\工场.json" />
+    <EmbeddedResource Include="Rules\c.actions\工场\木棍.json" />
+    <EmbeddedResource Include="Rules\c.actions\工场\石斧.json" />
+    <EmbeddedResource Include="Rules\c.actions\工场\石矛.json" />
     <EmbeddedResource Include="Rules\b.buildings\石台.json" />
-    <EmbeddedResource Include="Rules\c.actions\石台.json" />
+    <EmbeddedResource Include="Rules\c.actions\建筑\石台.json" />
     <EmbeddedResource Include="Rules\c.actions\供奉\石头.json" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

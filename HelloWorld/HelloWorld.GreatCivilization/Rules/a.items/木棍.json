@@ -2,5 +2,6 @@
   "ID": "{9C128143-0D5B-46D8-9560-1B7AF26130F8}",
   "Type": "HelloWorld.ItemDescriptor",
   "Name": "木棍",
-  "Description": "木棍通常是制作其他东西的原材料"
+  "Description": "木棍通常是制作其他东西的原材料",
+  "Weight": 1
 }

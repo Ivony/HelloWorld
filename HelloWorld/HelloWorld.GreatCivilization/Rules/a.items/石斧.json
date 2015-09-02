@@ -2,5 +2,6 @@
   "ID": "{149E4802-3DEA-432F-945F-EF5803BAB998}",
   "Type": "HelloWorld.ItemDescriptor",
   "Name": "石斧",
-  "Description": "一种非常粗糙的武器，用起来可能比板砖好一点点。"
+  "Description": "一种非常粗糙的武器，用起来可能比板砖好一点点。",
+  "Weight": 10
 }

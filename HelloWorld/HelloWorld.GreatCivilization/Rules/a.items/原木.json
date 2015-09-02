@@ -2,5 +2,6 @@
   "ID": "{DA338526-872E-4A76-890A-D8C7F8454F1E}",
   "Type": "HelloWorld.ItemDescriptor",
   "Name": "原木",
-  "Description": "一根刚砍下来的树丫子"
+  "Description": "一根刚砍下来的树丫子",
+  "Weight": 10
 }

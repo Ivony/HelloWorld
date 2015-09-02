@@ -2,13 +2,15 @@
   "ID": "{24A31C20-C84C-4626-9A9A-F5387967FAD9}",
   "Type": "HelloWorld.ActionDescriptor",
   "Building": "C6E4329A-D722-439C-B846-F0EADF388AD9",
+  "Name": "割草",
+  "Description": "虽然会破坏草原，但是春风吹又生嘛。",
   "Returns":
   {
     "Items":
     {
       "{5962E351-33CA-4968-90A3-8AF6C8847180}": 2000
     },
-    "Bulding": "{EB0C8AE8-FC09-4874-9985-98C081F4D1B7}"
+    "Building": "{EB0C8AE8-FC09-4874-9985-98C081F4D1B7}"
 
   },
   "Requirment":

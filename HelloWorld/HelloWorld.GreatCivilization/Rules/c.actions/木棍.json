@@ -1,0 +1,21 @@
+{
+  "ID": "{7539F0F2-CE1E-45B1-9017-E75D3E44EF4C}",
+  "Type": "HelloWorld.ActionDescriptor",
+  "Building": "{216E6D35-7990-4493-A3B3-B724C73AF5AF}",
+  "Returns":
+  {
+    "Items":
+    {
+      "{9C128143-0D5B-46D8-9560-1B7AF26130F8}": 20
+    }
+
+  },
+  "Requirment":
+  {
+    "Time": "01:00:00",
+    "Items":
+    {
+      "{DA338526-872E-4A76-890A-D8C7F8454F1E}": 1
+    }
+  }
+}

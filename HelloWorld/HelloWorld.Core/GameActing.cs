@@ -239,9 +239,8 @@ namespace HelloWorld
       } );
 
       var descriptor = ActionDescriptor as ActionDescriptor;
-
       if ( descriptor != null )
-        data["CompletTime"] = StartOn + descriptor.Requirment.Time;
+        data["Remaining"] = ( StartOn + descriptor.Requirment.Time ) - DateTime.UtcNow;
 
       return data;
     }

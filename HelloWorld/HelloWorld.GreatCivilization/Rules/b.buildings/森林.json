@@ -1,6 +1,6 @@
 {
   "ID": "{8105A10F-1E11-4FF0-B2D2-1FD910258648}",
-  "Type": "HelloWorld.BuildingDescriptor",
+  "Type": "HelloWorld.GreatCivilization.Terrain",
   "Name": "森林",
   "Description": "原始的大森林，伐木的好地方"
 

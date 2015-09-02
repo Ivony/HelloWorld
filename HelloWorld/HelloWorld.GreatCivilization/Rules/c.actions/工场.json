@@ -1,0 +1,19 @@
+{
+  "ID": "{5072B36B-543A-4558-B34D-8D37CEE558C9}",
+  "Type": "HelloWorld.ActionDescriptor",
+  "Building": "{EB0C8AE8-FC09-4874-9985-98C081F4D1B7}",
+  "Returns":
+  {
+    "Building": "{216E6D35-7990-4493-A3B3-B724C73AF5AF}"
+  },
+  "Requirment":
+  {
+    "Items":
+    {
+      "{E198C61A-3B2F-4499-86D8-94FBCABB5591}": 10,
+      "{DA338526-872E-4A76-890A-D8C7F8454F1E}": 20,
+      "{5962E351-33CA-4968-90A3-8AF6C8847180}": 5000
+    },
+    "Time": "24:00:00"
+  }
+}

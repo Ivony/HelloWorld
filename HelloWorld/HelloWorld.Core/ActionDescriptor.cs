@@ -90,6 +90,16 @@ namespace HelloWorld
       if ( place == null )
         throw new ArgumentNullException( "place" );
 
+
+      if ( place.Owner == null )
+        throw new InvalidOperationException( "不能在无主土地上开始活动" );
+
+      if ( place.Acting != null )
+        throw new InvalidOperationException( "土地上已经存在一个正在进行的活动" );
+
+      if ( place.Building.Guid != Building.Guid )
+        throw new InvalidOperationException( "地块建筑不满足活动需求" );
+
       var acting = new GameActing( this );
 
       lock ( place )

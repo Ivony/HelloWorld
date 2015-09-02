@@ -59,25 +59,13 @@ namespace HelloWorld
           throw new InvalidOperationException();
 
 
-        lock ( place.SyncRoot )
-        {
 
-          if ( place.Owner == null )
-            throw new ArgumentException( "不能在无主土地上开始", "place" );
-
-          if ( place.Acting != null )
-            throw new ArgumentException( "土地上已经存在一个正在进行的任务", "place" );
+        StartOn = DateTime.UtcNow;
+        Place = place;
+        Status = GameActingStatus.Processing;
 
 
-
-          StartOn = DateTime.UtcNow;
-          Place = place;
-          Status = GameActingStatus.Processing;
-
-
-          place.Acting = this;
-        }
-
+        place.Acting = this;
       }
     }
 
@@ -240,7 +228,7 @@ namespace HelloWorld
 
       var descriptor = ActionDescriptor as ActionDescriptor;
       if ( descriptor != null )
-        data["Remaining"] = ( StartOn + descriptor.Requirment.Time ) - DateTime.UtcNow;
+        data["Remaining"] = (StartOn + descriptor.Requirment.Time) - DateTime.UtcNow;
 
       return data;
     }

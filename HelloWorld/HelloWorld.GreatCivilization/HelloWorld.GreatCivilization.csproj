@@ -55,14 +55,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Rules\b.buildings\荒原.json" />
+    <EmbeddedResource Include="Rules\b.buildings\terrain\荒原.json" />
     <EmbeddedResource Include="Rules\a.items\杂草.json" />
     <EmbeddedResource Include="Rules\c.actions\割草.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <EmbeddedResource Include="Rules\b.buildings\草原.json" />
-    <EmbeddedResource Include="Rules\b.buildings\森林.json" />
+    <EmbeddedResource Include="Rules\b.buildings\terrain\草原.json" />
+    <EmbeddedResource Include="Rules\b.buildings\terrain\森林.json" />
     <EmbeddedResource Include="Rules\c.actions\伐木.json" />
     <EmbeddedResource Include="Rules\a.items\原木.json" />
     <EmbeddedResource Include="Rules\c.actions\狩猎.json" />
@@ -70,8 +70,8 @@
     <EmbeddedResource Include="Rules\c.actions\采蘑菇.json" />
     <EmbeddedResource Include="Rules\b.buildings\宫殿.json" />
     <EmbeddedResource Include="Rules\a.items\石头.json" />
-    <EmbeddedResource Include="Rules\b.buildings\池塘.json" />
-    <EmbeddedResource Include="Rules\b.buildings\沼泽.json" />
+    <EmbeddedResource Include="Rules\b.buildings\terrain\池塘.json" />
+    <EmbeddedResource Include="Rules\b.buildings\terrain\沼泽.json" />
     <EmbeddedResource Include="Rules\c.actions\采石.json" />
     <EmbeddedResource Include="Rules\b.buildings\茅屋.json" />
     <EmbeddedResource Include="Rules\b.buildings\工场.json" />

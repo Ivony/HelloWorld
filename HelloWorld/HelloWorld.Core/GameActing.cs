@@ -16,6 +16,10 @@ namespace HelloWorld
 
     public GameActing( ActionDescriptorBase descriptor, Action<GameActing> changeHandler = null )
     {
+
+      if ( descriptor == null )
+        throw new ArgumentNullException( "descriptor" );
+
       ActionDescriptor = descriptor;
       Status = GameActingStatus.NotStarted;
       ChangeHandler = changeHandler;
@@ -163,8 +167,12 @@ namespace HelloWorld
 
 
       var startOn = data.Value<DateTime>( "StartOn" );
-      var action = GameHost.GameRules.GetDataItem<ActionDescriptorBase>( data.GuidValue( "ActingDescriptor" ) );
+      var action = GameHost.GameRules.GetDataItem<ActionDescriptorBase>( data.GuidValue( "ActionDescriptor" ) );
       var status = GameActingStatus.GetStatus( data.Value<string>( "Status" ) );
+
+      if ( action == null )
+        return null;
+
 
 
       return new GameActing

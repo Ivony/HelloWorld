@@ -16,6 +16,10 @@ namespace HelloWorld
 
     public GameActing( ActionDescriptorBase descriptor, Action<GameActing> changeHandler = null )
     {
+
+      if ( descriptor == null )
+        throw new ArgumentNullException( "descriptor" );
+
       ActionDescriptor = descriptor;
       Status = GameActingStatus.NotStarted;
       ChangeHandler = changeHandler;
@@ -134,7 +138,7 @@ namespace HelloWorld
       {
         StartOn,
         Place = Place == null ? null : Place.Coordinate,
-        ActingDescriptor = ActionDescriptor.Guid,
+        ActionDescriptor = ActionDescriptor.Guid,
         Status = Status.ToString(),
       } );
     }
@@ -163,8 +167,12 @@ namespace HelloWorld
 
 
       var startOn = data.Value<DateTime>( "StartOn" );
-      var action = GameHost.GameRules.GetDataItem<ActionDescriptorBase>( data.GuidValue( "ActingDescriptor" ) );
+      var action = GameHost.GameRules.GetDataItem<ActionDescriptorBase>( data.GuidValue( "ActionDescriptor" ) );
       var status = GameActingStatus.GetStatus( data.Value<string>( "Status" ) );
+
+      if ( action == null )
+        return null;
+
 
 
       return new GameActing
@@ -221,14 +229,14 @@ namespace HelloWorld
     {
       var data = JObject.FromObject( new
       {
-        ActingDescriptor = ActionDescriptor.GetInfo(),
+        ActionDescriptor = ActionDescriptor.GetInfo(),
         StartOn,
         Status = Status.ToString(),
       } );
 
       var descriptor = ActionDescriptor as ActionDescriptor;
       if ( descriptor != null )
-        data["Remaining"] = (StartOn + descriptor.Requirment.Time) - DateTime.UtcNow;
+        data["Remaining"] = ( StartOn + descriptor.Requirment.Time ) - DateTime.UtcNow;
 
       return data;
     }

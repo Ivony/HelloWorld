@@ -59,7 +59,7 @@ namespace HelloWorld
     /// <summary>
     /// 正在进行的活动
     /// </summary>
-    public abstract GameActing Acting { get; set; }
+    public abstract PlaceActing Acting { get; set; }
 
 
     /// <summary>
@@ -122,7 +122,7 @@ namespace HelloWorld
       } );
 
       if ( Acting == null )
-        data["Actions"] = JArray.FromObject( GameHost.GameRules.GetActions( this ).Select( item => item.GetInfo() ) );
+        data["Actions"] = JArray.FromObject( GetActions().Select( item => item.GetInfo() ) );
 
       else
         data["Action"] = JObject.FromObject( Acting.GetInfo() );
@@ -195,5 +195,14 @@ namespace HelloWorld
 
 
 
+
+    /// <summary>
+    /// 获取可以执行的活动列表
+    /// </summary>
+    /// <returns></returns>
+    public virtual ActionDescriptor[] GetActions()
+    {
+      return Building.GetActions();
+    }
   }
 }

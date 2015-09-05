@@ -22,8 +22,6 @@ namespace HelloWorld
 
     private GameRuleDataItemCollection _collection;
 
-    private Dictionary<BuildingDescriptor, HashSet<ActionDescriptor>> _actionMap = new Dictionary<BuildingDescriptor, HashSet<ActionDescriptor>>();
-
 
 
     private IJsonDataResolver _dataResolver;
@@ -60,14 +58,7 @@ namespace HelloWorld
 
         var action = item as ActionDescriptor;
         if ( action != null )
-        {
-          if ( _actionMap.ContainsKey( action.Building ) == false )
-            _actionMap.Add( action.Building, new HashSet<ActionDescriptor>() { action } );
-
-          else
-            _actionMap[action.Building].Add( action );
-          continue;
-        }
+          action.Building.RegisterAction( action );
       }
     }
 
@@ -139,26 +130,6 @@ namespace HelloWorld
     }
 
 
-
-
-    /// <summary>
-    /// 获取某个建筑可以进行的生产
-    /// </summary>
-    /// <param name="place"></param>
-    /// <returns></returns>
-    public override ActionDescriptor[] GetActions( Place place )
-    {
-      if ( _actionMap == null )
-        throw new InvalidOperationException( "游戏规则尚未初始化" );
-
-
-      HashSet<ActionDescriptor> result;
-      if ( _actionMap.TryGetValue( place.Building, out result ) )
-        return result.ToArray();
-
-      else
-        return new ActionDescriptor[0];
-    }
 
 
 

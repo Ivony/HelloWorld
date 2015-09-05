@@ -29,7 +29,7 @@ namespace HelloWorld
     /// </summary>
     /// <param name="place">进行活动的地块</param>
     /// <returns>是否成功</returns>
-    public abstract GameActing TryStartAt( Place place );
+    public abstract PlaceActing TryStartAt( Place place );
 
 
     /// <summary>
@@ -37,7 +37,7 @@ namespace HelloWorld
     /// </summary>
     /// <param name="acting">正在进行的活动对象</param>
     /// <returns>是否已经完成</returns>
-    public abstract bool TryComplete( GameActing acting );
+    public abstract bool TryComplete( PlaceActing acting );
 
   }
 }

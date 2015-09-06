@@ -154,7 +154,7 @@ namespace HelloWorld
     /// </summary>
     /// <param name="jObject"></param>
     /// <returns></returns>
-    public static PlaceActing FromData( GameDataService dataService, JObject data )
+    public static PlaceActing FromData( IGameDataService dataService, JObject data )
     {
 
       if ( data == null )

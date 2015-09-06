@@ -12,7 +12,7 @@ namespace HelloWorld
   public abstract class Place
   {
 
-    protected Place( GameDataService service, Coordinate coordinate )
+    protected Place( IGameDataService service, Coordinate coordinate )
     {
       DataService = service;
       Coordinate = coordinate;
@@ -31,7 +31,7 @@ namespace HelloWorld
     /// <summary>
     /// 所使用的数据服务
     /// </summary>
-    protected GameDataService DataService { get; private set; }
+    protected IGameDataService DataService { get; private set; }
 
 
     /// <summary>
@@ -203,6 +203,25 @@ namespace HelloWorld
     public virtual ActionDescriptor[] GetActions()
     {
       return Building.GetActions();
+    }
+
+
+    public Coordinate GetUserCoordinate()
+    {
+
+      if ( Owner == null )
+        throw new InvalidOperationException();
+
+      return GetUserCoordinate( Owner );
+    }
+
+    public Coordinate GetUserCoordinate( GamePlayer player )
+    {
+
+      if ( player == null )
+        throw new ArgumentNullException( "player" );
+
+      return Coordinate - player.Initiation;
     }
   }
 }

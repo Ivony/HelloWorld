@@ -65,7 +65,7 @@
     <Compile Include="Coordinate.cs" />
     <Compile Include="CoordinateJsonConverter.cs" />
     <Compile Include="ActionReturnsDescriptor.cs" />
-    <Compile Include="GameDataService.cs" />
+    <Compile Include="IGameDataService.cs" />
     <Compile Include="GameHost.cs" />
     <Compile Include="GameMessageEntry.cs" />
     <Compile Include="GameRules.cs" />
@@ -78,9 +78,10 @@
     <Compile Include="ItemList.cs" />
     <Compile Include="ItemListJsonConverter.cs" />
     <Compile Include="JsonDataService.cs" />
+    <Compile Include="JsonMessageService.cs" />
     <Compile Include="JsonUserService.cs" />
     <Compile Include="JValueExtensions.cs" />
-    <Compile Include="GameMessageService.cs" />
+    <Compile Include="IGameMessageService.cs" />
     <Compile Include="Place.cs" />
     <Compile Include="GamePlayer.cs" />
     <Compile Include="ActionDescriptor.cs" />
@@ -92,7 +93,7 @@
     <Compile Include="TypeResolver.cs" />
     <Compile Include="Unit.cs" />
     <Compile Include="UnitDescriptor.cs" />
-    <Compile Include="UserService.cs" />
+    <Compile Include="IGameUserService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -14,19 +14,7 @@ namespace HelloWorld
   {
 
 
-
-    public static void Initialize( GameRules rules, string dataRoot )
-    {
-      if ( rules == null )
-        throw new ArgumentNullException( "rules" );
-
-      if ( dataRoot == null )
-        throw new ArgumentNullException( "dataRoot" );
-
-      Initialize( rules, new JsonDataService( dataRoot ) );
-    }
-
-    public static void Initialize( GameRules rules, GameDataService dataService )
+    public static void Initialize( GameRules rules, IGameDataService dataService, IGameMessageService messageService )
     {
       if ( rules == null )
         throw new ArgumentNullException( "rules" );
@@ -34,8 +22,12 @@ namespace HelloWorld
       if ( dataService == null )
         throw new ArgumentNullException( "dataService" );
 
+      if ( messageService == null )
+        throw new ArgumentNullException( "messageService" );
+
       GameRules = rules;
       DataService = dataService;
+      MessageService = messageService;
 
       GameRules.Initialize();
     }
@@ -43,7 +35,12 @@ namespace HelloWorld
 
     public static GameRules GameRules { get; private set; }
 
-    public static GameDataService DataService { get; private set; }
+
+    public static IGameDataService DataService { get; private set; }
+
+
+    public static IGameMessageService MessageService { get; private set; }
+
 
 
     private static Random random = new Random( DateTime.Now.Millisecond );

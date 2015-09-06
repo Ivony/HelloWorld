@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace HelloWorld
 {
-  public abstract class UserService
+  public interface IGameUserService
   {
 
     /// <summary>
@@ -14,7 +14,7 @@ namespace HelloWorld
     /// <param name="email"></param>
     /// <param name="password"></param>
     /// <returns></returns>
-    public abstract bool TryRegister( string email, string password, out string loginToken );
+    bool TryRegister( string email, string password, out string loginToken );
 
     /// <summary>
     /// 用户登陆
@@ -22,14 +22,14 @@ namespace HelloWorld
     /// <param name="email"></param>
     /// <param name="password"></param>
     /// <returns></returns>
-    public abstract bool TryLogin( string email, string password, out string loginToken );
+    bool TryLogin( string email, string password, out string loginToken );
 
 
     /// <summary>
     /// 通过登录凭证获取用户ID
     /// </summary>
     /// <param name="loginToken"></param>
-    public abstract Guid? GetUserID( string loginToken );
+    Guid? GetUserID( string loginToken );
 
     /// <summary>
     /// 尝试修改密码
@@ -38,6 +38,6 @@ namespace HelloWorld
     /// <param name="oldPassword">旧密码</param>
     /// <param name="newPassword">新密码</param>
     /// <returns></returns>
-    public abstract bool TryResetPassword( string loginToken, string oldPassword, string newPassword );
+    bool TryResetPassword( string loginToken, string oldPassword, string newPassword );
   }
 }

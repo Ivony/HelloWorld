@@ -129,14 +129,19 @@ namespace HelloWorld
       if ( completedOn > DateTime.UtcNow )
         return false;
 
+      var place = acting.Place;
+      var player = place.Owner;
+
       if ( Returns.Items != null )
-        acting.Place.Owner.Resources.AddItems( Returns.Items );
+        player.Resources.AddItems( Returns.Items );
 
       if ( Returns.Building != null )
-        acting.Place.Building = Returns.Building;
+        place.Building = Returns.Building;
 
 
-      acting.Place.CheckPoint = completedOn;
+      place.CheckPoint = completedOn;
+      var message = new GameMessageEntry( completedOn, string.Format( "通过不懈的努力，在 {0} 的活动 {1} 已经完成 {2}", place.GetUserCoordinate(), Name, Returns.DescriptiveMessage ) );
+      GameHost.MessageService.AddMessage( player.UserID, message );
       return true;
     }
 

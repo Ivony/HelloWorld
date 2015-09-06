@@ -10,7 +10,7 @@ using System.Text.RegularExpressions;
 
 namespace HelloWorld
 {
-  public class JsonDataService : GameDataService
+  public class JsonDataService : IGameDataService
   {
 
     public JsonDataService( string dataRoot )

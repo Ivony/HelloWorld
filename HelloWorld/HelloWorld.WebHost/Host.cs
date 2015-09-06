@@ -13,8 +13,8 @@ namespace HelloWorld.WebHost
 {
   public class Host
   {
-    public static UserService UserService { get; private set; }
-    public static GameDataService DataService { get; private set; }
+    public static IGameUserService UserService { get; private set; }
+    public static IGameDataService DataService { get; private set; }
 
     public static void Initailze( HttpConfiguration configuration )
     {

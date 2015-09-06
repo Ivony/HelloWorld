@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace HelloWorld
 {
-  public class JsonUserService : UserService
+  public class JsonUserService : IGameUserService
   {
     private const string salt = "Hello";
 

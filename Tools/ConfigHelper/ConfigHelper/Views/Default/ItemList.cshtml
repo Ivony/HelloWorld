@@ -1,0 +1,76 @@
+﻿@{
+    ViewBag.Title = "ItemList";
+    Layout = "~/Views/_LayoutPage1.cshtml";
+}
+
+<h2>物品列表</h2>
+<button type="button" onclick='location.href = "/Default/ItemAdd/"' class="btn btn-success">新增</button>
+<br />
+<div class="form-inline">
+    <div class="form-group">
+        <label>搜索</label>
+        <input type="text" placeholder="" value="" class="form-control" id="txtSearch" />
+    </div>
+    <button type="button" class="btn btn-default" data-bind="click:SearchFunc" >搜索</button>
+</div>
+<div style="min-height:400px">
+    <table class="table">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>操作</th>
+        </tr>
+        <tbody data-bind="foreach:item">
+            <tr>
+                <td data-bind="text:ID"></td>
+                <td data-bind="text:Name"></td>
+                <td data-bind="text:Description"></td>
+                <td>
+                    <button type="button" class="btn btn-primary  btn-xs" data-bind="click:$parent.Edit">修改</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="form-inline">
+    <div class="form-group">
+        <label data-bind="text:redirectTxt"></label>
+        <input type="text" placeholder="第几页" value="1" class="form-control" id="txtPage" />       
+    </div>
+    <button type="button" class="btn btn-default" data-bind="click:RedirectFunc" > 跳转</button>
+</div>
+@section Script{
+
+    <script>
+        var myModel = function () {
+            var self = this;
+            self.item = ko.observableArray([]);
+            self.redirectTxt = ko.observable("");
+
+            function GetListData(a, b) {
+                var url = "/Default/GetItemList?";
+                if ($("#txtSearch").val().length > 0) url += "key=" + encodeURI($("#txtSearch").val());
+                if (a != undefined) url += "&pageIndex=" + a;
+                if (b != undefined) url += "&itemsPerPage=" + b;
+                url += "&random=" + Math.random();
+                $.get(url, function (data) {
+                    self.item(data.Items);
+                    self.redirectTxt("当前第" + data.PageIndex + "页，共" + data.TotalPageCount + "页，跳转到：");
+                });
+            };
+            self.RedirectFunc = function () {
+                var page = $("#txtPage").val();
+                if(/^\d+$/.test(page)==false)return false;
+                GetListData(page);
+            };
+            self.Edit = function () {
+                location.href = "/Default/ItemAdd/" + this.ID;
+            };
+            self.SearchFunc = GetListData;
+            GetListData();
+        }
+        ko.applyBindings(new myModel());
+    </script>
+}
+

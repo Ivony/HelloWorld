@@ -1,0 +1,20 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <meta charset="utf-8" />
+</head>
+<body>
+    <link href="/Content/bootstrap.min.css" rel="stylesheet" />
+    @RenderSection("Style", false)
+    <div>
+        @RenderBody()
+    </div>
+    <script src="/Scripts/jquery-1.9.1.min.js"></script>
+    <script src="/Scripts/bootstrap.min.js"></script>
+    <script src="/Scripts/knockout-3.3.0.js"></script>
+    @RenderSection("Script", false)
+</body>
+</html>

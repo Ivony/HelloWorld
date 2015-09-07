@@ -47,6 +47,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Database.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\HW_Terrain.cs" />
+    <Compile Include="Models\HW_Build.cs" />
+    <Compile Include="Models\HW_Item.cs" />
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\PetaPoco.cs" />
     <Compile Include="Models\Product.cs" />

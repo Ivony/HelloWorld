@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/_LayoutPage1.cshtml";
+}
+
+<h2>Index</h2>
+<div>
+    <button type="button" class="btn btn-primary" data-bind="click:CreateJsonFile">生成json文件</button>
+</div>
+
+@section Script{
+<script src="~/Scripts/jquery-1.9.1.min.js"></script>
+<script src="~/Scripts/knockout-3.3.0.js"></script>
+    <script>
+        var myViewModel = function () {
+            var self = this;
+            self.CreateJsonFile = function () {
+                $.get("/default/CreateJsonFile?"+Math.random(), function (data) {
+                    alert("OK");
+                });
+            };
+        };
+
+        ko.applyBindings(new myViewModel());
+    </script>
+}

@@ -19,5 +19,28 @@ namespace HelloWorld
 
     public Place Place { get; private set; }
 
+
+    public UnitActionState ActionState { get; protected set; }
+
   }
+
+
+
+  /// <summary>
+  /// 定义单位的行动状态
+  /// </summary>
+  public enum UnitActionState
+  {
+    /// <summary>空闲</summary>
+    Idle,
+    /// <summary>休息</summary>
+    Rest,
+    /// <summary>正在移动</summary>
+    Moving,
+    /// <summary>正在执行某任务</summary>
+    Acting
+  }
+
+
+
 }

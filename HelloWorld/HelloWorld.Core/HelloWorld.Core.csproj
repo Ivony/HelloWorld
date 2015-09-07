@@ -67,6 +67,7 @@
     <Compile Include="ActionReturnsDescriptor.cs" />
     <Compile Include="GameDataService.cs" />
     <Compile Include="GameHost.cs" />
+    <Compile Include="GameMessageEntry.cs" />
     <Compile Include="GameRules.cs" />
     <Compile Include="GameRuleDataItem.cs" />
     <Compile Include="GameRulesBase.cs" />
@@ -79,10 +80,11 @@
     <Compile Include="JsonDataService.cs" />
     <Compile Include="JsonUserService.cs" />
     <Compile Include="JValueExtensions.cs" />
+    <Compile Include="GameMessageService.cs" />
     <Compile Include="Place.cs" />
     <Compile Include="GamePlayer.cs" />
     <Compile Include="ActionDescriptor.cs" />
-    <Compile Include="GameActing.cs" />
+    <Compile Include="PlaceActing.cs" />
     <Compile Include="Probability.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ActionInvestmentDescriptor.cs" />

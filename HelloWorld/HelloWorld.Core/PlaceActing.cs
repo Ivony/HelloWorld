@@ -10,12 +10,16 @@ namespace HelloWorld
 
 
 
-  public class GameActing
+  public class PlaceActing
   {
 
 
-    public GameActing( ActionDescriptorBase descriptor, Action<GameActing> changeHandler = null )
+    public PlaceActing( ActionDescriptorBase descriptor, Action<PlaceActing> changeHandler = null )
     {
+
+      if ( descriptor == null )
+        throw new ArgumentNullException( "descriptor" );
+
       ActionDescriptor = descriptor;
       Status = GameActingStatus.NotStarted;
       ChangeHandler = changeHandler;
@@ -31,7 +35,7 @@ namespace HelloWorld
     /// <summary>
     /// 当发生修改时需要调用的方法
     /// </summary>
-    protected Action<GameActing> ChangeHandler { get; private set; }
+    protected Action<PlaceActing> ChangeHandler { get; private set; }
 
 
 
@@ -142,7 +146,7 @@ namespace HelloWorld
 
 
 
-    private GameActing() { }
+    private PlaceActing() { }
 
 
     /// <summary>
@@ -150,7 +154,7 @@ namespace HelloWorld
     /// </summary>
     /// <param name="jObject"></param>
     /// <returns></returns>
-    public static GameActing FromData( GameDataService dataService, JObject data )
+    public static PlaceActing FromData( GameDataService dataService, JObject data )
     {
 
       if ( data == null )
@@ -163,11 +167,15 @@ namespace HelloWorld
 
 
       var startOn = data.Value<DateTime>( "StartOn" );
-      var action = GameHost.GameRules.GetDataItem<ActionDescriptorBase>( data.GuidValue( "ActingDescriptor" ) );
+      var action = GameHost.GameRules.GetDataItem<ActionDescriptorBase>( data.GuidValue( "ActionDescriptor" ) );
       var status = GameActingStatus.GetStatus( data.Value<string>( "Status" ) );
 
+      if ( action == null )
+        return null;
 
-      return new GameActing
+
+
+      return new PlaceActing
       {
         StartOn = startOn,
         Place = place,
@@ -180,7 +188,7 @@ namespace HelloWorld
 
     public override bool Equals( object obj )
     {
-      var acting = obj as GameActing;
+      var acting = obj as PlaceActing;
       if ( acting == null )
         return false;
 

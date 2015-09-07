@@ -85,7 +85,7 @@ namespace HelloWorld
     /// </summary>
     /// <param name="place">要开始活动的地方</param>
     /// <returns>正在进行的活动</returns>
-    public override GameActing TryStartAt( Place place )
+    public override PlaceActing TryStartAt( Place place )
     {
       if ( place == null )
         throw new ArgumentNullException( "place" );
@@ -100,7 +100,7 @@ namespace HelloWorld
       if ( place.Building.Guid != Building.Guid )
         throw new InvalidOperationException( "地块建筑不满足活动需求" );
 
-      var acting = new GameActing( this );
+      var acting = new PlaceActing( this );
 
       lock ( place )
       {
@@ -122,7 +122,7 @@ namespace HelloWorld
     /// </summary>
     /// <param name="acting">正在进行的活动</param>
     /// <returns>活动是否已经完成</returns>
-    public override bool TryComplete( GameActing acting )
+    public override bool TryComplete( PlaceActing acting )
     {
       var completedOn = acting.StartOn + Requirment.Time;
 

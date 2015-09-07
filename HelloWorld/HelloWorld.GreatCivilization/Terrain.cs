@@ -51,6 +51,9 @@ namespace HelloWorld.GreatCivilization
           return;
         }
       }
+
+      place.CheckPoint = place.CheckPoint.AddMinutes( times );
+        
     }
 
     private bool TerrainChanged( Place place )

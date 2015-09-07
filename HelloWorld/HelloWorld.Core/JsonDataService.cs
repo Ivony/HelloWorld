@@ -163,14 +163,14 @@ namespace HelloWorld
 
 
 
-      public override GameActing Acting
+      public override PlaceActing Acting
       {
         get
         {
           if ( data["Acting"] == null || data["Acting"].Type == JTokenType.Null )
             return null;
           else
-            return GameActing.FromData( DataService, (JObject) data["Acting"] );
+            return PlaceActing.FromData( DataService, (JObject) data["Acting"] );
         }
         set
         {

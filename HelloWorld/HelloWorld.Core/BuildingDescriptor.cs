@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Newtonsoft.Json.Linq;
+using System.Linq;
 
 namespace HelloWorld
 {
@@ -71,6 +73,36 @@ namespace HelloWorld
       place.CheckPoint = DateTime.UtcNow;
 
     }
+
+
+
+
+    private static object _sync;
+
+    private HashSet<ActionDescriptor> _actions = new HashSet<ActionDescriptor>();
+
+    internal void RegisterAction( ActionDescriptor action )
+    {
+
+      lock ( _sync )
+      {
+        _actions.Add( action );
+      }
+
+    }
+
+
+    /// <summary>
+    /// 获取建筑可以执行的行动列表
+    /// </summary>
+    /// <returns>可以执行的行动列表</returns>
+    public virtual ActionDescriptor[] GetActions()
+    {
+
+      return _actions.ToArray();
+
+    }
+
 
   }
 }

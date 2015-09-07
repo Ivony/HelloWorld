@@ -59,15 +59,6 @@ namespace HelloWorld
 
 
     /// <summary>
-    /// 获取某个地块可以进行的活动
-    /// </summary>
-    /// <param name="building"></param>
-    /// <returns></returns>
-    public abstract ActionDescriptor[] GetActions( Place place );
-
-
-
-    /// <summary>
     /// 获取初始建筑
     /// </summary>
     public abstract BuildingDescriptor InitiationBuilding { get; }

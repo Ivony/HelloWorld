@@ -18,6 +18,30 @@ namespace ConfigHelper.Tool
             }
         }
 
+        public static T[] Query<T>(Sql sqlstr)
+        {
+            using (var db = new Database("conn"))
+            {
+                return db.Query<T>(sqlstr).ToArray();
+            }
+        }
+
+        public static Page<T> Page<T>(int pageindex,int itemperpages,string sqlstr)
+        {
+            using (var db = new Database("conn"))
+            {
+                return db.Page<T>(pageindex, itemperpages, sqlstr);
+            }
+        }
+
+        public static Page<T> Page<T>(int pageindex, int itemperpages, Sql sqlstr)
+        {
+            using (var db = new Database("conn"))
+            {
+                return db.Page<T>(pageindex, itemperpages, sqlstr);
+            }
+        }
+
         public static object Insert(object model)
         {
             using (var db = new Database("conn"))

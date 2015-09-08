@@ -111,6 +111,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\DefaultController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -142,12 +143,14 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
     <None Include="Scripts\jquery-1.9.1-vsdoc.js" />
-    <Content Include="Icon.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\jquery-1.9.1 - 复制.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />
-    <Content Include="Scripts\npm.js" />
+    <Content Include="Scripts\knockout-3.3.0 - 复制.js" />
+    <Content Include="Scripts\knockout-3.3.0.debug.js" />
+    <Content Include="Scripts\knockout-3.3.0.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -163,6 +166,14 @@
     <Content Include="Views\Home\ProductEdit.cshtml" />
     <Content Include="Views\Home\ConstructionList.cshtml" />
     <Content Include="Views\Home\ConstructionEdit.cshtml" />
+    <Content Include="Views\_LayoutPage1.cshtml" />
+    <Content Include="Views\Default\ItemList.cshtml" />
+    <Content Include="Views\Default\ItemAdd.cshtml" />
+    <Content Include="Views\Default\BuildList.cshtml" />
+    <Content Include="Views\Default\BuildAdd.cshtml" />
+    <Content Include="Views\Default\TerrainList.cshtml" />
+    <Content Include="Views\Default\TerrainAdd.cshtml" />
+    <Content Include="Views\Default\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

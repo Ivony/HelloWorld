@@ -24,7 +24,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
-    <TypeScriptToolsVersion>1.0</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>1.5</TypeScriptToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -45,6 +45,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DataPithy, Version=4.0.5556.23047, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DbWrench.4.5.2\lib\net45\DataPithy.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -100,6 +104,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ControllerBase.cs" />
+    <Compile Include="DataBaseMessageService.cs" />
     <Compile Include="GameExtensions.cs" />
     <Compile Include="GameController.cs" />
     <Compile Include="Global.asax.cs">

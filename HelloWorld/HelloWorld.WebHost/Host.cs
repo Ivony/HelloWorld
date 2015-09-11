@@ -15,6 +15,7 @@ namespace HelloWorld.WebHost
   {
     public static IGameUserService UserService { get; private set; }
     public static IGameDataService DataService { get; private set; }
+    public static IGameMessageService MessageService { get; private set; }
 
     public static void Initailze( HttpConfiguration configuration )
     {
@@ -26,13 +27,15 @@ namespace HelloWorld.WebHost
 
       UserService = new JsonUserService( dataRoot );
       DataService = new JsonDataService( dataRoot );
+      MessageService = new TextFileMessageService( dataRoot );
+
 
 
       var typeResolver = new HttpRuntimeTypeResolver( configuration.Services.GetAssembliesResolver() );
 
 
       var rules = new GreatCivilizationRules( typeResolver );
-      GameHost.Initialize( rules, DataService );
+      GameHost.Initialize( rules, DataService, MessageService );
 
 
 

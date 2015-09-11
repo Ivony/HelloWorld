@@ -291,7 +291,7 @@ namespace HelloWorld
     /// </summary>
     /// <param name="userId">用户ID</param>
     /// <returns></returns>
-    public override GamePlayer GetPlayer( Guid userId )
+    public GamePlayer GetPlayer( Guid userId )
     {
       lock ( _sync )
       {
@@ -322,7 +322,7 @@ namespace HelloWorld
     /// </summary>
     /// <param name="coordinate">地块坐标</param>
     /// <returns></returns>
-    public override Place GetPlace( Coordinate coordinate )
+    public Place GetPlace( Coordinate coordinate )
     {
       lock ( _sync )
       {

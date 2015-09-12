@@ -41,15 +41,20 @@ namespace HelloWorld
       File.AppendAllLines( filepath, new[] { GetText( message ) } );
     }
 
-    public IEnumerable<GameMessageEntry> GetMessages( Guid playerId, DateTime startTime )
+    public IEnumerable<GameMessageEntry> GetMessages( Guid playerId, DateTime? startTime )
     {
 
+      var messages =
+        LoadMessages( Path.Combine( RootPath, playerId + ".message" ) )
+          .Concat( LoadMessages( Path.Combine( RootPath, "annoucement.message" ) ) )
+          .OrderByDescending( item => item.NotifyTime );
 
-      var messages = LoadMessages( Path.Combine( RootPath, playerId + ".message" ) );
-      messages = messages.Concat( LoadMessages( Path.Combine( RootPath, "annoucement.message" ) ) ).OrderBy( item => item.NotifyTime ).ToArray();
 
+      if ( startTime == null )
+        return messages.ToArray();
 
-      return messages.OrderBy( item => item.NotifyTime ).SkipWhile( item => item.NotifyTime < startTime );
+      else
+        return messages.SkipWhile( item => item.NotifyTime > startTime ).ToArray();
     }
 
     private GameMessageEntry[] LoadMessages( string filepath )
@@ -65,7 +70,7 @@ namespace HelloWorld
     private GameMessageEntry FromText( string text )
     {
 
-      var dateString = text.Remove( 29 );
+      var dateString = text.Remove( 28 );
       var content = text.Substring( 29 );
 
       var date = DateTime.ParseExact( dateString, "O", null );

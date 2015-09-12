@@ -140,7 +140,7 @@ namespace HelloWorld
 
 
       place.CheckPoint = completedOn;
-      var message = new GameMessageEntry( completedOn, string.Format( "通过不懈的努力，在 {0} 的活动 {1} 已经完成 {2}", place.GetUserCoordinate(), Name, Returns.DescriptiveMessage ) );
+      var message = new GameMessageEntry( completedOn, string.Format( "通过不懈的努力，在位置 {0} 的活动 {1} 已经完成 {2}", place.GetUserCoordinate(), Name, Returns.DescriptiveMessage ) );
       GameHost.MessageService.AddMessage( player.UserID, message );
       return true;
     }

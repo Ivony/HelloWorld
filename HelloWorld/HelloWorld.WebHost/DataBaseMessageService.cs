@@ -17,7 +17,7 @@ namespace HelloWorld.WebHost
       throw new NotImplementedException();
     }
 
-    public IEnumerable<GameMessageEntry> GetMessages( Guid playerId, DateTime startTime )
+    public IEnumerable<GameMessageEntry> GetMessages( Guid playerId, DateTime? startTime )
     {
       throw new NotImplementedException();
     }

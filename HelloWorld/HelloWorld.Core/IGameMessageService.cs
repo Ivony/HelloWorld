@@ -19,7 +19,7 @@ namespace HelloWorld
     void AddAnnouncement( GameMessageEntry message );
 
 
-    IEnumerable<GameMessageEntry> GetMessages( Guid playerId, DateTime startTime );
+    IEnumerable<GameMessageEntry> GetMessages( Guid playerId, DateTime? startTime );
 
   }
 }

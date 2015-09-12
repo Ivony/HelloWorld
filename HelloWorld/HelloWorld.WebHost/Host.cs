@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Hosting;
 using System.Web.Http;
 using HelloWorld.GreatCivilization;
+using Newtonsoft.Json;
 
 namespace HelloWorld.WebHost
 {
@@ -40,6 +41,7 @@ namespace HelloWorld.WebHost
 
 
       configuration.Services.Replace( typeof( IContentNegotiator ), new JsonContentNegotiator() );
+      configuration.Formatters.JsonFormatter.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
 
     }
 

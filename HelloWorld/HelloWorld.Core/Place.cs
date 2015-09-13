@@ -46,6 +46,13 @@ namespace HelloWorld
 
 
     /// <summary>
+    /// 地块上的单位
+    /// </summary>
+    public abstract Unit Unit { get; set; }
+
+
+
+    /// <summary>
     /// 地块上存在的资源
     /// </summary>
     public abstract ItemCollection Resources { get; }

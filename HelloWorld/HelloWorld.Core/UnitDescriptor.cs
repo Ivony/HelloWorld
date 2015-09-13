@@ -33,5 +33,10 @@ namespace HelloWorld
     public string Description { get; private set; }
 
 
+
+    internal static ActionDescriptor[] GetActions( Unit unit )
+    {
+      throw new NotImplementedException();
+    }
   }
 }

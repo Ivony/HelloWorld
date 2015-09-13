@@ -22,6 +22,15 @@ namespace HelloWorld
 
     public UnitActionState ActionState { get; protected set; }
 
+
+    public ActionDescriptor[] GetActions()
+    {
+
+      return UnitDescriptor.GetActions( this );
+
+    }
+
+
   }
 
 

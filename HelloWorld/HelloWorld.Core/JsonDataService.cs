@@ -69,7 +69,7 @@ namespace HelloWorld
       /// </summary>
       public void Save()
       {
-        File.WriteAllText( _filepath, ((JObject) this).ToString( Formatting.None ) );
+        File.WriteAllText( _filepath, ( (JObject) this ).ToString( Formatting.None ) );
       }
 
 
@@ -170,7 +170,7 @@ namespace HelloWorld
           if ( data["Acting"] == null || data["Acting"].Type == JTokenType.Null )
             return null;
           else
-            return PlaceActing.FromData( DataService, (JObject) data["Acting"] );
+            return PlaceActing.FromData( this, (JObject) data["Acting"] );
         }
         set
         {

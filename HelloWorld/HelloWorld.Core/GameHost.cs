@@ -58,5 +58,6 @@ namespace HelloWorld
       lock ( _sync )
         return random.Next( maxValue );
     }
+
   }
 }

@@ -28,7 +28,7 @@ namespace HelloWorld
 
       var instance = new ActionDescriptor( guid, data )
       {
-        Building = GameHost.GameRules.GetDataItem<BuildingDescriptor>( data.GuidValue( "Building" ) ),
+        BuildingRestriction = BuildingRestriction.FromData( GameHost.GameRules, data["Building"] ),
         Requirment = ActionInvestmentDescriptor.FromData( (JObject) data["Requirment"] ),
         Returns = ActionReturnsDescriptor.FromData( (JObject) data["Returns"] ),
       };
@@ -64,9 +64,13 @@ namespace HelloWorld
     /// <summary>
     /// 此生产过程所依赖的建筑/场所
     /// </summary>
-    public BuildingDescriptor Building { get; private set; }
+    public BuildingRestriction BuildingRestriction { get; private set; }
 
 
+    /// <summary>
+    /// 此生产过程所依赖的单位
+    /// </summary>
+    public UnitRestriction UnitRestriction { get; private set; }
 
     /// <summary>
     /// 生产所需资源列表
@@ -97,10 +101,17 @@ namespace HelloWorld
       if ( place.Acting != null )
         throw new InvalidOperationException( "土地上已经存在一个正在进行的活动" );
 
-      if ( place.Building.Guid != Building.Guid )
+      if ( place.Building != BuildingRestriction.Building )
         throw new InvalidOperationException( "地块建筑不满足活动需求" );
 
-      var acting = new PlaceActing( this );
+      if ( UnitRestriction != null )
+      {
+        if ( place.Unit == null || place.Unit.IsSatisfy( UnitRestriction ) == false )
+          throw new InvalidOperationException( "单位不满足活动需求" );
+      }
+
+
+
 
       lock ( place )
       {
@@ -109,11 +120,10 @@ namespace HelloWorld
 
         if ( Requirment.TryInvest( place ) == false )
           return null;
-
-        acting.StartAt( place );
       }
 
-      return acting;
+
+      return PlaceActing.StartAt( place, this );
     }
 
 
@@ -140,7 +150,7 @@ namespace HelloWorld
 
 
       place.CheckPoint = completedOn;
-      var message = new GameMessageEntry( completedOn, string.Format( "通过不懈的努力，在位置 {0} 的活动 {1} 已经完成 {2}", place.GetUserCoordinate(), Name, Returns.DescriptiveMessage ) );
+      var message = new GameMessageEntry( completedOn, string.Format( "通过不懈的努力，在位置 {0} 的活动 {1} 已经完成 {2}", place.GetPlayerCoordinate(), Name, Returns.DescriptiveMessage ) );
       GameHost.MessageService.AddMessage( player.UserID, message );
       return true;
     }

@@ -62,6 +62,7 @@
     <Compile Include="ActionDescriptorBase.cs" />
     <Compile Include="Building.cs" />
     <Compile Include="BuildingDescriptor.cs" />
+    <Compile Include="BuildingRestriction.cs" />
     <Compile Include="Coordinate.cs" />
     <Compile Include="CoordinateJsonConverter.cs" />
     <Compile Include="ActionReturnsDescriptor.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="Unit.cs" />
     <Compile Include="UnitDescriptor.cs" />
     <Compile Include="IGameUserService.cs" />
+    <Compile Include="UnitRestriction.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

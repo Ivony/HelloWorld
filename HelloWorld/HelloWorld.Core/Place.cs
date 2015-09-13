@@ -209,20 +209,21 @@ namespace HelloWorld
     /// <returns></returns>
     public virtual ActionDescriptor[] GetActions()
     {
-      return Building.GetActions();
+
+      return GameHost.GameRules.GetActions( this );
     }
 
 
-    public Coordinate GetUserCoordinate()
+    public Coordinate GetPlayerCoordinate()
     {
 
       if ( Owner == null )
         throw new InvalidOperationException();
 
-      return GetUserCoordinate( Owner );
+      return GetPlayerCoordinate( Owner );
     }
 
-    public Coordinate GetUserCoordinate( GamePlayer player )
+    public Coordinate GetPlayerCoordinate( GamePlayer player )
     {
 
       if ( player == null )

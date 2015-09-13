@@ -14,17 +14,6 @@ namespace HelloWorld
   {
 
 
-    private PlaceActing( ActionDescriptorBase descriptor )
-    {
-
-      if ( descriptor == null )
-        throw new ArgumentNullException( "descriptor" );
-
-      ActionDescriptor = descriptor;
-      _sync = new object();
-    }
-
-
     private object _sync = new object();
 
     protected object SyncRoot { get { return _sync; } }
@@ -45,24 +34,23 @@ namespace HelloWorld
     /// 在指定地块开始这个活动
     /// </summary>
     /// <param name="place">要开始活动的地块</param>
-    internal void StartAt( Place place )
+    internal static PlaceActing StartAt( Place place, ActionDescriptorBase action )
     {
 
-      lock ( SyncRoot )
+      if ( place == null )
+        throw new ArgumentNullException( "place" );
+
+
+      var acting = new PlaceActing
       {
-
-        if ( place == null )
-          throw new ArgumentNullException( "place" );
-
-        if ( disposed )
-          throw new ObjectDisposedException( "PlaceActing" );
+        StartOn = DateTime.UtcNow,
+        ActionDescriptor = action,
+        Place = place,
+      };
 
 
-
-        StartOn = DateTime.UtcNow;
-        Place = place;
-        place.Acting = this;
-      }
+      place.Acting = acting;
+      return acting;
     }
 
 
@@ -194,6 +182,7 @@ namespace HelloWorld
 
       return data;
     }
+
 
   }
 }

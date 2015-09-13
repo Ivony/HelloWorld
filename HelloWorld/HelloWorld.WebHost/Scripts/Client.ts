@@ -1,13 +1,16 @@
 ﻿///<reference path="jquery.ts" />
 
 
-module hello {
+module hello
+{
 
 
-  export class Coordinate {
+  export class Coordinate
+  {
 
 
-    constructor(x: number, y: number) {
+    constructor(x: number, y: number)
+    {
       this.x = x;
       this.y = y;
     }
@@ -15,16 +18,19 @@ module hello {
     public x: number;
     public y: number;
 
-    public toString(): string {
+    public toString(): string
+    {
       return "(" + this.x + ", " + this.y + ")";
     }
 
     private static regex: RegExp = /^[#?]?\(\s*([\+\-]?[0-9]+)\s*,\s*([\+\-]?[0-9])\s*\)$/;
 
-    public static parse(str: string) {
+    public static parse(str: string)
+    {
 
       console.info(str);
-      if (this.regex.test(str) == false) {
+      if (this.regex.test(str) == false)
+      {
         window.alert("coordinate error");
       }
 
@@ -37,86 +43,73 @@ module hello {
 
 
 
-    public add(coordinate: Coordinate) {
+    public add(coordinate: Coordinate)
+    {
       return new Coordinate(this.x + coordinate.x, this.y + coordinate.y);
     }
 
 
-    public toHtml(): string {
 
-      var a = this.add(new Coordinate(-1, -2)).toString();
-      var b = this.add(new Coordinate(1, -2)).toString();
-      var c = this.add(new Coordinate(-2, 0)).toString();
-      var d = this.add(new Coordinate(2, 0)).toString();
-      var e = this.add(new Coordinate(-1, 2)).toString();
-      var f = this.add(new Coordinate(1, 2)).toString();
-
-      a = "<a href='?" + a + "'>" + a + "</a>";
-      b = "<a href='?" + b + "'>" + b + "</a>";
-      c = "<a href='?" + c + "'>" + c + "</a>";
-      d = "<a href='?" + d + "'>" + d + "</a>";
-      e = "<a href='?" + e + "'>" + e + "</a>";
-      f = "<a href='?" + f + "'>" + f + "</a>";
-
-
-      return "" +
-        "<table cellspacing='0'>" +
-
-        "  <tr>                   " +
-        "    <td></td>            " +
-        "    <td></td>            " +
-        "    <td></td>            " +
-        "    <td></td>            " +
-        "    <td></td>            " +
-        "    <td></td>            " +
-        "  </tr>                  " +
-        "  <tr>                   " +
-        "    <td></td>            " +
-        "    <td colspan='2'>" + a + "</td>" +
-        "    <td colspan='2'>" + b + "</td>" +
-        "    <td></td>            " +
-        "  </tr>                  " +
-        "  <tr>                   " +
-        "    <td colspan='2'>" + c + "</td>" +
-        "    <td colspan='2'><b>" + this.toString() + "</b></td>" +
-        "    <td colspan='2'>" + d + "</td>" +
-        "  </tr>                  " +
-        "  <tr>                   " +
-        "    <td></td>            " +
-        "    <td colspan='2'>" + e + "</td>" +
-        "    <td colspan='2'>" + f + "</td>" +
-        "    <td></td>            " +
-        "  </tr>                  " +
-        "</table>                 ";
-
-
+    public get A(): Coordinate
+    {
+      return this.add(new Coordinate(-1, -2));
     }
 
 
+    public get B(): Coordinate
+    {
+      return this.add(new Coordinate(1, -2));
+    }
+
+
+    public get C(): Coordinate
+    {
+      return this.add(new Coordinate(-2, 0));
+    }
+
+
+    public get D(): Coordinate
+    {
+      return this.add(new Coordinate(2, 0));
+    }
+
+
+    public get E(): Coordinate
+    {
+      return this.add(new Coordinate(-1, 2));
+    }
+
+
+    public get F(): Coordinate
+    {
+      return this.add(new Coordinate(1, 2));
+    }
 
   }
 
 
-  export class Building {
+  export class Building
+  {
     public name: string;
     public description: string;
 
-    constructor(data: any) {
+    constructor(data: any)
+    {
       this.name = data.Name;
       this.description = data.Description
     }
 
 
-    public toHtml() {
+    public toHtml()
+    {
       return "<b> " + this.name + "</b> " + this.description;
 
     }
 
   }
 
-  export class Place {
-
-
+  export class Place
+  {
 
     public coordinate: Coordinate;
     public building: Building;
@@ -126,7 +119,8 @@ module hello {
     private acting: any;
 
 
-    constructor(data: any) {
+    constructor(data: any)
+    {
 
 
       console.info(data);
@@ -139,19 +133,22 @@ module hello {
     }
 
 
-    public toHtml() {
-      var html = "<section id='coordinate'><h3>Coordinate:</h3> " + this.coordinate.toHtml() + "</section>" +
+    public toHtml()
+    {
+      var html = "<section id='coordinate'><h3>Coordinate:</h3> " + this.coordinate + "</section>" +
         "<section id='building'><h3>Building:</h3> " + this.building.toHtml() + "</section>";
 
 
-      if (this.actions != null) {
+      if (this.actions != null)
+      {
 
         html += "<section id='actions'><h3>Actions:</h3> ";
         this.actions.forEach(action => html += "<p onclick='hello.Client.Action( \"" + action.Guid + "\" );' style='cursor: pointer;'><b>" + action.Name + "</b> " + action.Description + "</p>");
         html += "</section>";
       }
 
-      else if (this.acting != null) {
+      else if (this.acting != null)
+      {
         html += "<section id='acting'><h3>Acting:</h3> ";
         html += "<p><b> " + this.acting.ActionDescriptor.Name + "</b> " + this.acting.ActionDescriptor.Description + "</p>";
         html += "<p>" + this.acting.Remaining + "</p>";
@@ -165,9 +162,11 @@ module hello {
 
   }
 
-  export class Client {
+  export class Client
+  {
 
-    static Run(fun: (place: Place) => void) {
+    static Run(fun: (place: Place) => void)
+    {
 
 
       if (window.location.search == "")
@@ -181,7 +180,8 @@ module hello {
 
     }
 
-    static Action(id: string) {
+    static Action(id: string)
+    {
 
       var coordinate = Coordinate.parse(decodeURIComponent(window.location.search));
 
@@ -195,9 +195,11 @@ module hello {
 
 
 
-$(() => {
+$(() =>
+{
 
-  hello.Client.Run(function (place) {
+  hello.Client.Run(function (place)
+  {
 
     $("#place").html(place.toHtml());
 

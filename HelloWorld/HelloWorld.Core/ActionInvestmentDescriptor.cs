@@ -16,9 +16,6 @@ namespace HelloWorld
   {
 
 
-
-
-
     public static ActionInvestmentDescriptor FromData( JObject data )
     {
 
@@ -33,9 +30,17 @@ namespace HelloWorld
     }
 
 
+
+    /// <summary>
+    /// 所需要投入的物品资源列表
+    /// </summary>
     public ItemList Items { get; private set; }
 
+    /// <summary>
+    /// 所需要投入的时间
+    /// </summary>
     public TimeSpan Time { get; private set; }
+
 
 
 

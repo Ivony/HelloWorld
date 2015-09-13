@@ -12,14 +12,38 @@
         margin: 10px;
       }
 
-      td {
-        height: 30px;
+      #map td {
+        height: 70px;
         width: 70px;
         text-align: center;
+      }
+
+      #map #placeO {
+        font-weight: bold;
       }
   </style>
 </head>
 <body>
+
+  <table cellspacing='0' id='map'>
+    <tr>
+      <td></td>
+      <td colspan='2' id="placeA"></td>
+      <td colspan='2' id="placeB"></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td colspan='2' id="placeC"></td>
+      <td colspan='2' id="placeO"></td>
+      <td colspan='2' id="placeD"></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td colspan='2' id="placeE"></td>
+      <td colspan='2' id="placeF"></td>
+      <td></td>
+    </tr>
+  </table>
 
   <section id="place"></section>
 

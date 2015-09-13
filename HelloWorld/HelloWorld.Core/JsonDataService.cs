@@ -181,6 +181,26 @@ namespace HelloWorld
         }
       }
 
+      public override Unit Unit
+      {
+        get
+        {
+          if ( data["Unit"] == null || data["Unit"].Type == JTokenType.Null )
+            return null;
+          else
+            return Unit.FromData( this, (JObject) data["Unit"] );
+        }
+        set
+        {
+          if ( value == null )
+            data["Unit"] = null;
+          else
+            data["Unit"] = value.ToJson();
+        }
+      }
+
+
+
 
 
       public override DateTime CheckPoint

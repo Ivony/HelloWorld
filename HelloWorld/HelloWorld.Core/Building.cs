@@ -17,5 +17,11 @@ namespace HelloWorld
 
     public Place Place { get; private set; }
 
+
+    public bool IsSatisfy( BuildingRestriction restriction )
+    {
+      return BuildingDescriptor == restriction.Building;
+    }
+
   }
 }

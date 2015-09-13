@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace HelloWorld
 {
@@ -30,6 +31,20 @@ namespace HelloWorld
 
     }
 
+    public static Unit FromData( Place place, JObject data )
+    {
+      throw new NotImplementedException();
+    }
+
+    public JObject ToJson()
+    {
+      throw new NotImplementedException();
+    }
+
+    public bool IsSatisfy( UnitRestriction restriction )
+    {
+      return UnitDescriptor == restriction.Unit;
+    }
 
   }
 

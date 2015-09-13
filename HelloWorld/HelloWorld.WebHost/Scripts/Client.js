@@ -20,48 +20,48 @@ var hello;
         Coordinate.prototype.add = function (coordinate) {
             return new Coordinate(this.x + coordinate.x, this.y + coordinate.y);
         };
-        Coordinate.prototype.toHtml = function () {
-            var a = this.add(new Coordinate(-1, -2)).toString();
-            var b = this.add(new Coordinate(1, -2)).toString();
-            var c = this.add(new Coordinate(-2, 0)).toString();
-            var d = this.add(new Coordinate(2, 0)).toString();
-            var e = this.add(new Coordinate(-1, 2)).toString();
-            var f = this.add(new Coordinate(1, 2)).toString();
-            a = "<a href='?" + a + "'>" + a + "</a>";
-            b = "<a href='?" + b + "'>" + b + "</a>";
-            c = "<a href='?" + c + "'>" + c + "</a>";
-            d = "<a href='?" + d + "'>" + d + "</a>";
-            e = "<a href='?" + e + "'>" + e + "</a>";
-            f = "<a href='?" + f + "'>" + f + "</a>";
-            return "" +
-                "<table cellspacing='0'>" +
-                "  <tr>                   " +
-                "    <td></td>            " +
-                "    <td></td>            " +
-                "    <td></td>            " +
-                "    <td></td>            " +
-                "    <td></td>            " +
-                "    <td></td>            " +
-                "  </tr>                  " +
-                "  <tr>                   " +
-                "    <td></td>            " +
-                "    <td colspan='2'>" + a + "</td>" +
-                "    <td colspan='2'>" + b + "</td>" +
-                "    <td></td>            " +
-                "  </tr>                  " +
-                "  <tr>                   " +
-                "    <td colspan='2'>" + c + "</td>" +
-                "    <td colspan='2'><b>" + this.toString() + "</b></td>" +
-                "    <td colspan='2'>" + d + "</td>" +
-                "  </tr>                  " +
-                "  <tr>                   " +
-                "    <td></td>            " +
-                "    <td colspan='2'>" + e + "</td>" +
-                "    <td colspan='2'>" + f + "</td>" +
-                "    <td></td>            " +
-                "  </tr>                  " +
-                "</table>                 ";
-        };
+        Object.defineProperty(Coordinate.prototype, "A", {
+            get: function () {
+                return this.add(new Coordinate(-1, -2));
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Coordinate.prototype, "B", {
+            get: function () {
+                return this.add(new Coordinate(1, -2));
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Coordinate.prototype, "C", {
+            get: function () {
+                return this.add(new Coordinate(-2, 0));
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Coordinate.prototype, "D", {
+            get: function () {
+                return this.add(new Coordinate(2, 0));
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Coordinate.prototype, "E", {
+            get: function () {
+                return this.add(new Coordinate(-1, 2));
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Coordinate.prototype, "F", {
+            get: function () {
+                return this.add(new Coordinate(1, 2));
+            },
+            enumerable: true,
+            configurable: true
+        });
         Coordinate.regex = /^[#?]?\(\s*([\+\-]?[0-9]+)\s*,\s*([\+\-]?[0-9])\s*\)$/;
         return Coordinate;
     })();
@@ -86,7 +86,7 @@ var hello;
             this.acting = data.Action;
         }
         Place.prototype.toHtml = function () {
-            var html = "<section id='coordinate'><h3>Coordinate:</h3> " + this.coordinate.toHtml() + "</section>" +
+            var html = "<section id='coordinate'><h3>Coordinate:</h3> " + this.coordinate + "</section>" +
                 "<section id='building'><h3>Building:</h3> " + this.building.toHtml() + "</section>";
             if (this.actions != null) {
                 html += "<section id='actions'><h3>Actions:</h3> ";

@@ -15,6 +15,10 @@ namespace HelloWorld
   [JsonConverter( typeof( CoordinateJsonConverter ) )]
   public sealed class Coordinate
   {
+
+
+    private Coordinate() { }
+
     public int X { get; private set; }
 
     public int Y { get; private set; }
@@ -33,10 +37,10 @@ namespace HelloWorld
       if ( y % 2 != 0 )
         throw new ArgumentException( "坐标 y 必须是偶数", "y" );
 
-      if ( (y / 2) % 2 == 0 && x % 2 != 0 )
+      if ( ( y / 2 ) % 2 == 0 && x % 2 != 0 )
         throw new ArgumentException( "当坐标 y/2 是偶数时，坐标 x 必须是偶数", "x" );
 
-      if ( (y / 2) % 2 != 0 && x % 2 == 0 )
+      if ( ( y / 2 ) % 2 != 0 && x % 2 == 0 )
         throw new ArgumentException( "当坐标 y/2 是奇数时，坐标 x 必须是奇数", "x" );
 
       return new Coordinate
@@ -62,10 +66,10 @@ namespace HelloWorld
       if ( y % 2 != 0 )
         return false;
 
-      if ( (y / 2) % 2 == 0 && x % 2 != 0 )
+      if ( ( y / 2 ) % 2 == 0 && x % 2 != 0 )
         return false;
 
-      if ( (y / 2) % 2 != 0 && x % 2 == 0 )
+      if ( ( y / 2 ) % 2 != 0 && x % 2 == 0 )
         return false;
 
       coordinate = new Coordinate
@@ -92,7 +96,7 @@ namespace HelloWorld
     {
 
       y = random.Next( y / 2 ) * 2;
-      x = random.Next( x / 2 ) * 2 + (y / 2) % 2;
+      x = random.Next( x / 2 ) * 2 + ( y / 2 ) % 2;
 
 
       return Create( x, y );
@@ -168,6 +172,7 @@ namespace HelloWorld
     }
 
 
+
     /// <summary>
     /// 将坐标转换为字符串形式
     /// </summary>
@@ -204,7 +209,7 @@ namespace HelloWorld
 
 
 
-    private static Coordinate _origin = Create( 0, 0 );
+    private static readonly Coordinate _origin = Create( 0, 0 );
     /// <summary>
     /// 原点坐标
     /// </summary>
@@ -247,7 +252,7 @@ namespace HelloWorld
 
     public override int GetHashCode()
     {
-      return (X ^ -Y);
+      return ( X ^ -Y );
     }
 
 
@@ -279,5 +284,52 @@ namespace HelloWorld
 
 
 
+    private static readonly Coordinate nw = Create( -1, -2 );
+    private static readonly Coordinate ne = Create( 1, -2 );
+    private static readonly Coordinate e = Create( 2, 0 );
+    private static readonly Coordinate se = Create( 1, 2 );
+    private static readonly Coordinate sw = Create( -1, 2 );
+    private static readonly Coordinate w = Create( -2, 0 );
+
+
+
+    public Coordinate GetCoordinate( Direction direction )
+    {
+      switch ( direction )
+      {
+        case Direction.NorthWest:
+          return this + nw;
+        case Direction.NorthEast:
+          return this + ne;
+        case Direction.East:
+          return this + e;
+        case Direction.SouthEast:
+          return this + se;
+        case Direction.SouthWest:
+          return this + sw;
+        case Direction.West:
+          return this + w;
+        default:
+          throw new InvalidOperationException();
+      }
+    }
   }
+
+
+  public enum Direction
+  {
+    /// <summary>西北方向 ↖</summary>
+    NorthWest,
+    /// <summary>东北方向 ↗</summary>
+    NorthEast,
+    /// <summary>正东方向 →</summary>
+    East,
+    /// <summary>东南方向 ↙</summary>
+    SouthEast,
+    /// <summary>西南方向 ↘</summary>
+    SouthWest,
+    /// <summary>正西方向 ←</summary>
+    West,
+  }
+
 }

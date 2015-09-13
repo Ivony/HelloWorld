@@ -76,5 +76,18 @@ namespace HelloWorld
 
     }
 
+
+
+    public Unit Create( Place place )
+    {
+      lock ( place.SyncRoot )
+      {
+        if ( place.Unit != null )
+          throw new InvalidOperationException();
+
+        return place.Unit = new Unit( Guid.NewGuid(), this, place );
+      }
+    }
+
   }
 }

@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace ConfigHelper.Controllers
 {
+    using ConfigHelper.Models;
     using Newtonsoft.Json;
     using System.IO;
     using System.Text;
@@ -198,6 +199,91 @@ namespace ConfigHelper.Controllers
 
         #endregion
 
+        #region action
+
+        public ActionResult ActionLIst()
+        {
+            return View();
+        }
+
+        public ActionResult GetActionList(string key, int pageIndex = 1, int itemsPerPage = 20)
+        {
+            var sql = Sql.Builder.Select("*").From("hw_action");
+            if (false == string.IsNullOrWhiteSpace(key)) sql.Where("Name=@0", key);
+            sql.OrderBy("UpdateTime desc");
+            var result = DBHelper.Page<HW_Action>(pageIndex, itemsPerPage, sql);
+            var data = new SimpleViewModel<HW_Action>()
+            {
+                Items = result.Items,
+                ItemsPerpage = result.ItemsPerPage,
+                PageIndex = result.CurrentPage,
+                TotalPageCount = result.TotalPages
+            };
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult ActionAdd(Guid? id)
+        {
+            var bSql = Sql.Builder.Append(@"select ID,Name from hw_build
+UNION 
+SELECT ID,Name from hw_terrain");
+            var buildData = DBHelper.Query<SimpleModel>(bSql);
+            var buildList = new List<SelectListItem>();
+            foreach (var b in buildData)
+            {
+                buildList.Add(new SelectListItem() { Text = b.Name, Value = b.ID.ToString() });
+            }
+
+            if (null == id || id == EmptyGUID)
+            {
+                ViewData["buildData"] = buildList;
+                return View(new HW_Action() { ID = EmptyGUID });
+            }
+
+            var sql = Sql.Builder.Select("*").From("hw_action").Where("ID=@0", id.ToString());
+            var res = DBHelper.Query<HW_Action>(sql).FirstOrDefault();
+
+            foreach (var b in buildList)
+            {
+                if (b.Value == res.Building.ToString()) b.Selected = true;
+            }
+            ViewData["buildData"] = buildList;
+            return View(res);
+        }
+
+        [HttpPost]
+        public ActionResult ActionAdd(HW_Action model)
+        {
+            var re = Request.Form["Return"];
+            model.UpdateTime = DateTime.Now;
+            if (model.ID == EmptyGUID)
+            {
+                model.ID = Guid.NewGuid();
+                DBHelper.Insert(model);
+            }
+            else
+            {
+                DBHelper.Update(model);
+            }
+            return RedirectToAction("ActionLIst");
+        }
+
+        public ActionResult GetSimleItemByName(string key)
+        {
+            var sql = Sql.Builder.Select("ID,Name").From("HW_Item").Where(string.Format(" Name like '%{0}%' ", key));
+            var data = DBHelper.Query<SimpleModel>(sql);
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetSimleItemByID(Guid id)
+        {
+            var sql = Sql.Builder.Select("ID,Name").From("HW_Item").Where("ID=@0", id.ToString());
+            var data = DBHelper.Query<SimpleModel>(sql);
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+
+        #endregion
 
         #region JsonFile
         public ActionResult CreateJsonFile()
@@ -269,7 +355,91 @@ namespace ConfigHelper.Controllers
                 }
             }
 
+            //action
+            var sql4 = Sql.Builder.Select("*").From("hw_action");
+            var actionData = DBHelper.Query<HW_Action>(sql4);
+            var buildGroup = actionData.GroupBy(s => s.Building);
+            var x = buildGroup.ToList();
+            foreach (var b in buildGroup)
+            {
+                var groupData = from a in actionData where a.Building == b.Key select a;
+                string dirName = string.Empty;
+                var sql41 = Sql.Builder.Select("*").From("hw_build").Where("ID=@0", b.Key);
+                var data41 = DBHelper.Query<HW_Build>(sql41).FirstOrDefault();
+                if (null != data41)
+                {
+                    dirName = data41.Name;
+                }
+                else
+                {
+                    var sql42 = Sql.Builder.Select("*").From("hw_terrain").Where("ID=@0", b.Key);
+                    var data42 = DBHelper.Query<HW_Build>(sql42).FirstOrDefault();
+                    if (null != data42)
+                    {
+                        dirName = data42.Name;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+                var actionFilePath = Server.MapPath("/JsonFile2/Action/" + dirName);
+                if (Directory.Exists(actionFilePath) == false) Directory.CreateDirectory(actionFilePath);
+                foreach (var g in groupData)
+                {
+                    //json
+                    var actionsb = new StringBuilder();
+                    actionsb.Append("{");
+                    actionsb.Append(string.Format("\"{0}\":\"{1}\",", "ID", g.ID));
+                    actionsb.Append(string.Format("\"{0}\":\"{1}\",", "Type", g.Type));
+                    actionsb.Append(string.Format("\"{0}\":\"{1}\",", "Building", g.Building));
+                    actionsb.Append(string.Format("\"{0}\":\"{1}\",", "Name", g.Name));
+                    actionsb.Append(string.Format("\"{0}\":\"{1}\",", "Description", g.Description));
+                    //Returns
+                    actionsb.Append("\"Returns\":{");
+                    actionsb.Append("\"Items\":[");
+                    if (false == string.IsNullOrWhiteSpace(g.Return))
+                    {
+                        var returnItems = JsonConvert.DeserializeObject<SimpleModel2[]>(g.Return);
+                        foreach (var item in returnItems)
+                        {
+                            actionsb.Append("{");
+                            actionsb.Append(string.Format("\"{0}\":{1}", item.ID, item.Num));
+                            actionsb.Append("},");
+                        }
+                        if (actionsb[actionsb.Length - 1] == ',') actionsb.Remove(actionsb.Length - 1, 1);
+                    }
+                    actionsb.Append("]");
+                    actionsb.Append("},");
+                    //Require
+                    actionsb.Append("\"Requirment\":{");
+                    actionsb.Append("\"Items\":[");
+                    if (false == string.IsNullOrWhiteSpace(g.Require))
+                    {
+                        var reqItem = JsonConvert.DeserializeObject<SimpleModel2[]>(g.Require);
+                        foreach (var item in reqItem)
+                        {
+                            actionsb.Append("{");
+                            actionsb.Append(string.Format("\"{0}\":{1}", item.ID, item.Num));
+                            actionsb.Append("},");
+                        }
+                        if (actionsb[actionsb.Length - 1] == ',') actionsb.Remove(actionsb.Length - 1, 1);
+                    }
+                    actionsb.Append("],");
+                    actionsb.Append(string.Format("\"{0}\":\"{1}\"", "Time", g.Time));
+                    actionsb.Append("}");
 
+                    actionsb.Append("}");
+
+                    var actionBuffer = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(actionsb.ToString()));
+                    using (var file = System.IO.File.Open(Path.Combine(actionFilePath, g.Name + ".json"), FileMode.Create))
+                    {
+                        file.Write(actionBuffer, 0, actionBuffer.Length);
+                    }
+                }
+
+
+            }
             return Json(true, JsonRequestBehavior.AllowGet);
         }
 

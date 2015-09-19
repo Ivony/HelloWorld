@@ -1,0 +1,161 @@
+﻿@{
+    ViewBag.Title = "ActionAdd";
+    Layout = "~/Views/_LayoutPage1.cshtml";
+}
+
+<h1>Add</h1>
+@model Entity.Models.HW_Action
+<div style="width:500px;padding-left:10px">
+    <form method="post">
+        <div class="form-group">
+            <label for="exampleInputEmail1">Name</label>
+            <input type="text" class="form-control" id="" value="@Model.Name" name="Name">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Description</label>
+            @Html.TextAreaFor(s => s.Description, new { @style = "width:500px;height:100px;" })
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Type:</label>
+            <input type="text" class="form-control" name="Type" value="@if(string.IsNullOrWhiteSpace(Model.Type)){<text>HelloWorld.ActionDescriptor</text>}else{@Model.Type} " />
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Time:</label>
+            <input type="text" class="form-control" id="" value="@Model.Time" name="Time">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Building:</label>
+            @Html.DropDownList("Building", ViewData["buildData"] as List<SelectListItem>)
+        </div>
+        @Html.HiddenFor(s => s.ID)
+        @Html.HiddenFor(s => s.Require)
+        @Html.HiddenFor(s => s.Return)
+        
+        <hr />
+        <div class="form-inline">
+            <div class="form-group">
+                <label for="exampleInputEmail1">物品:</label>
+                <input type="text" id="key" value="" class="form-control" />
+                <button type="button" data-bind="click:Search" class="btn btn-default">搜索</button>
+                <input type="text" id="num" value="2" class="form-control" />
+            </div>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Require</th>
+                    <th>Result</th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach:searchResult">
+                <tr>
+                    <td data-bind="text: ID"></td>
+                    <td data-bind="text: Name"></td>
+                    <td>
+                        <button class="btn btn-success btn-xs" data-bind="click:$root.AddRequire">添加</button>
+                    </td>
+                    <td>
+                        <button class="btn btn-info btn-xs" data-bind="click:$root.AddReturn">添加</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <hr />
+        <h3>Require（需求）</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>数量</th>
+                    <th>删除</th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach:requireArr">
+                <tr>
+                    <td data-bind="text: ID"></td>
+                    <td data-bind="text: Name"></td>
+                    <td data-bind="text: Num"></td>
+                    <td><button class="btn btn-danger btn-xs" data-bind="click:$root.RemoveRequire">删除</button> </td>
+                </tr>
+            </tbody>
+        </table>
+        <h3>Return（结果）</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>数量</th>
+                    <th>删除</th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach:returnArr">
+                <tr>
+                    <td data-bind="text: ID"></td>
+                    <td data-bind="text: Name"></td>
+                    <td data-bind="text: Num"></td>
+                    <td><button class="btn btn-danger btn-xs" data-bind="click:$root.RemoveReturn">删除</button> </td>
+                </tr>
+            </tbody>
+        </table>
+        <button id="sub" type="submit" class="btn btn-primary">保存</button>
+    </form>
+</div>
+
+@section Script{
+    <script>
+        var myViewModel = function () {
+            var self = this;
+            self.requireArr = ko.observableArray(@Html.Raw(Model.Require));
+            self.searchResult = ko.observableArray([]);
+            self.Search = function () {
+                var key = $("#key").val();
+                if (key.trim().length == 0) return false;
+                $.get("/Default/GetSimleItemByName?key=" + encodeURI(key), function (data) {
+                    instance.searchResult(data);
+                });
+            };
+            self.AddRequire = function () {
+                var id = this.ID;
+                for (var i = 0; i < instance.requireArr().length; i++) {
+                    if (instance.requireArr()[i].ID == id) {
+                        alert("已经添加");
+                        return false;
+                    }
+                }
+                var data = { ID: this.ID, Name: this.Name, Num: $("#num").val() }
+                instance.requireArr.push(data);
+            };
+            self.RemoveRequire = function () {
+                instance.requireArr.remove(this);
+            };
+            self.returnArr = ko.observableArray(@Html.Raw(Model.Return));
+            self.AddReturn = function () {
+                var id = this.ID;
+                for (var i = 0; i < instance.returnArr().length; i++) {
+                    if (instance.returnArr()[i].ID == id) {
+                        alert("已经添加");
+                        return false;
+                    }
+                }
+                var data = { ID: this.ID, Name: this.Name, Num: $("#num").val() }
+                instance.returnArr.push(data);
+            };
+            self.RemoveReturn= function () {
+                instance.returnArr.remove(this);
+            };
+        }
+        var instance = new myViewModel();
+        ko.applyBindings(instance);
+        $("#sub").click(function () {
+            var ret = $("#Return"),
+                req = $("#Require");
+            ret.val(JSON.stringify(instance.returnArr()));
+            req.val(JSON.stringify(instance.requireArr()));
+            return true;
+        })
+    </script>
+}

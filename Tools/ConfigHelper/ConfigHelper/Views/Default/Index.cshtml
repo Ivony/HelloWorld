@@ -6,19 +6,33 @@
 <h2>Index</h2>
 <div>
     <button type="button" class="btn btn-primary" data-bind="click:CreateJsonFile">生成json文件</button>
+    <button type="button" class="btn btn-info" data-bind="click:ItemList">物品清单</button>
+    <button type="button" class="btn btn-info" data-bind="click:ActionList">动作清单</button>
+    <button type="button" class="btn btn-info" data-bind="click:BuildList">建筑清单</button>
+    <button type="button" class="btn btn-info" data-bind="click:TerrainList">地形清单</button>
 </div>
 
 @section Script{
-<script src="~/Scripts/jquery-1.9.1.min.js"></script>
-<script src="~/Scripts/knockout-3.3.0.js"></script>
     <script>
         var myViewModel = function () {
             var self = this;
             self.CreateJsonFile = function () {
-                $.get("/default/CreateJsonFile?"+Math.random(), function (data) {
+                $.get("/default/CreateJsonFile?" + Math.random(), function (data) {
                     alert("OK");
                 });
             };
+            self.ActionList = function () {
+                location.href = "/Default/ActionList";
+            };
+            self.ItemList = function () {
+                location.href = "/Default/ItemList";
+            };
+            self.TerrainList = function () {
+                location.href = "/Default/TerrainList";
+            };
+            self.BuildList = function () {
+                location.href = "/Default/BuildList";
+            }
         };
 
         ko.applyBindings(new myViewModel());

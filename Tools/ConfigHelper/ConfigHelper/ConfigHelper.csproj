@@ -123,6 +123,7 @@
     </Compile>
     <Compile Include="Models\SimpleJsonModel.cs" />
     <Compile Include="Models\SimpleModel.cs" />
+    <Compile Include="Models\SimpleModel2.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tool\DBHelper.cs" />
   </ItemGroup>
@@ -174,6 +175,8 @@
     <Content Include="Views\Default\TerrainList.cshtml" />
     <Content Include="Views\Default\TerrainAdd.cshtml" />
     <Content Include="Views\Default\Index.cshtml" />
+    <Content Include="Views\Default\ActionLIst.cshtml" />
+    <Content Include="Views\Default\ActionAdd.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

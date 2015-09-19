@@ -9,14 +9,14 @@ namespace HelloWorld
   {
 
 
-    protected GamePlayer( GameDataService service, Guid userId )
+    protected GamePlayer( IGameDataService service, Guid userId )
     {
       DataService = service;
       UserID = userId;
     }
 
 
-    protected GameDataService DataService { get; private set; }
+    protected IGameDataService DataService { get; private set; }
 
 
     /// <summary>
@@ -112,8 +112,5 @@ namespace HelloWorld
 
       return player1.Equals( player2 ) == false;
     }
-
-
-
   }
 }

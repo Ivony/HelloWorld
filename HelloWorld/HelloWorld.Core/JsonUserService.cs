@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace HelloWorld
 {
-  public class JsonUserService : UserService
+  public class JsonUserService : IGameUserService
   {
     private const string salt = "Hello";
 
@@ -79,7 +79,7 @@ namespace HelloWorld
 
 
 
-    public override Guid? GetUserID( string loginToken )
+    public Guid? GetUserID( string loginToken )
     {
 
       var data = LoadLoginData( loginToken );
@@ -106,7 +106,7 @@ namespace HelloWorld
 
 
 
-    public override bool TryLogin( string email, string password, out string loginToken )
+    public bool TryLogin( string email, string password, out string loginToken )
     {
 
       loginToken = null;
@@ -138,7 +138,7 @@ namespace HelloWorld
     /// <param name="password">密码</param>
     /// <param name="userId">用户ID</param>
     /// <returns></returns>
-    public override bool TryRegister( string email, string password, out string loginToken )
+    public bool TryRegister( string email, string password, out string loginToken )
     {
 
       if ( emailRegex.IsMatch( email ) == false )
@@ -162,7 +162,7 @@ namespace HelloWorld
       data.UserID = Guid.NewGuid();
 
 
-      File.WriteAllText( path, ((JObject) data).ToString() );
+      File.WriteAllText( path, ( (JObject) data ).ToString() );
       loginToken = CreateLoginToken( (Guid) data.UserID, email );
       return true;
     }
@@ -175,7 +175,7 @@ namespace HelloWorld
     /// <param name="oldPassword"></param>
     /// <param name="newPassword"></param>
     /// <returns></returns>
-    public override bool TryResetPassword( string loginToken, string oldPassword, string newPassword )
+    public bool TryResetPassword( string loginToken, string oldPassword, string newPassword )
     {
 
       var loginData = LoadLoginData( loginToken );

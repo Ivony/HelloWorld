@@ -10,7 +10,7 @@ using System.Text.RegularExpressions;
 
 namespace HelloWorld
 {
-  public class JsonDataService : GameDataService
+  public class JsonDataService : IGameDataService
   {
 
     public JsonDataService( string dataRoot )
@@ -69,7 +69,7 @@ namespace HelloWorld
       /// </summary>
       public void Save()
       {
-        File.WriteAllText( _filepath, ((JObject) this).ToString( Formatting.None ) );
+        File.WriteAllText( _filepath, ( (JObject) this ).ToString( Formatting.None ) );
       }
 
 
@@ -170,7 +170,7 @@ namespace HelloWorld
           if ( data["Acting"] == null || data["Acting"].Type == JTokenType.Null )
             return null;
           else
-            return PlaceActing.FromData( DataService, (JObject) data["Acting"] );
+            return PlaceActing.FromData( this, (JObject) data["Acting"] );
         }
         set
         {
@@ -180,6 +180,26 @@ namespace HelloWorld
             data["Acting"] = value.ToJson();
         }
       }
+
+      public override Unit Unit
+      {
+        get
+        {
+          if ( data["Unit"] == null || data["Unit"].Type == JTokenType.Null )
+            return null;
+          else
+            return Unit.FromData( this, (JObject) data["Unit"] );
+        }
+        set
+        {
+          if ( value == null )
+            data["Unit"] = null;
+          else
+            data["Unit"] = value.ToJson();
+        }
+      }
+
+
 
 
 
@@ -291,7 +311,7 @@ namespace HelloWorld
     /// </summary>
     /// <param name="userId">用户ID</param>
     /// <returns></returns>
-    public override GamePlayer GetPlayer( Guid userId )
+    public GamePlayer GetPlayer( Guid userId )
     {
       lock ( _sync )
       {
@@ -322,7 +342,7 @@ namespace HelloWorld
     /// </summary>
     /// <param name="coordinate">地块坐标</param>
     /// <returns></returns>
-    public override Place GetPlace( Coordinate coordinate )
+    public Place GetPlace( Coordinate coordinate )
     {
       lock ( _sync )
       {

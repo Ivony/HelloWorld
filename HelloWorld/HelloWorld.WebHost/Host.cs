@@ -8,13 +8,15 @@ using System.Web;
 using System.Web.Hosting;
 using System.Web.Http;
 using HelloWorld.GreatCivilization;
+using Newtonsoft.Json;
 
 namespace HelloWorld.WebHost
 {
   public class Host
   {
-    public static UserService UserService { get; private set; }
-    public static GameDataService DataService { get; private set; }
+    public static IGameUserService UserService { get; private set; }
+    public static IGameDataService DataService { get; private set; }
+    public static IGameMessageService MessageService { get; private set; }
 
     public static void Initailze( HttpConfiguration configuration )
     {
@@ -26,17 +28,20 @@ namespace HelloWorld.WebHost
 
       UserService = new JsonUserService( dataRoot );
       DataService = new JsonDataService( dataRoot );
+      MessageService = new TextFileMessageService( dataRoot );
+
 
 
       var typeResolver = new HttpRuntimeTypeResolver( configuration.Services.GetAssembliesResolver() );
 
 
       var rules = new GreatCivilizationRules( typeResolver );
-      GameHost.Initialize( rules, DataService );
+      GameHost.Initialize( rules, DataService, MessageService );
 
 
 
       configuration.Services.Replace( typeof( IContentNegotiator ), new JsonContentNegotiator() );
+      configuration.Formatters.JsonFormatter.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
 
     }
 

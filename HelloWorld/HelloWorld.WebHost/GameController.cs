@@ -102,5 +102,18 @@ namespace HelloWorld.WebHost
     }
 
 
+
+    [HttpGet]
+    public async Task<object> Messages( DateTime? start = null, int count = 100 )
+    {
+
+
+      return Host.MessageService.GetMessages( Player.UserID, start ).Take( count ).ToArray();
+
+
+
+    }
+
+
   }
 }

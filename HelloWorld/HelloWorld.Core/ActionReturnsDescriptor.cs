@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Text;
 
 namespace HelloWorld
 {
@@ -49,6 +50,44 @@ namespace HelloWorld
       {
         return place.Owner.Resources.RemoveItems( Items );
       }
+    }
+
+
+
+    /// <summary>
+    /// 转换为游戏消息中的描述信息
+    /// </summary>
+    /// <returns></returns>
+    public string DescriptiveMessage
+    {
+      get
+      {
+        var builder = new StringBuilder();
+
+
+        if ( Building != null )
+        {
+          builder.AppendFormat( "您获得了新的建筑 {0} ", Building.Name );
+
+          if ( Items.Any() )
+            builder.AppendFormat( "以及 {0} ", GetDescriptiveMessage( Items ) );
+        }
+        else
+        {
+          builder.AppendFormat( "您获得了 {0} ", GetDescriptiveMessage( Items ) );
+        }
+
+
+        builder.Append( "。" );
+        return builder.ToString();
+
+
+      }
+    }
+
+    private static string GetDescriptiveMessage( ItemList items )
+    {
+      return string.Join( "、", items.Select( i => string.Format( "{0}*{1}", i.ItemDescriptor.Name, i.Quantity ) ) );
     }
   }
 }

@@ -77,7 +77,7 @@ namespace HelloWorld
 
 
 
-    private static object _sync;
+    private static object _sync = new object();
 
     private HashSet<ActionDescriptor> _actions = new HashSet<ActionDescriptor>();
 

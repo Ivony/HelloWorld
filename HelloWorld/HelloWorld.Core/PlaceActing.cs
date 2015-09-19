@@ -10,32 +10,14 @@ namespace HelloWorld
 
 
 
-  public class PlaceActing
+  public sealed class PlaceActing
   {
-
-
-    public PlaceActing( ActionDescriptorBase descriptor, Action<PlaceActing> changeHandler = null )
-    {
-
-      if ( descriptor == null )
-        throw new ArgumentNullException( "descriptor" );
-
-      ActionDescriptor = descriptor;
-      Status = GameActingStatus.NotStarted;
-      ChangeHandler = changeHandler;
-      _sync = new object();
-    }
 
 
     private object _sync = new object();
 
     protected object SyncRoot { get { return _sync; } }
 
-
-    /// <summary>
-    /// 当发生修改时需要调用的方法
-    /// </summary>
-    protected Action<PlaceActing> ChangeHandler { get; private set; }
 
 
 
@@ -46,31 +28,29 @@ namespace HelloWorld
 
 
 
+    private bool disposed = false;
+
     /// <summary>
     /// 在指定地块开始这个活动
     /// </summary>
     /// <param name="place">要开始活动的地块</param>
-    internal void StartAt( Place place )
+    internal static PlaceActing StartAt( Place place, ActionDescriptorBase action )
     {
 
-      lock ( SyncRoot )
+      if ( place == null )
+        throw new ArgumentNullException( "place" );
+
+
+      var acting = new PlaceActing
       {
-
-        if ( place == null )
-          throw new ArgumentNullException( "place" );
-
-        if ( Status != GameActingStatus.NotStarted )
-          throw new InvalidOperationException();
+        StartOn = DateTime.UtcNow,
+        ActionDescriptor = action,
+        Place = place,
+      };
 
 
-
-        StartOn = DateTime.UtcNow;
-        Place = place;
-        Status = GameActingStatus.Processing;
-
-
-        place.Acting = this;
-      }
+      place.Acting = acting;
+      return acting;
     }
 
 
@@ -86,48 +66,27 @@ namespace HelloWorld
     /// </summary>
     public Place Place { get; private set; }
 
-    /// <summary>
-    /// 活动状态
-    /// </summary>
-    public GameActingStatus Status { get; protected set; }
-
-
 
     /// <summary>
     /// 检查活动状态
     /// </summary>
-    public GameActingStatus Check()
+    public void Check()
     {
       lock ( SyncRoot )
       {
-        if ( Status == GameActingStatus.NotStarted || Status == GameActingStatus.Done )
-          return Status;
+        if ( Place == null )
+          throw new InvalidOperationException();
 
 
         if ( this.Equals( Place.Acting ) == false )
           throw new InvalidOperationException();
 
-        if ( ActionDescriptor.TryComplete( this ) == false )
-          return Status;
-
-        Place.Acting = null;
-
-
-        Status = GameActingStatus.Done;
-        OnChanged();
-
-        return Status;
+        if ( ActionDescriptor.TryComplete( this ) )
+        {
+          Place.Acting = null;
+        }
       }
     }
-
-
-
-    protected void OnChanged()
-    {
-      if ( ChangeHandler != null )
-        ChangeHandler( this );
-    }
-
 
 
 
@@ -137,9 +96,7 @@ namespace HelloWorld
       return JObject.FromObject( new
       {
         StartOn,
-        Place = Place == null ? null : Place.Coordinate,
         ActionDescriptor = ActionDescriptor.Guid,
-        Status = Status.ToString(),
       } );
     }
 
@@ -154,21 +111,17 @@ namespace HelloWorld
     /// </summary>
     /// <param name="jObject"></param>
     /// <returns></returns>
-    public static PlaceActing FromData( GameDataService dataService, JObject data )
+    public static PlaceActing FromData( Place place, JObject data )
     {
+
+      if ( place == null )
+        throw new ArgumentNullException( "place" );
 
       if ( data == null )
         return null;
 
-
-      Place place = null;
-      if ( data["Place"] != null && data["Place"].Type != JTokenType.Null )
-        place = dataService.GetPlace( data.CoordinateValue( "Place" ) );
-
-
       var startOn = data.Value<DateTime>( "StartOn" );
       var action = GameHost.GameRules.GetDataItem<ActionDescriptorBase>( data.GuidValue( "ActionDescriptor" ) );
-      var status = GameActingStatus.GetStatus( data.Value<string>( "Status" ) );
 
       if ( action == null )
         return null;
@@ -177,10 +130,9 @@ namespace HelloWorld
 
       return new PlaceActing
       {
-        StartOn = startOn,
         Place = place,
+        StartOn = startOn,
         ActionDescriptor = action,
-        Status = status,
       };
     }
 
@@ -193,29 +145,20 @@ namespace HelloWorld
         return false;
 
 
-      if ( acting.Status != this.Status )
+
+      if ( acting.Place != this.Place )
         return false;
 
+      if ( acting.ActionDescriptor != this.ActionDescriptor )
+        throw new InvalidOperationException();
 
-      if ( Status == GameActingStatus.Processing )
-      {
-
-        if ( acting.Place != this.Place )
-          return false;
-
-        if ( acting.ActionDescriptor != this.ActionDescriptor )
-          throw new InvalidOperationException();
-
-        return true;
-      }
-
-      return acting.ActionDescriptor == this.ActionDescriptor;
+      return true;
     }
 
 
     public override int GetHashCode()
     {
-      return Status.GetHashCode() ^ ActionDescriptor.GetHashCode() ^ Place.GetHashCode();
+      return Place.GetHashCode() ^ ActionDescriptor.GetHashCode();
     }
 
 
@@ -231,7 +174,6 @@ namespace HelloWorld
       {
         ActionDescriptor = ActionDescriptor.GetInfo(),
         StartOn,
-        Status = Status.ToString(),
       } );
 
       var descriptor = ActionDescriptor as ActionDescriptor;
@@ -241,82 +183,6 @@ namespace HelloWorld
       return data;
     }
 
-  }
 
-
-
-
-
-  /// <summary>
-  /// 定义游戏活动状态
-  /// </summary>
-  public sealed class GameActingStatus
-  {
-
-
-    /// <summary>
-    /// 尚未开始
-    /// </summary>
-    public static readonly GameActingStatus NotStarted = new GameActingStatus( "NotStarted" );
-
-    /// <summary>
-    /// 正在进行
-    /// </summary>
-    public static readonly GameActingStatus Processing = new GameActingStatus( "Processing" );
-
-    /// <summary>
-    /// 已经完成
-    /// </summary>
-    public static readonly GameActingStatus Done = new GameActingStatus( "Done" );
-
-
-    private string status;
-
-    private GameActingStatus( string status )
-    {
-      this.status = status;
-    }
-
-
-    public override bool Equals( object obj )
-    {
-      var a = obj as GameActingStatus;
-      if ( a == null )
-        return false;
-
-
-      return a.status == status;
-    }
-
-
-    public override int GetHashCode()
-    {
-      return status.GetHashCode();
-    }
-
-    public override string ToString()
-    {
-      return status;
-    }
-
-
-    public static GameActingStatus GetStatus( string str )
-    {
-      if ( str == null )
-        throw new ArgumentNullException( "str" );
-
-      else if ( str.Equals( NotStarted.status, StringComparison.OrdinalIgnoreCase ) )
-        return NotStarted;
-
-      else if ( str.Equals( Processing.status, StringComparison.OrdinalIgnoreCase ) )
-        return Processing;
-
-      else if ( str.Equals( Done.status, StringComparison.OrdinalIgnoreCase ) )
-        return Done;
-
-      else
-        throw new InvalidOperationException();
-
-    }
   }
 }

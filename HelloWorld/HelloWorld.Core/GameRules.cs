@@ -58,7 +58,14 @@ namespace HelloWorld
 
         var action = item as ActionDescriptor;
         if ( action != null )
-          action.Building.RegisterAction( action );
+        {
+
+          if ( action.UnitRestriction == null )
+            action.BuildingRestriction.Building.RegisterAction( action );
+
+          else
+            action.UnitRestriction.Unit.RegisterAction( action );
+        }
       }
     }
 
@@ -178,5 +185,21 @@ namespace HelloWorld
       }
     }
 
+
+    /// <summary>
+    /// 获取指定地块可以进行的活动列表
+    /// </summary>
+    /// <param name="place">要进行活动的地块</param>
+    /// <returns></returns>
+    public virtual ActionDescriptor[] GetActions( Place place )
+    {
+      var actions = place.Building.GetActions().AsEnumerable();
+
+      if ( place.Unit != null )
+        actions.Union( place.Unit.GetActions() );
+
+      return actions.ToArray();
+
+    }
   }
 }

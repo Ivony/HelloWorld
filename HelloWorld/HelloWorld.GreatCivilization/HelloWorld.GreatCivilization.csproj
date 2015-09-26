@@ -44,6 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BuildFactory.cs" />
+    <Compile Include="Factory.cs" />
     <Compile Include="GreatCivilizationRules.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Terrain.cs" />
@@ -57,36 +59,41 @@
   <ItemGroup>
     <EmbeddedResource Include="Rules\b.buildings\terrain\荒原.json" />
     <EmbeddedResource Include="Rules\a.items\杂草.json" />
-    <EmbeddedResource Include="Rules\c.actions\割草.json" />
+    <EmbeddedResource Include="Rules\d.actions\割草.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
     <EmbeddedResource Include="Rules\b.buildings\terrain\草原.json" />
     <EmbeddedResource Include="Rules\b.buildings\terrain\森林.json" />
-    <EmbeddedResource Include="Rules\c.actions\伐木.json" />
+    <EmbeddedResource Include="Rules\d.actions\伐木.json" />
     <EmbeddedResource Include="Rules\a.items\原木.json" />
-    <EmbeddedResource Include="Rules\c.actions\狩猎.json" />
+    <EmbeddedResource Include="Rules\d.actions\狩猎.json" />
     <EmbeddedResource Include="Rules\a.items\食物.json" />
-    <EmbeddedResource Include="Rules\c.actions\采蘑菇.json" />
+    <EmbeddedResource Include="Rules\d.actions\采蘑菇.json" />
     <EmbeddedResource Include="Rules\b.buildings\宫殿.json" />
     <EmbeddedResource Include="Rules\a.items\石头.json" />
     <EmbeddedResource Include="Rules\b.buildings\terrain\池塘.json" />
     <EmbeddedResource Include="Rules\b.buildings\terrain\沼泽.json" />
-    <EmbeddedResource Include="Rules\c.actions\采石.json" />
+    <EmbeddedResource Include="Rules\d.actions\采石.json" />
     <EmbeddedResource Include="Rules\b.buildings\茅屋.json" />
     <EmbeddedResource Include="Rules\b.buildings\工场.json" />
     <EmbeddedResource Include="Rules\a.items\金砖.json" />
-    <EmbeddedResource Include="Rules\c.actions\钓鱼.json" />
+    <EmbeddedResource Include="Rules\d.actions\钓鱼.json" />
     <EmbeddedResource Include="Rules\a.items\石斧.json" />
     <EmbeddedResource Include="Rules\a.items\石矛.json" />
     <EmbeddedResource Include="Rules\a.items\木棍.json" />
-    <EmbeddedResource Include="Rules\c.actions\建筑\工场.json" />
-    <EmbeddedResource Include="Rules\c.actions\工场\木棍.json" />
-    <EmbeddedResource Include="Rules\c.actions\工场\石斧.json" />
-    <EmbeddedResource Include="Rules\c.actions\工场\石矛.json" />
-    <EmbeddedResource Include="Rules\b.buildings\石台.json" />
-    <EmbeddedResource Include="Rules\c.actions\建筑\石台.json" />
-    <EmbeddedResource Include="Rules\c.actions\供奉\石头.json" />
+    <EmbeddedResource Include="Rules\d.actions\建筑\工场.json" />
+    <EmbeddedResource Include="Rules\d.actions\工场\木棍.json" />
+    <EmbeddedResource Include="Rules\d.actions\工场\石斧.json" />
+    <EmbeddedResource Include="Rules\d.actions\工场\石矛.json" />
+    <EmbeddedResource Include="Rules\d.actions\供奉\石头.json" />
+    <EmbeddedResource Include="Rules\b.buildings\factories\伐木小屋.json" />
+    <EmbeddedResource Include="Rules\b.buildings\factories\狩猎小屋.json" />
+    <EmbeddedResource Include="Rules\b.buildings\factories\牧场.json" />
+    <EmbeddedResource Include="Rules\b.buildings\factories\草场.json" />
+    <EmbeddedResource Include="Rules\b.buildings\factories\鱼塘.json" />
+    <EmbeddedResource Include="Rules\b.buildings\factories\采石场.json" />
+    <EmbeddedResource Include="Rules\c.units\工人.json" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

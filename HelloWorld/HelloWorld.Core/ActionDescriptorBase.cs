@@ -22,7 +22,16 @@ namespace HelloWorld
     public abstract string Description { get; }
 
 
-    protected ActionDescriptorBase( Guid guid, JObject data ) : base( guid, data ) { }
+    protected ActionDescriptorBase() : base() { }
+
+
+    /// <summary>
+    /// 确认是否可以在指定地块开展活动
+    /// </summary>
+    /// <param name="place">要开展活动的地块</param>
+    /// <returns>是否可以开展活动</returns>
+    public abstract bool CanStartAt( Place place );
+
 
     /// <summary>
     /// 尝试对指定地块进行投入来进行这个活动

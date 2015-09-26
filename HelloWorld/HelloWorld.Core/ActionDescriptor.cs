@@ -17,40 +17,29 @@ namespace HelloWorld
   {
 
 
-    private ActionDescriptor( Guid guid, JObject data ) : base( guid, data ) { }
-
-
-    public static ActionDescriptor FromData( Guid guid, JObject data )
+    protected override void Initialize( JObject data )
     {
+      base.Initialize( data );
 
-      if ( data == null )
-        return null;
-
-      var instance = new ActionDescriptor( guid, data )
-      {
-        BuildingRestriction = BuildingRestriction.FromData( GameHost.GameRules, data["Building"] ),
-        Requirment = ActionInvestmentDescriptor.FromData( (JObject) data["Requirment"] ),
-        Returns = ActionReturnsDescriptor.FromData( (JObject) data["Returns"] ),
-      };
+      BuildingRestriction = BuildingRestriction.FromData( GameHost.GameRules, data["Building"] );
+      Requirment = ActionInvestmentDescriptor.FromData( (JObject) data["Requirment"] );
+      Returns = ActionReturnsDescriptor.FromData( (JObject) data["Returns"] );
 
 
       if ( data.Value<string>( "Name" ) == null )
-        instance._name = instance.DefaultName();
+        _name = DefaultName();
       else
-        instance._name = data.Value<string>( "Name" );
+        _name = data.Value<string>( "Name" );
 
 
 
       if ( data.Value<string>( "Description" ) == null )
-        instance._description = instance.DefaultDescription();
+        _description = DefaultDescription();
       else
-        instance._description = data.Value<string>( "Description" );
-
-
-
-      return instance;
+        _description = data.Value<string>( "Description" );
 
     }
+
 
 
     private string _name;
@@ -82,6 +71,12 @@ namespace HelloWorld
     /// 生产结束后的回报
     /// </summary>
     public ActionReturnsDescriptor Returns { get; private set; }
+
+
+    public override bool CanStartAt( Place place )
+    {
+      return place.Building == BuildingRestriction.Building;
+    }
 
 
     /// <summary>

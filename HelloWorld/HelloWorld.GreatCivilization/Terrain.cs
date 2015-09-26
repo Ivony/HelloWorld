@@ -16,9 +16,6 @@ namespace HelloWorld.GreatCivilization
   {
 
 
-    private Terrain( BuildingDescriptor building ) : base( building ) { }
-
-
 
     private static readonly Guid wildernessId = new Guid( "EB0C8AE8-FC09-4874-9985-98C081F4D1B7" );
     private static readonly Guid forestId = new Guid( "8105A10F-1E11-4FF0-B2D2-1FD910258648" );
@@ -53,7 +50,7 @@ namespace HelloWorld.GreatCivilization
       }
 
       place.CheckPoint = place.CheckPoint.AddMinutes( times );
-        
+
     }
 
     private bool TerrainChanged( Place place )
@@ -75,20 +72,6 @@ namespace HelloWorld.GreatCivilization
       else
         return false;
     }
-
-
-    public new static Terrain FromData( Guid guid, JObject data )
-    {
-
-      var building = BuildingDescriptor.FromData( guid, data );
-
-      if ( building == null )
-        return null;
-
-      return new Terrain( building );
-    }
-
-
 
   }
 }

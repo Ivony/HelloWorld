@@ -1,7 +1,7 @@
 {
-  "ID": "{77C77588-6367-4979-9AA3-B65BB670E244}",
+  "ID": "{EDDBF2E1-FFCE-4006-8CD8-1E6F032EEE24}",
   "Type": "HelloWorld.ActionDescriptor",
-  "Building": "{B5C3C4AB-2B9F-49BB-A9C4-A3650B1E7072}",
+  "Building": "{DE9E65D4-F49A-44A1-815C-66ED691D3FBF}",
   "Name": "供奉换取石头",
   "Description": "向秋千大神供奉食物以换得石头",
   "Requirment":

@@ -1,0 +1,12 @@
+{
+  "ID": "{72213162-0D16-4C53-89F3-AE2A0180E031}",
+  "Type": "HelloWorld.UnitDescriptor",
+  "Name": "工人",
+  "Description": "工人就是什么工作都能做的人",
+  "Mobility":
+  {
+    "Maximum": 2,
+    "RecoveryCycle": "00:30:00",
+    "RecoveryScale": 1,
+  }
+}

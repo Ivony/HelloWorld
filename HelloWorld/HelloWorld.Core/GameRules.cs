@@ -90,7 +90,6 @@ namespace HelloWorld
     /// <returns></returns>
     protected virtual GameRuleDataItem LoadData( JObject data )
     {
-      var id = data.GuidValue( "ID" );
       var type = GetType( data.Value<String>( "Type" ) );
 
       if ( type == null )
@@ -99,12 +98,11 @@ namespace HelloWorld
       if ( typeof( GameRuleDataItem ).IsAssignableFrom( type ) == false )
         return null;
 
-      var method = type.GetMethod( "FromData", BindingFlags.Static | BindingFlags.Public | BindingFlags.FlattenHierarchy );
-      if ( method == null )
-        return null;
 
-      return (GameRuleDataItem) method.Invoke( null, new object[] { id, data } );
+      var instance = Activator.CreateInstance( type ) as GameRuleDataItem;
+      instance.InitializeCore( data );
 
+      return instance;
     }
 
 

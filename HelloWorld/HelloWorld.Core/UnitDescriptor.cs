@@ -12,15 +12,21 @@ namespace HelloWorld
   /// </summary>
   public class UnitDescriptor : GameRuleDataItem
   {
-    private UnitDescriptor( Guid guid, JObject data ) : base( guid, data ) { }
 
 
-    protected UnitDescriptor( UnitDescriptor instance )
-      : this( instance.Guid, instance.Data )
+    protected override void Initialize( JObject data )
     {
-      Name = instance.Name;
-      Description = instance.Description;
+      base.Initialize( data );
+
+      dynamic d = data;
+
+      Name = d.Name;
+      Description = d.Description;
+      MobilityMaximum = d.Mobility.Maximum;
+      MobilityRecoveryCycle = d.Mobility.RecoveryCycle;
+      MobilityRecoveryScale = d.Mobility.RecoveryScale;
     }
+
 
 
     /// <summary>
@@ -35,15 +41,22 @@ namespace HelloWorld
 
 
     /// <summary>
-    /// 行动力
+    /// 最大行动力
     /// </summary>
-    public decimal Mobility { get; private set; }
+    public decimal MobilityMaximum { get; private set; }
+
 
 
     /// <summary>
-    /// 完成任务后所需要的休息时间
+    /// 行动力恢复周期
     /// </summary>
-    public TimeSpan RestTime { get; private set; }
+    public TimeSpan MobilityRecoveryCycle { get; private set; }
+
+
+    /// <summary>
+    /// 每个恢复周期恢复的行动力
+    /// </summary>
+    public decimal MobilityRecoveryScale { get; private set; }
 
 
 
@@ -78,6 +91,11 @@ namespace HelloWorld
 
 
 
+    /// <summary>
+    /// 在指定地块创建单位对象
+    /// </summary>
+    /// <param name="place">要创建单位对象的地块</param>
+    /// <returns>单位对象</returns>
     public Unit Create( Place place )
     {
       lock ( place.SyncRoot )
@@ -88,6 +106,5 @@ namespace HelloWorld
         return place.Unit = new Unit( Guid.NewGuid(), this, place );
       }
     }
-
   }
 }

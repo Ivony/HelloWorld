@@ -55,9 +55,32 @@ namespace HelloWorld
 
       if ( ActionState == UnitActionState.Idle )
       {
-        //如果休息时间足够，则复原移动力
-        if ( Mobility < UnitDescriptor.Mobility && DateTime.UtcNow - LastActTime > UnitDescriptor.RestTime )
-          Mobility = UnitDescriptor.Mobility;
+
+        RecoveryMobilityForIdle();
+
+      }
+    }
+
+
+    /// <summary>
+    /// 如果休息时间足够，则复原移动力
+    /// </summary>
+    private void RecoveryMobilityForIdle()
+    {
+      var restTime = DateTime.UtcNow - LastActTime;
+
+      while ( Mobility < UnitDescriptor.MobilityMaximum )
+      {
+        restTime -= UnitDescriptor.MobilityRecoveryCycle;
+        if ( restTime < TimeSpan.Zero )
+          break;
+
+        Mobility += UnitDescriptor.MobilityRecoveryScale;
+        if ( Mobility > UnitDescriptor.MobilityMaximum )
+        {
+          Mobility = UnitDescriptor.MobilityMaximum;
+          break;
+        }
       }
     }
 
@@ -122,13 +145,13 @@ namespace HelloWorld
     public bool Move( Direction direction )
     {
       return false;
-    
+
     }
 
   }
 
 
-  
+
 
 
 

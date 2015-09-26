@@ -17,29 +17,15 @@ namespace HelloWorld
   {
 
 
-    private ItemDescriptor( Guid guid, JObject data ) : base( guid, data ) { }
-
-    protected ItemDescriptor( ItemDescriptor instance ) : this( instance.Guid, instance.Data )
+    protected override void Initialize( JObject data )
     {
+      base.Initialize( data );
 
-      Name = instance.Name;
-      Description = instance.Description;
-
+      Name = data.Value<string>( "Name" );
+      Description = data.Value<string>( "Description" );
     }
 
 
-    public static ItemDescriptor FromData( Guid guid, JObject data )
-    {
-
-      if ( data == null )
-        return null;
-
-      return new ItemDescriptor( guid, data )
-      {
-        Name = data.Value<string>( "Name" ),
-        Description = data.Value<string>( "Description" ),
-      };
-    }
 
 
     /// <summary>

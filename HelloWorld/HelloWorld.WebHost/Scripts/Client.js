@@ -10,7 +10,6 @@ var hello;
             return "(" + this.x + ", " + this.y + ")";
         };
         Coordinate.parse = function (str) {
-            console.info(str);
             if (this.regex.test(str) == false) {
                 window.alert("coordinate error");
             }
@@ -20,44 +19,44 @@ var hello;
         Coordinate.prototype.add = function (coordinate) {
             return new Coordinate(this.x + coordinate.x, this.y + coordinate.y);
         };
-        Object.defineProperty(Coordinate.prototype, "A", {
+        Object.defineProperty(Coordinate.prototype, "NW", {
             get: function () {
                 return this.add(new Coordinate(-1, -2));
             },
             enumerable: true,
             configurable: true
         });
-        Object.defineProperty(Coordinate.prototype, "B", {
+        Object.defineProperty(Coordinate.prototype, "NE", {
             get: function () {
                 return this.add(new Coordinate(1, -2));
             },
             enumerable: true,
             configurable: true
         });
-        Object.defineProperty(Coordinate.prototype, "C", {
-            get: function () {
-                return this.add(new Coordinate(-2, 0));
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Coordinate.prototype, "D", {
+        Object.defineProperty(Coordinate.prototype, "E", {
             get: function () {
                 return this.add(new Coordinate(2, 0));
             },
             enumerable: true,
             configurable: true
         });
-        Object.defineProperty(Coordinate.prototype, "E", {
+        Object.defineProperty(Coordinate.prototype, "SE", {
+            get: function () {
+                return this.add(new Coordinate(1, 2));
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Coordinate.prototype, "SW", {
             get: function () {
                 return this.add(new Coordinate(-1, 2));
             },
             enumerable: true,
             configurable: true
         });
-        Object.defineProperty(Coordinate.prototype, "F", {
+        Object.defineProperty(Coordinate.prototype, "W", {
             get: function () {
-                return this.add(new Coordinate(1, 2));
+                return this.add(new Coordinate(-2, 0));
             },
             enumerable: true,
             configurable: true
@@ -79,28 +78,11 @@ var hello;
     hello.Building = Building;
     var Place = (function () {
         function Place(data) {
-            console.info(data);
             this.coordinate = Coordinate.parse(data.Coordinate);
             this.building = new Building(data.Building);
             this.actions = data.Actions;
             this.acting = data.Action;
         }
-        Place.prototype.toHtml = function () {
-            var html = "<section id='coordinate'><h3>Coordinate:</h3> " + this.coordinate + "</section>" +
-                "<section id='building'><h3>Building:</h3> " + this.building.toHtml() + "</section>";
-            if (this.actions != null) {
-                html += "<section id='actions'><h3>Actions:</h3> ";
-                this.actions.forEach(function (action) { return html += "<p onclick='hello.Client.Action( \"" + action.Guid + "\" );' style='cursor: pointer;'><b>" + action.Name + "</b> " + action.Description + "</p>"; });
-                html += "</section>";
-            }
-            else if (this.acting != null) {
-                html += "<section id='acting'><h3>Acting:</h3> ";
-                html += "<p><b> " + this.acting.ActionDescriptor.Name + "</b> " + this.acting.ActionDescriptor.Description + "</p>";
-                html += "<p>" + this.acting.Remaining + "</p>";
-                html += "</section>";
-            }
-            return html;
-        };
         return Place;
     })();
     hello.Place = Place;
@@ -111,20 +93,46 @@ var hello;
             if (window.location.search == "")
                 window.location.search = "(0,0)";
             var coordinate = Coordinate.parse(decodeURIComponent(window.location.search));
-            $.getJSON("/" + coordinate.toString(), function (data) { return fun(new Place(data)); });
+            this.Place(coordinate, fun);
         };
         Client.Action = function (id) {
             var coordinate = Coordinate.parse(decodeURIComponent(window.location.search));
             $.getJSON("/" + coordinate.toString() + "/" + id, function (data) { return window.location.reload(); });
         };
+        Client.Place = function (coordinate, fun) {
+            $.getJSON("/" + coordinate.toString(), function (data) { return fun(new Place(data)); });
+        };
         return Client;
     })();
     hello.Client = Client;
+    function bindPlace(place, dom) {
+        dom.find("a").attr("href", "?" + place.coordinate.toString()).text(place.building.name);
+    }
+    hello.bindPlace = bindPlace;
 })(hello || (hello = {}));
 ;
 $(function () {
     hello.Client.Run(function (place) {
-        $("#place").html(place.toHtml());
+        $("#map #placeO").text(place.building.name);
+        hello.Client.Place(place.coordinate.NW, function (place) { return hello.bindPlace(place, $("#map #placeNW")); });
+        hello.Client.Place(place.coordinate.NE, function (place) { return hello.bindPlace(place, $("#map #placeNE")); });
+        hello.Client.Place(place.coordinate.E, function (place) { return hello.bindPlace(place, $("#map #placeE")); });
+        hello.Client.Place(place.coordinate.SE, function (place) { return hello.bindPlace(place, $("#map #placeSE")); });
+        hello.Client.Place(place.coordinate.SW, function (place) { return hello.bindPlace(place, $("#map #placeSW")); });
+        hello.Client.Place(place.coordinate.W, function (place) { return hello.bindPlace(place, $("#map #placeW")); });
+        $("#building .name").text(place.building.name);
+        $("#building .description").text(place.building.description);
+        if (place.acting != null) {
+            console.info(place.acting);
+            $("#acting .name").text(place.acting.ActionDescriptor.Name);
+            $("#acting .description").text(place.acting.ActionDescriptor.Description);
+            $("#acting .remaining").text(place.acting.Remaining);
+            $("#actions").remove();
+        }
+        else {
+            $("#acting").remove();
+            var list = $("#actions ul");
+            place.actions.forEach(function (item) { return list.append($("<li/>").text(item.Name).click(function () { return hello.Client.Action(item.Guid); })); });
+        }
     });
 });
-//# sourceMappingURL=Client.js.map

@@ -28,7 +28,6 @@ module hello
     public static parse(str: string)
     {
 
-      console.info(str);
       if (this.regex.test(str) == false)
       {
         window.alert("coordinate error");
@@ -50,39 +49,39 @@ module hello
 
 
 
-    public get A(): Coordinate
+    public get NW(): Coordinate
     {
       return this.add(new Coordinate(-1, -2));
     }
 
 
-    public get B(): Coordinate
+    public get NE(): Coordinate
     {
       return this.add(new Coordinate(1, -2));
     }
 
 
-    public get C(): Coordinate
-    {
-      return this.add(new Coordinate(-2, 0));
-    }
-
-
-    public get D(): Coordinate
+    public get E(): Coordinate
     {
       return this.add(new Coordinate(2, 0));
     }
 
 
-    public get E(): Coordinate
+    public get SE(): Coordinate
+    {
+      return this.add(new Coordinate(1, 2));
+    }
+
+
+    public get SW(): Coordinate
     {
       return this.add(new Coordinate(-1, 2));
     }
 
 
-    public get F(): Coordinate
+    public get W(): Coordinate
     {
-      return this.add(new Coordinate(1, 2));
+      return this.add(new Coordinate(-2, 0));
     }
 
   }
@@ -115,48 +114,18 @@ module hello
     public building: Building;
 
 
-    private actions: Array<any>;
-    private acting: any;
+    public actions: Array<any>;
+    public acting: any;
 
 
     constructor(data: any)
     {
 
 
-      console.info(data);
-
       this.coordinate = Coordinate.parse(data.Coordinate);
       this.building = new Building(data.Building);
       this.actions = data.Actions;
       this.acting = data.Action;
-
-    }
-
-
-    public toHtml()
-    {
-      var html = "<section id='coordinate'><h3>Coordinate:</h3> " + this.coordinate + "</section>" +
-        "<section id='building'><h3>Building:</h3> " + this.building.toHtml() + "</section>";
-
-
-      if (this.actions != null)
-      {
-
-        html += "<section id='actions'><h3>Actions:</h3> ";
-        this.actions.forEach(action => html += "<p onclick='hello.Client.Action( \"" + action.Guid + "\" );' style='cursor: pointer;'><b>" + action.Name + "</b> " + action.Description + "</p>");
-        html += "</section>";
-      }
-
-      else if (this.acting != null)
-      {
-        html += "<section id='acting'><h3>Acting:</h3> ";
-        html += "<p><b> " + this.acting.ActionDescriptor.Name + "</b> " + this.acting.ActionDescriptor.Description + "</p>";
-        html += "<p>" + this.acting.Remaining + "</p>";
-        html += "</section>";
-      }
-
-      return html;
-
 
     }
 
@@ -174,7 +143,7 @@ module hello
 
       var coordinate = Coordinate.parse(decodeURIComponent(window.location.search));
 
-      $.getJSON("/" + coordinate.toString(), data => fun(new Place(data)));
+      this.Place(coordinate, fun);
 
 
 
@@ -189,9 +158,24 @@ module hello
 
     }
 
+
+
+    static Place(coordinate: Coordinate, fun: (place: Place) => void)
+    {
+      $.getJSON("/" + coordinate.toString(), data => fun(new Place(data)));
+    }
+  }
+
+
+  export function bindPlace(place: Place, dom: JQuery)
+  {
+    dom.find("a").attr("href", "?" + place.coordinate.toString()).text(place.building.name);
   }
 
 };
+
+
+
 
 
 
@@ -201,7 +185,39 @@ $(() =>
   hello.Client.Run(function (place)
   {
 
-    $("#place").html(place.toHtml());
+    $("#map #placeO").text(place.building.name);
+
+
+    hello.Client.Place(place.coordinate.NW, place => hello.bindPlace(place, $("#map #placeNW")));
+    hello.Client.Place(place.coordinate.NE, place => hello.bindPlace(place, $("#map #placeNE")));
+    hello.Client.Place(place.coordinate.E, place => hello.bindPlace(place, $("#map #placeE")));
+    hello.Client.Place(place.coordinate.SE, place => hello.bindPlace(place, $("#map #placeSE")));
+    hello.Client.Place(place.coordinate.SW, place => hello.bindPlace(place, $("#map #placeSW")));
+    hello.Client.Place(place.coordinate.W, place => hello.bindPlace(place, $("#map #placeW")));
+
+
+    $("#building .name").text(place.building.name);
+    $("#building .description").text(place.building.description);
+
+
+    if (place.acting != null)
+    {
+      console.info(place.acting);
+
+      $("#acting .name").text(place.acting.ActionDescriptor.Name);
+      $("#acting .description").text(place.acting.ActionDescriptor.Description);
+      $("#acting .remaining").text(place.acting.Remaining);
+      $("#actions").remove();
+    }
+    else
+    {
+      $("#acting").remove();
+      var list = $("#actions ul");
+
+      place.actions.forEach(item => list.append($("<li/>").text(item.Name).click(() => hello.Client.Action(item.Guid))));
+
+    }
+
 
   });
 

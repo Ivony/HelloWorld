@@ -7,19 +7,39 @@
   <script src="Scripts/Client.js"></script>
 
   <style>
-      section {
+      section
+      {
         padding: 0 20px;
         margin: 10px;
       }
 
-      #map td {
+      #map td
+      {
         height: 70px;
         width: 70px;
         text-align: center;
       }
 
-      #map #placeO {
+      #map #placeO
+      {
         font-weight: bold;
+      }
+
+      #map a
+      {
+        text-decoration: none;
+        color: black;
+      }
+
+        #map a:visited
+        {
+          color: blueviolet;
+        }
+
+
+      #actions li
+      {
+        cursor: pointer;
       }
   </style>
 </head>
@@ -28,24 +48,35 @@
   <table cellspacing='0' id='map'>
     <tr>
       <td></td>
-      <td colspan='2' id="placeA"></td>
-      <td colspan='2' id="placeB"></td>
+      <td colspan='2' id="placeNW"><a></a></td>
+      <td colspan='2' id="placeNE"><a></a></td>
       <td></td>
     </tr>
     <tr>
-      <td colspan='2' id="placeC"></td>
+      <td colspan='2' id="placeW"><a></a></td>
       <td colspan='2' id="placeO"></td>
-      <td colspan='2' id="placeD"></td>
+      <td colspan='2' id="placeE"><a></a></td>
     </tr>
     <tr>
       <td></td>
-      <td colspan='2' id="placeE"></td>
-      <td colspan='2' id="placeF"></td>
+      <td colspan='2' id="placeSW"><a></a></td>
+      <td colspan='2' id="placeSE"><a></a></td>
       <td></td>
     </tr>
   </table>
 
-  <section id="place"></section>
+  <section id="building">
+    <h3 class="name"></h3>
+    <p class="description"></p>
+  </section>
+  <section id="acting">
+    <h4><span class="name"></span></h4>
+    <div>剩余时间： <span class="remaining"></span></div>
+  </section>
+  <section id="actions">
+    <h3>可以执行的操作列表</h3>
+    <ul></ul>
+  </section>
 
 
 

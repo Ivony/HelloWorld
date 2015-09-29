@@ -106,7 +106,10 @@ var hello;
     })();
     hello.Client = Client;
     function bindPlace(place, dom) {
-        dom.find("a").attr("href", "?" + place.coordinate.toString()).text(place.building.name);
+        var name = place.building.name;
+        if (place.acting != null)
+            name += "(" + place.acting.ActionDescriptor.Name + ")";
+        dom.find("a").attr("href", "?" + place.coordinate.toString()).text(name);
     }
     hello.bindPlace = bindPlace;
 })(hello || (hello = {}));
@@ -136,3 +139,4 @@ $(function () {
         }
     });
 });
+//# sourceMappingURL=Client.js.map

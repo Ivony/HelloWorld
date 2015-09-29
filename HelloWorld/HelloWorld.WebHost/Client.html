@@ -15,10 +15,18 @@
 
       #map td
       {
-        height: 70px;
-        width: 70px;
+        height: 50px;
         text-align: center;
       }
+
+      #map tr.scale td
+      {
+        font-size: 0;
+        height: 0px;
+        width: 50px;
+      }
+
+
 
       #map #placeO
       {
@@ -45,7 +53,15 @@
 </head>
 <body>
 
-  <table cellspacing='0' id='map'>
+  <table cellspacing='0' id='map' border="0">
+    <tr class="scale">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
     <tr>
       <td></td>
       <td colspan='2' id="placeNW"><a></a></td>

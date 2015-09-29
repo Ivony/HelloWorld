@@ -169,7 +169,10 @@ module hello
 
   export function bindPlace(place: Place, dom: JQuery)
   {
-    dom.find("a").attr("href", "?" + place.coordinate.toString()).text(place.building.name);
+    var name = place.building.name;
+    if (place.acting != null)
+      name += "(" + place.acting.ActionDescriptor.Name + ")"
+    dom.find("a").attr("href", "?" + place.coordinate.toString()).text(name);
   }
 
 };

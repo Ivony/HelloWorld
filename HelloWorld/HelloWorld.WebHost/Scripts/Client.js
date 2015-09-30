@@ -90,8 +90,17 @@ var hello;
         function Client() {
         }
         Client.Run = function (fun) {
-            if (window.location.search == "")
+            $.ajax("/", {
+                error: function (xhr) {
+                    if (xhr.status == 401) {
+                        window.location.href = "/Login.html";
+                    }
+                }
+            });
+            if (window.location.search == "") {
                 window.location.search = "(0,0)";
+                return;
+            }
             var coordinate = Coordinate.parse(decodeURIComponent(window.location.search));
             fun(coordinate);
         };

@@ -85,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Client.html" />
+    <Content Include="Login.html" />
     <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\jumony.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />

@@ -138,8 +138,22 @@ module hello
     {
 
 
+      $.ajax("/", {
+        error: xhr =>
+        {
+          if (xhr.status == 401)
+          {
+            window.location.href = "/Login.html";
+          }
+        }
+      });
+
+
       if (window.location.search == "")
+      {
         window.location.search = "(0,0)";
+        return;
+      }
 
       var coordinate = Coordinate.parse(decodeURIComponent(window.location.search));
 
@@ -282,7 +296,7 @@ $(() =>
             .append($("<div/>").addClass("content").text(item.Content)).addBack()
           );
       });
-      
+
     });
 
 

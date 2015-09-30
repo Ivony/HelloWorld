@@ -49,7 +49,7 @@ namespace HelloWorld.GreatCivilization
         }
       }
 
-      place.CheckPoint = place.CheckPoint.AddMinutes( times );
+      place.CheckPoint = place.CheckPoint.AddMinutes( times * 5 );
 
     }
 

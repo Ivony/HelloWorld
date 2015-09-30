@@ -134,7 +134,7 @@ module hello
   export class Client
   {
 
-    static Run(fun: (place: Place) => void)
+    static Run(fun: (coordinate: Coordinate) => void)
     {
 
 
@@ -143,7 +143,7 @@ module hello
 
       var coordinate = Coordinate.parse(decodeURIComponent(window.location.search));
 
-      this.Place(coordinate, fun);
+      fun(coordinate);
 
 
 
@@ -164,6 +164,22 @@ module hello
     {
       $.getJSON("/" + coordinate.toString(), data => fun(new Place(data)));
     }
+
+
+
+    static GameInfo(fun: (info: any) => void)
+    {
+      $.getJSON("/", data => fun(data));
+    }
+
+
+
+    static Messages(fun: (messages: any[]) => void)
+    {
+      $.getJSON("/Messages", data => fun(data));
+    }
+
+
   }
 
 
@@ -185,41 +201,89 @@ module hello
 $(() =>
 {
 
-  hello.Client.Run(function (place)
+  hello.Client.Run(function (coordinate)
   {
 
-    $("#map #placeO").text(place.building.name);
-
-
-    hello.Client.Place(place.coordinate.NW, place => hello.bindPlace(place, $("#map #placeNW")));
-    hello.Client.Place(place.coordinate.NE, place => hello.bindPlace(place, $("#map #placeNE")));
-    hello.Client.Place(place.coordinate.E, place => hello.bindPlace(place, $("#map #placeE")));
-    hello.Client.Place(place.coordinate.SE, place => hello.bindPlace(place, $("#map #placeSE")));
-    hello.Client.Place(place.coordinate.SW, place => hello.bindPlace(place, $("#map #placeSW")));
-    hello.Client.Place(place.coordinate.W, place => hello.bindPlace(place, $("#map #placeW")));
-
-
-    $("#building .name").text(place.building.name);
-    $("#building .description").text(place.building.description);
-
-
-    if (place.acting != null)
+    hello.Client.Place(coordinate, place =>
     {
-      console.info(place.acting);
 
-      $("#acting .name").text(place.acting.ActionDescriptor.Name);
-      $("#acting .description").text(place.acting.ActionDescriptor.Description);
-      $("#acting .remaining").text(place.acting.Remaining);
-      $("#actions").remove();
-    }
-    else
+
+      $("#map #placeO").text(place.building.name);
+
+
+      hello.Client.Place(coordinate.NW, place => hello.bindPlace(place, $("#map #placeNW")));
+      hello.Client.Place(coordinate.NE, place => hello.bindPlace(place, $("#map #placeNE")));
+      hello.Client.Place(coordinate.E, place => hello.bindPlace(place, $("#map #placeE")));
+      hello.Client.Place(coordinate.SE, place => hello.bindPlace(place, $("#map #placeSE")));
+      hello.Client.Place(coordinate.SW, place => hello.bindPlace(place, $("#map #placeSW")));
+      hello.Client.Place(coordinate.W, place => hello.bindPlace(place, $("#map #placeW")));
+
+
+      $("#building .name").text(place.building.name);
+      $("#building .description").text(place.building.description);
+
+
+      if (place.acting != null)
+      {
+        console.info(place.acting);
+
+        $("#acting .name").text(place.acting.ActionDescriptor.Name);
+        $("#acting .description").text(place.acting.ActionDescriptor.Description);
+        $("#acting .remaining").text(place.acting.Remaining);
+        $("#actions").remove();
+      }
+      else
+      {
+        $("#acting").remove();
+        var list = $("#actions ul");
+
+        place.actions.forEach(item => list.append($("<li/>").text(item.Name).click(() => hello.Client.Action(item.Guid))));
+
+      }
+    });
+
+
+
+
+    hello.Client.GameInfo(info =>
     {
-      $("#acting").remove();
-      var list = $("#actions ul");
 
-      place.actions.forEach(item => list.append($("<li/>").text(item.Name).click(() => hello.Client.Action(item.Guid))));
+      var list = $("#resources ul");
 
-    }
+
+      for (var key in info.Resources)
+      {
+
+        console.info(key);
+        list.append(
+          $("<li/>")
+            .append($("<div/>").addClass("name").text(key)).addBack()
+            .append($("<div/>").addClass("quantity").text(info.Resources[key])).addBack()
+          );
+      }
+    });
+
+
+
+    hello.Client.Messages(messages =>
+    {
+
+      var list = $("#messages ul");
+
+      messages.forEach(item =>
+      {
+        var date = new Date(item.NotifyTime);
+
+
+
+        list.append(
+          $("<li/>")
+            .append($("<div/>").addClass("date").text(date.toLocaleString())).addBack()
+            .append($("<div/>").addClass("content").text(item.Content)).addBack()
+          );
+      });
+      
+    });
 
 
   });

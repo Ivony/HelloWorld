@@ -49,52 +49,129 @@
       {
         cursor: pointer;
       }
+
+      body
+      {
+        display: flex;
+        flex-flow: row wrap;
+      }
+
+      #place
+      {
+        width: 500px;
+        flex: none;
+      }
+
+        #place + section
+        {
+          flex: auto;
+        }
+
+      #status
+      {
+        min-width: 500px;
+        display: flex;
+        flex-flow: column nowrap;
+      }
+
+
+      #resources li
+      {
+        display: flex;
+        flex-flow: row nowrap;
+      }
+
+
+
+        #resources li .name
+        {
+          min-width: 200px;
+          font-weight: bold;
+          word-break: break-all;
+        }
+
+        #resources li .quantity
+        {
+          flex: 1;
+          text-align: right;
+        }
+
+      #messages li
+      {
+        display: flex;
+        flex-flow: row nowrap;
+      }
+
+        #messages li .date
+        {
+          flex: 0 0 250px;
+        }
+
+        #messages li .content
+        {
+          flex: 200px;
+          width: 200px;
+          word-break: break-all;
+        }
   </style>
 </head>
 <body>
+  <section id="place">
 
-  <table cellspacing='0' id='map' border="0">
-    <tr class="scale">
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td></td>
-      <td colspan='2' id="placeNW"><a></a></td>
-      <td colspan='2' id="placeNE"><a></a></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td colspan='2' id="placeW"><a></a></td>
-      <td colspan='2' id="placeO"></td>
-      <td colspan='2' id="placeE"><a></a></td>
-    </tr>
-    <tr>
-      <td></td>
-      <td colspan='2' id="placeSW"><a></a></td>
-      <td colspan='2' id="placeSE"><a></a></td>
-      <td></td>
-    </tr>
-  </table>
+    <table cellspacing='0' id='map' border="0">
+      <tr class="scale">
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td colspan='2' id="placeNW"><a></a></td>
+        <td colspan='2' id="placeNE"><a></a></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td colspan='2' id="placeW"><a></a></td>
+        <td colspan='2' id="placeO"></td>
+        <td colspan='2' id="placeE"><a></a></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td colspan='2' id="placeSW"><a></a></td>
+        <td colspan='2' id="placeSE"><a></a></td>
+        <td></td>
+      </tr>
+    </table>
 
-  <section id="building">
-    <h3 class="name"></h3>
-    <p class="description"></p>
+    <section id="building">
+      <h3 class="name"></h3>
+      <p class="description"></p>
+    </section>
+    <section id="acting">
+      <h4><span class="name"></span></h4>
+      <div>剩余时间： <span class="remaining"></span></div>
+    </section>
+    <section id="actions">
+      <h3>可以执行的操作列表</h3>
+      <ul></ul>
+    </section>
+
   </section>
-  <section id="acting">
-    <h4><span class="name"></span></h4>
-    <div>剩余时间： <span class="remaining"></span></div>
+  <section id="status">
+    <section id="resources">
+      <h3>资源情况</h3>
+      <ul></ul>
+    </section>
+
+    <section id="messages">
+
+      <h3>消息列表</h3>
+      <ul></ul>
+
+    </section>
   </section>
-  <section id="actions">
-    <h3>可以执行的操作列表</h3>
-    <ul></ul>
-  </section>
-
-
-
 </body>
 </html>

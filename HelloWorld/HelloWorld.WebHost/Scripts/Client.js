@@ -93,7 +93,7 @@ var hello;
             if (window.location.search == "")
                 window.location.search = "(0,0)";
             var coordinate = Coordinate.parse(decodeURIComponent(window.location.search));
-            this.Place(coordinate, fun);
+            fun(coordinate);
         };
         Client.Action = function (id) {
             var coordinate = Coordinate.parse(decodeURIComponent(window.location.search));
@@ -101,6 +101,12 @@ var hello;
         };
         Client.Place = function (coordinate, fun) {
             $.getJSON("/" + coordinate.toString(), function (data) { return fun(new Place(data)); });
+        };
+        Client.GameInfo = function (fun) {
+            $.getJSON("/", function (data) { return fun(data); });
+        };
+        Client.Messages = function (fun) {
+            $.getJSON("/Messages", function (data) { return fun(data); });
         };
         return Client;
     })();
@@ -115,28 +121,47 @@ var hello;
 })(hello || (hello = {}));
 ;
 $(function () {
-    hello.Client.Run(function (place) {
-        $("#map #placeO").text(place.building.name);
-        hello.Client.Place(place.coordinate.NW, function (place) { return hello.bindPlace(place, $("#map #placeNW")); });
-        hello.Client.Place(place.coordinate.NE, function (place) { return hello.bindPlace(place, $("#map #placeNE")); });
-        hello.Client.Place(place.coordinate.E, function (place) { return hello.bindPlace(place, $("#map #placeE")); });
-        hello.Client.Place(place.coordinate.SE, function (place) { return hello.bindPlace(place, $("#map #placeSE")); });
-        hello.Client.Place(place.coordinate.SW, function (place) { return hello.bindPlace(place, $("#map #placeSW")); });
-        hello.Client.Place(place.coordinate.W, function (place) { return hello.bindPlace(place, $("#map #placeW")); });
-        $("#building .name").text(place.building.name);
-        $("#building .description").text(place.building.description);
-        if (place.acting != null) {
-            console.info(place.acting);
-            $("#acting .name").text(place.acting.ActionDescriptor.Name);
-            $("#acting .description").text(place.acting.ActionDescriptor.Description);
-            $("#acting .remaining").text(place.acting.Remaining);
-            $("#actions").remove();
-        }
-        else {
-            $("#acting").remove();
-            var list = $("#actions ul");
-            place.actions.forEach(function (item) { return list.append($("<li/>").text(item.Name).click(function () { return hello.Client.Action(item.Guid); })); });
-        }
+    hello.Client.Run(function (coordinate) {
+        hello.Client.Place(coordinate, function (place) {
+            $("#map #placeO").text(place.building.name);
+            hello.Client.Place(coordinate.NW, function (place) { return hello.bindPlace(place, $("#map #placeNW")); });
+            hello.Client.Place(coordinate.NE, function (place) { return hello.bindPlace(place, $("#map #placeNE")); });
+            hello.Client.Place(coordinate.E, function (place) { return hello.bindPlace(place, $("#map #placeE")); });
+            hello.Client.Place(coordinate.SE, function (place) { return hello.bindPlace(place, $("#map #placeSE")); });
+            hello.Client.Place(coordinate.SW, function (place) { return hello.bindPlace(place, $("#map #placeSW")); });
+            hello.Client.Place(coordinate.W, function (place) { return hello.bindPlace(place, $("#map #placeW")); });
+            $("#building .name").text(place.building.name);
+            $("#building .description").text(place.building.description);
+            if (place.acting != null) {
+                console.info(place.acting);
+                $("#acting .name").text(place.acting.ActionDescriptor.Name);
+                $("#acting .description").text(place.acting.ActionDescriptor.Description);
+                $("#acting .remaining").text(place.acting.Remaining);
+                $("#actions").remove();
+            }
+            else {
+                $("#acting").remove();
+                var list = $("#actions ul");
+                place.actions.forEach(function (item) { return list.append($("<li/>").text(item.Name).click(function () { return hello.Client.Action(item.Guid); })); });
+            }
+        });
+        hello.Client.GameInfo(function (info) {
+            var list = $("#resources ul");
+            for (var key in info.Resources) {
+                console.info(key);
+                list.append($("<li/>")
+                    .append($("<div/>").addClass("name").text(key)).addBack()
+                    .append($("<div/>").addClass("quantity").text(info.Resources[key])).addBack());
+            }
+        });
+        hello.Client.Messages(function (messages) {
+            var list = $("#messages ul");
+            messages.forEach(function (item) {
+                var date = new Date(item.NotifyTime);
+                list.append($("<li/>")
+                    .append($("<div/>").addClass("date").text(date.toLocaleString())).addBack()
+                    .append($("<div/>").addClass("content").text(item.Content)).addBack());
+            });
+        });
     });
 });
-//# sourceMappingURL=Client.js.map

@@ -40,7 +40,13 @@ namespace HelloWorld
       else
         id = property.Name;
 
-      return new Item( GameHost.GameRules.GetDataItem<ItemDescriptor>( Guid.Parse( id ) ), property.Value.Value<int>() );
+      var descriptor = GameHost.GameRules.GetDataItem<ItemDescriptor>( Guid.Parse( id ) );
+      var quantity = property.Value.Value<int>();
+
+      if ( quantity == 0 )
+        return null;
+
+      return new Item( descriptor, quantity );
     }
 
     public override void WriteJson( JsonWriter writer, object value, JsonSerializer serializer )
@@ -58,7 +64,7 @@ namespace HelloWorld
       if ( data == null )
         return new Item[0];
 
-      return data.Properties().Select( p => CreateItem( p ) ).ToArray();
+      return data.Properties().Select( p => CreateItem( p ) ).Where( item => item != null ).ToArray();
     }
 
     /// <summary>

@@ -35,7 +35,12 @@ namespace HelloWorld
     public ItemCollection( Item[] data, Action<ItemCollection> changeHandler = null )
     {
       foreach ( var i in data )
+      {
+        if ( i == null )
+          continue;
+
         AddItemsInternal( i.ItemDescriptor, i.Quantity );
+      }
 
 
       ChangeHandler = changeHandler;
@@ -234,10 +239,19 @@ namespace HelloWorld
       if ( quantity <= 0 )
         throw new ArgumentOutOfRangeException( "quantity" );
 
-      if ( _collection.ContainsKey( item ) && _collection[item] < quantity )
+      var exists = _collection[item];
+
+
+      if ( _collection.ContainsKey( item ) && exists < quantity )
         return false;
 
-      _collection[item] -= quantity;
+
+      if ( exists == quantity )
+        _collection.Remove( item );
+
+      else
+        _collection[item] = exists - quantity;
+
       return true;
     }
 
@@ -247,12 +261,12 @@ namespace HelloWorld
 
     IEnumerator<Item> IEnumerable<Item>.GetEnumerator()
     {
-      return ((ItemList) this).GetEnumerator();
+      return ( (ItemList) this ).GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()
     {
-      return ((ItemList) this).GetEnumerator();
+      return ( (ItemList) this ).GetEnumerator();
     }
 
 

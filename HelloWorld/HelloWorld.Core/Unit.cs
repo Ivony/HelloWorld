@@ -23,6 +23,8 @@ namespace HelloWorld
       ActionState = UnitActionState.Idle;
       Mobility = 0m;
       LastActTime = DateTime.UtcNow;
+
+      SyncRoot = new object();
     }
 
     private Unit() { }
@@ -137,6 +139,27 @@ namespace HelloWorld
     }
 
 
+
+    /// <summary>
+    /// 获取移动到指定位置所需要的移动力
+    /// </summary>
+    /// <param name="place">抵达位置</param>
+    /// <returns>所需移动力</returns>
+    public decimal MobilityRequired( Place place )
+    {
+
+      return 1;
+
+    }
+
+
+
+    /// <summary>
+    /// 用于同步的对象
+    /// </summary>
+    public object SyncRoot { get; private set; }
+
+
     /// <summary>
     /// 移动单位
     /// </summary>
@@ -144,8 +167,31 @@ namespace HelloWorld
     /// <returns>是否成功</returns>
     public bool Move( Direction direction )
     {
-      return false;
 
+      Check();
+
+
+      var target = GameHost.DataService.GetPlace( Place.Coordinate.GetCoordinate( direction ) );
+
+      lock ( SyncRoot )
+      {
+
+        var m = MobilityRequired( target );
+
+        if ( Mobility < m || m == -1 )
+          return false;
+
+
+        if ( Place.MoveUnit( this, target ) )
+        {
+          Mobility -= m;
+          LastActTime = DateTime.UtcNow;
+
+          return true;
+        }
+
+        return false;
+      }
     }
 
   }

@@ -236,5 +236,29 @@ namespace HelloWorld
 
 
 
+
+    internal bool MoveUnit( Unit unit, Place target )
+    {
+
+      lock ( this.SyncRoot )
+      {
+
+        if ( unit != this.Unit )
+          return false;
+
+
+        lock ( target )
+        {
+
+          if ( target.Unit != null )
+            return false;
+
+          this.Unit = null;
+          target.Unit = unit;
+
+          return true;
+        }
+      }
+    }
   }
 }

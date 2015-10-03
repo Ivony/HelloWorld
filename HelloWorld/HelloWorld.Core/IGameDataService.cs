@@ -11,6 +11,5 @@ namespace HelloWorld
 
     GamePlayer GetPlayer( Guid userId );
 
-
   }
 }

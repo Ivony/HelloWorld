@@ -54,7 +54,7 @@ namespace HelloWorld.WebHost
     private async Task<Place> GetPlace( string coordinate )
     {
       var place = Player.GetPlace( Coordinate.Parse( coordinate ) );
-      if ( place.Owner != Player )
+      if ( place.Owner != Player.UserID )
         return null;
 
 
@@ -70,7 +70,7 @@ namespace HelloWorld.WebHost
     {
 
       var place = await GetPlace( coordinate );
-      if ( place == null || place.Owner != Player )
+      if ( place == null || place.Owner != Player.UserID )
         throw new InvalidOperationException( "不能在不是自己的领土上进行活动" );
 
 

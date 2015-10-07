@@ -173,13 +173,13 @@ namespace HelloWorld
     /// <param name="player"></param>
     public override void InitializePlayer( GamePlayer player )
     {
-      GameHost.DataService.GetPlace( player.Initiation ).Owner = player;
+      GameHost.DataService.GetPlace( player.Initiation ).Owner = player.UserID;
 
 
       foreach ( var coordinate in player.Initiation.NearlyCoordinates( 3 ) )
       {
         var place = GameHost.DataService.GetPlace( coordinate );
-        place.Owner = player;
+        place.Owner = player.UserID;
       }
     }
 
@@ -192,9 +192,6 @@ namespace HelloWorld
     public virtual ActionDescriptor[] GetActions( Place place )
     {
       var actions = place.Building.GetActions().AsEnumerable();
-
-      if ( place.Unit != null )
-        actions.Union( place.Unit.GetActions() );
 
       return actions.ToArray();
 

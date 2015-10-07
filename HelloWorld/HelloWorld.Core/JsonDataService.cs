@@ -113,126 +113,6 @@ namespace HelloWorld
 
 
 
-    private class JsonPlace : Place
-    {
-
-      private JsonDataItem data;
-
-
-      public JsonPlace( JsonDataService service, Coordinate coordinate, JsonDataItem jsonData )
-        : base( service, coordinate )
-      {
-        data = jsonData;
-        resources = new ItemCollection( ItemListJsonConverter.FromJson( (JObject) data["Resources"] ), collection => SaveResources() );
-      }
-
-
-      /// <summary>
-      /// 地块上的建筑/地形
-      /// </summary>
-      public override BuildingDescriptor Building
-      {
-        get { return GameHost.GameRules.GetDataItem<BuildingDescriptor>( data.GuidValue( "Building" ) ); }
-        set { data["Building"] = value.Guid.ToString( "D" ); }
-      }
-
-
-      /// <summary>
-      /// 地块的所有者
-      /// </summary>
-      public override GamePlayer Owner
-      {
-        get
-        {
-          var owner = data.GuidValue( "Owner" );
-          if ( owner == null )
-            return null;
-
-          else
-            return DataService.GetPlayer( owner.Value );
-        }
-        set
-        {
-          if ( value == null )
-            data["Owner"] = null;
-          else
-            data["Owner"] = value.UserID;
-        }
-      }
-
-
-
-
-      public override PlaceActing Acting
-      {
-        get
-        {
-          if ( data["Acting"] == null || data["Acting"].Type == JTokenType.Null )
-            return null;
-          else
-            return PlaceActing.FromData( this, (JObject) data["Acting"] );
-        }
-        set
-        {
-          if ( value == null )
-            data["Acting"] = null;
-          else
-            data["Acting"] = value.ToJson();
-        }
-      }
-
-      public override Unit Unit
-      {
-        get
-        {
-          if ( data["Unit"] == null || data["Unit"].Type == JTokenType.Null )
-            return null;
-          else
-            return Unit.FromData( this, (JObject) data["Unit"] );
-        }
-        set
-        {
-          if ( value == null )
-            data["Unit"] = null;
-          else
-            data["Unit"] = value.ToJson();
-        }
-      }
-
-
-
-
-
-      public override DateTime CheckPoint
-      {
-        get { return data.Value<DateTime>( "CheckPoint" ); }
-        set { data["CheckPoint"] = value; }
-      }
-
-
-
-
-      /// <summary>
-      /// 保存 Resources 属性
-      /// </summary>
-      private void SaveResources()
-      {
-        data["Resources"] = ItemListJsonConverter.ToJson( resources );
-      }
-
-      private ItemCollection resources;
-
-      /// <summary>
-      /// 资源数量
-      /// </summary>
-      public override ItemCollection Resources
-      {
-        get { return resources; }
-      }
-
-    }
-
-
 
 
     private class JsonPlayer : GamePlayer
@@ -303,7 +183,7 @@ namespace HelloWorld
 
     private object _sync = new object();
     private Dictionary<Guid, JsonPlayer> players = new Dictionary<Guid, JsonPlayer>();
-    private Dictionary<Coordinate, JsonPlace> places = new Dictionary<Coordinate, JsonPlace>();
+    private Dictionary<Coordinate, Place> places = new Dictionary<Coordinate, Place>();
 
 
     /// <summary>
@@ -347,20 +227,64 @@ namespace HelloWorld
       lock ( _sync )
       {
 
-        JsonPlace place;
+        Place place;
         if ( places.TryGetValue( coordinate, out place ) )
           return place;
 
 
         var filepath = Path.ChangeExtension( Path.Combine( placesDirectory, coordinate.ToString() ), _extensions );
-
         var data = JsonDataItem.LoadData( filepath, new { Building = GameHost.GameRules.InitiationBuilding.Guid, CheckPoint = DateTime.UtcNow } );
 
-        return places[coordinate] = new JsonPlace( this, coordinate, data );
+        place = new Place( this, coordinate );
+        place.InitializeData( data );
+
+        return place;
       }
     }
 
+    public Unit[] GetUnits( Coordinate coordinate )
+    {
+      throw new NotImplementedException();
+    }
 
+    public Unit[] GetUnits( GamePlayer player )
+    {
+      throw new NotImplementedException();
+    }
+
+    public void Save( GameDataItem dataItem )
+    {
+      var unit = dataItem as Unit;
+
+      if ( unit != null )
+      {
+        Save( unit );
+        return;
+      }
+
+
+      var place = dataItem as Place;
+
+      if ( place != null )
+      {
+        Save( place );
+      }
+
+
+
+    }
+
+    private void Save( Place place )
+    {
+      var filepath = Path.Combine( DataRoot, "places", place.Coordinate + ".json" );
+      File.WriteAllText( filepath, place.SaveAsJson() );
+    }
+
+    private void Save( Unit unit )
+    {
+      var filepath = Path.Combine( DataRoot, "units", unit.Guid + ".json" );
+      File.WriteAllText( filepath, unit.SaveAsJson() );
+    }
 
   }
 }

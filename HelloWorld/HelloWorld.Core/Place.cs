@@ -9,29 +9,50 @@ namespace HelloWorld
   /// <summary>
   /// 代表一个地块
   /// </summary>
-  public abstract class Place
+  public class Place : GameDataItem
   {
 
-    protected Place( IGameDataService service, Coordinate coordinate )
+    public Place( IGameDataService service, Coordinate coordinate ) : base( service )
     {
-      DataService = service;
       Coordinate = coordinate;
-      SyncRoot = new object();
     }
 
 
 
 
-    /// <summary>
-    /// 获取用于同步的对象
-    /// </summary>
-    public object SyncRoot { get; private set; }
+    protected override void Initialize()
+    {
+      base.Initialize();
+
+      {
+        var items = ItemListJsonConverter.FromJson( (JObject) DataObject.Resources );
+        Resources = new ItemCollection( items, collection =>
+        {
+          DataObject.Resources = ItemListJsonConverter.ToJson( collection );
+        } );
+      }
 
 
-    /// <summary>
-    /// 所使用的数据服务
-    /// </summary>
-    protected IGameDataService DataService { get; private set; }
+      Acting = PlaceActing.FromData( this, (JObject) DataObject.Acting );
+
+    }
+
+
+
+    internal void SetActing( PlaceActing acting )
+    {
+      if ( Acting != null )
+        throw new InvalidOperationException();
+
+      Acting = acting;
+      SaveActing();
+    }
+
+    private void SaveActing()
+    {
+      DataObject.Acting = Acting.ToJson();
+    }
+
 
 
     /// <summary>
@@ -42,37 +63,52 @@ namespace HelloWorld
     /// <summary>
     /// 地块上的建筑
     /// </summary>
-    public abstract BuildingDescriptor Building { get; set; }
-
-
-    /// <summary>
-    /// 地块上的单位
-    /// </summary>
-    public abstract Unit Unit { get; set; }
+    public BuildingDescriptor Building
+    {
+      get { return GameHost.GameRules.GetDataItem<BuildingDescriptor>( JsonObject.GuidValue( "Building" ) ); }
+      set { DataObject.Building = value.Guid; }
+    }
 
 
 
-    /// <summary>
-    /// 地块上存在的资源
-    /// </summary>
-    public abstract ItemCollection Resources { get; }
+    public ItemCollection Resources
+    {
+      get;
+      private set;
+    }
 
 
     /// <summary>
     /// 地块的拥有者
     /// </summary>
-    public abstract GamePlayer Owner { get; set; }
+    public Guid Owner
+    {
+      get { return DataObject.Owner; }
+      set { DataObject.Owner = value; }
+    }
+
+
+    public GamePlayer GetPlayer()
+    {
+      return DataService.GetPlayer( Owner );
+    }
+
+
 
     /// <summary>
     /// 正在进行的活动
     /// </summary>
-    public abstract PlaceActing Acting { get; set; }
+    public PlaceActing Acting { get; private set; }
 
 
     /// <summary>
     /// 上次检查时间
     /// </summary>
-    public abstract DateTime CheckPoint { get; set; }
+    public DateTime CheckPoint
+    {
+      get { return DataObject.CheckPoint; }
+      set { DataObject.CheckPoint = value; }
+    }
 
 
 
@@ -89,6 +125,8 @@ namespace HelloWorld
           Acting.Check();
 
         Building.Check( this );
+
+        SaveActing();
       }
     }
 
@@ -101,7 +139,7 @@ namespace HelloWorld
     {
       lock ( SyncRoot )
       {
-        Owner.Resources.Collect( Resources );
+        DataService.GetPlayer( Owner ).Resources.Collect( Resources );
       }
     }
 
@@ -123,7 +161,7 @@ namespace HelloWorld
         Coordinate = coordinate,
         Building = Building.GetInfo(),
         Resources,
-        IsMine = Owner == player,
+        IsMine = Owner == player.UserID,
 
         Nearly = coordinate.NearlyCoordinates(),
       } );
@@ -173,33 +211,6 @@ namespace HelloWorld
 
 
 
-    public static bool operator ==( Place a, Place b )
-    {
-
-      if ( object.ReferenceEquals( a, null ) && object.ReferenceEquals( b, null ) )
-        return true;
-
-      if ( object.ReferenceEquals( a, null ) || object.ReferenceEquals( b, null ) )
-        return false;
-
-      return a.Equals( b );
-    }
-
-
-    public static bool operator !=( Place a, Place b )
-    {
-
-      if ( object.ReferenceEquals( a, null ) && object.ReferenceEquals( b, null ) )
-        return false;
-
-      if ( object.ReferenceEquals( a, null ) || object.ReferenceEquals( b, null ) )
-        return true;
-
-      return a.Equals( b ) == false;
-    }
-
-
-
 
 
 
@@ -220,7 +231,7 @@ namespace HelloWorld
       if ( Owner == null )
         throw new InvalidOperationException();
 
-      return GetPlayerCoordinate( Owner );
+      return GetPlayerCoordinate( DataService.GetPlayer( Owner ) );
     }
 
     public Coordinate GetPlayerCoordinate( GamePlayer player )
@@ -232,33 +243,5 @@ namespace HelloWorld
       return Coordinate - player.Initiation;
     }
 
-
-
-
-
-
-    internal bool MoveUnit( Unit unit, Place target )
-    {
-
-      lock ( this.SyncRoot )
-      {
-
-        if ( unit != this.Unit )
-          return false;
-
-
-        lock ( target )
-        {
-
-          if ( target.Unit != null )
-            return false;
-
-          this.Unit = null;
-          target.Unit = unit;
-
-          return true;
-        }
-      }
-    }
   }
 }

@@ -39,11 +39,6 @@
         color: black;
       }
 
-        #map a:visited
-        {
-          color: blueviolet;
-        }
-
 
       #actions li
       {
@@ -58,61 +53,66 @@
 
       #place
       {
-        width: 500px;
-        flex: none;
+        flex: 0 300px;
       }
-
-        #place + section
-        {
-          flex: auto;
-        }
 
       #status
       {
-        min-width: 500px;
+        flex: 350px;
         display: flex;
         flex-flow: column nowrap;
       }
 
-
-      #resources li
+      #resources
       {
-        display: flex;
-        flex-flow: row nowrap;
+        max-width: 500px;
       }
 
-
-
-        #resources li .name
+        #resources li
         {
-          min-width: 200px;
-          font-weight: bold;
-          word-break: break-all;
+          display: flex;
+          flex-flow: row nowrap;
         }
 
-        #resources li .quantity
-        {
-          flex: 1;
-          text-align: right;
-        }
 
-      #messages li
+
+          #resources li .name
+          {
+            min-width: 200px;
+            font-weight: bold;
+            word-break: break-all;
+          }
+
+          #resources li .quantity
+          {
+            flex: 1;
+            text-align: right;
+          }
+
+
+      #messages
       {
-        display: flex;
-        flex-flow: row nowrap;
+        min-width: 300px;
       }
 
-        #messages li .date
+        #messages li
         {
-          flex: 0 0 250px;
+          display: flex;
+          flex-flow: row wrap;
+          margin: 5px;
         }
 
-        #messages li .content
-        {
-          flex: 200px;
-          width: 200px;
-          word-break: break-all;
-        }
+          #messages li .date
+          {
+            flex: 0 250px;
+          }
+
+          #messages li .content
+          {
+            flex: 1;
+            min-width: 180px;
+            word-break: break-all;
+          }
   </style>
 </head>
 <body>

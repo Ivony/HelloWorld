@@ -49,7 +49,7 @@ namespace HelloWorld
       };
 
 
-      place.Acting = acting;
+      place.SetActing( acting );
       return acting;
     }
 
@@ -83,7 +83,7 @@ namespace HelloWorld
 
         if ( ActionDescriptor.TryComplete( this ) )
         {
-          Place.Acting = null;
+          Place.SetActing( null );
         }
       }
     }

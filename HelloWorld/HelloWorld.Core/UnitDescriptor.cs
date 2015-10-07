@@ -88,23 +88,5 @@ namespace HelloWorld
       }
 
     }
-
-
-
-    /// <summary>
-    /// 在指定地块创建单位对象
-    /// </summary>
-    /// <param name="place">要创建单位对象的地块</param>
-    /// <returns>单位对象</returns>
-    public Unit Create( Place place )
-    {
-      lock ( place.SyncRoot )
-      {
-        if ( place.Unit != null )
-          throw new InvalidOperationException();
-
-        return place.Unit = new Unit( Guid.NewGuid(), this, place );
-      }
-    }
   }
 }

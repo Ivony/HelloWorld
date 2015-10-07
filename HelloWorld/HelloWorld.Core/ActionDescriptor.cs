@@ -99,13 +99,6 @@ namespace HelloWorld
       if ( place.Building != BuildingRestriction.Building )
         throw new InvalidOperationException( "地块建筑不满足活动需求" );
 
-      if ( UnitRestriction != null )
-      {
-        if ( place.Unit == null || place.Unit.IsSatisfy( UnitRestriction ) == false )
-          throw new InvalidOperationException( "单位不满足活动需求" );
-      }
-
-
 
 
       lock ( place )
@@ -135,7 +128,7 @@ namespace HelloWorld
         return false;
 
       var place = acting.Place;
-      var player = place.Owner;
+      var player = place.GetPlayer();
 
       if ( Returns.Items != null )
         player.Resources.AddItems( Returns.Items );

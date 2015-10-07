@@ -12,23 +12,36 @@ namespace HelloWorld
   /// <summary>
   /// 代表一个玩家的单位
   /// </summary>
-  public class Unit
+  public class Unit : GameDataItem
   {
+    private JObject data;
 
-    public Unit( Guid id, UnitDescriptor unit, Place place )
+    public Unit( IGameDataService dataService, Guid id, UnitDescriptor unit, Coordinate coordinate ) : base( dataService )
     {
-      Guid = id;
-      UnitDescriptor = unit;
-      Place = place;
-      ActionState = UnitActionState.Idle;
-      Mobility = 0m;
-      LastActTime = DateTime.UtcNow;
 
-      SyncRoot = new object();
+      DataObject.ID = id;
+      DataObject.Descriptor = unit.Guid;
+      DataObject.Coordinate = coordinate.ToString();
+      DataObject.State = UnitActionState.Idle;
+      DataObject.Mobility = 0m;
+      DataObject.LastActTime = DateTime.UtcNow;
+
+      Initialze();
     }
 
-    private Unit() { }
 
+    private Unit( IGameDataService dataService, JObject data ) : base( dataService )
+    {
+      JsonObject.Merge( data );
+      Initialze();
+    }
+
+
+    protected virtual void Initialze()
+    {
+      Guid = JsonObject.GuidValue( "ID" ).Value;
+      UnitDescriptor = GameHost.GameRules.GetDataItem<UnitDescriptor>( JsonObject.GuidValue( "Descriptor" ) );
+    }
 
 
     public Guid Guid { get; private set; }
@@ -36,18 +49,30 @@ namespace HelloWorld
     public UnitDescriptor UnitDescriptor { get; private set; }
 
 
-    public UnitActionState ActionState { get; protected set; }
+    public UnitActionState ActionState
+    {
+      get { return DataObject.State; }
+      private set { DataObject.State = value; }
+    }
 
 
     /// <summary>
     /// 剩余的移动力
     /// </summary>
-    public decimal Mobility { get; private set; }
+    public decimal Mobility
+    {
+      get { return DataObject.Mobility; }
+      private set { DataObject.Mobility = value; }
+    }
 
     /// <summary>
     /// 上次行动时间
     /// </summary>
-    public DateTime LastActTime { get; private set; }
+    public DateTime LastActTime
+    {
+      get { return DataObject.LastActTime; }
+      private set { DataObject.LastActTime = value; }
+    }
 
 
 
@@ -96,41 +121,7 @@ namespace HelloWorld
 
 
 
-    public Place Place { get; private set; }
-
-
-    public static Unit FromData( Place place, JObject data )
-    {
-
-      if ( data == null )
-        return null;
-
-      var guid = (Guid) data.GuidValue( "Guid" );
-      var unitDescriptor = GameHost.GameRules.GetDataItem<UnitDescriptor>( data.GuidValue( "UnitID" ) );
-      var lastActTime = data.Value<DateTime>( "LastActTime" );
-      var mobility = data.Value<decimal>( "Mobility" );
-
-      return new Unit
-      {
-        Guid = guid,
-        Place = place,
-        UnitDescriptor = unitDescriptor,
-        LastActTime = lastActTime,
-        Mobility = mobility,
-      };
-    }
-
-    public JObject ToJson()
-    {
-      return JObject.FromObject( new
-      {
-        Guid,
-        UnitID = UnitDescriptor.Guid,
-        LastActTime,
-        Mobility,
-      } );
-    }
-
+    public Coordinate Coordinate { get; private set; }
 
 
     public bool IsSatisfy( UnitRestriction restriction )
@@ -154,11 +145,6 @@ namespace HelloWorld
 
 
 
-    /// <summary>
-    /// 用于同步的对象
-    /// </summary>
-    public object SyncRoot { get; private set; }
-
 
     /// <summary>
     /// 移动单位
@@ -171,7 +157,9 @@ namespace HelloWorld
       Check();
 
 
-      var target = GameHost.DataService.GetPlace( Place.Coordinate.GetCoordinate( direction ) );
+      var target = GameHost.DataService.GetPlace( Coordinate.GetCoordinate( direction ) );
+
+
 
       lock ( SyncRoot )
       {
@@ -182,15 +170,13 @@ namespace HelloWorld
           return false;
 
 
-        if ( Place.MoveUnit( this, target ) )
-        {
-          Mobility -= m;
-          LastActTime = DateTime.UtcNow;
+        Coordinate = target.Coordinate;
+        Mobility -= m;
+        LastActTime = DateTime.UtcNow;
 
-          return true;
-        }
 
-        return false;
+        Save();
+        return true;
       }
     }
 

@@ -54,7 +54,7 @@ namespace HelloWorld
     {
       lock ( place.SyncRoot )
       {
-        return place.Owner.Resources.RemoveItems( Items );
+        return place.GetPlayer().Resources.RemoveItems( Items );
       }
     }
   }

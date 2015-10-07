@@ -11,5 +11,15 @@ namespace HelloWorld
 
     GamePlayer GetPlayer( Guid userId );
 
+
+
+    Unit[] GetUnits( Coordinate coordinate );
+
+    Unit[] GetUnits( GamePlayer player );
+
+
+    void Save( GameDataItem dataItem );
   }
+
+
 }

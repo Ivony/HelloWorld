@@ -41,7 +41,7 @@ namespace HelloWorld
 
     internal void SetActing( PlaceActing acting )
     {
-      if ( Acting != null )
+      if ( Acting != null && acting != null )
         throw new InvalidOperationException();
 
       Acting = acting;
@@ -50,7 +50,11 @@ namespace HelloWorld
 
     private void SaveActing()
     {
-      DataObject.Acting = Acting.ToJson();
+      if ( Acting == null )
+        DataObject.Acting = null;
+
+      else
+        DataObject.Acting = Acting.ToJson();
     }
 
 
@@ -71,6 +75,10 @@ namespace HelloWorld
 
 
 
+
+    /// <summary>
+    /// 获取地块上存在的资源
+    /// </summary>
     public ItemCollection Resources
     {
       get;
@@ -79,18 +87,26 @@ namespace HelloWorld
 
 
     /// <summary>
-    /// 地块的拥有者
+    /// 地块拥有者的玩家 ID
     /// </summary>
-    public Guid Owner
+    public Guid? Owner
     {
       get { return DataObject.Owner; }
       set { DataObject.Owner = value; }
     }
 
 
+    /// <summary>
+    /// 获取地块拥有者的玩家对象
+    /// </summary>
+    /// <returns></returns>
     public GamePlayer GetPlayer()
     {
-      return DataService.GetPlayer( Owner );
+
+      if ( Owner == null )
+        return null;
+
+      return DataService.GetPlayer( Owner.Value );
     }
 
 
@@ -139,7 +155,9 @@ namespace HelloWorld
     {
       lock ( SyncRoot )
       {
-        DataService.GetPlayer( Owner ).Resources.Collect( Resources );
+        var player = GetPlayer();
+        if ( player != null )
+          player.Resources.Collect( Resources );
       }
     }
 
@@ -177,6 +195,11 @@ namespace HelloWorld
 
 
 
+    /// <summary>
+    /// 重写 Equals 方法比较两个地块对象。
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public override bool Equals( object obj )
     {
       var place = obj as Place;
@@ -225,15 +248,26 @@ namespace HelloWorld
     }
 
 
+
+    /// <summary>
+    /// 获取相对于地块所在玩家而言地块的坐标
+    /// </summary>
+    /// <returns></returns>
     public Coordinate GetPlayerCoordinate()
     {
 
       if ( Owner == null )
         throw new InvalidOperationException();
 
-      return GetPlayerCoordinate( DataService.GetPlayer( Owner ) );
+      return GetPlayerCoordinate( GetPlayer() );
     }
 
+
+    /// <summary>
+    /// 获取相对于指定玩家而言地块的坐标
+    /// </summary>
+    /// <param name="player">玩家对象</param>
+    /// <returns></returns>
     public Coordinate GetPlayerCoordinate( GamePlayer player )
     {
 

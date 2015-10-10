@@ -20,6 +20,10 @@ namespace HelloWorld
 
 
 
+
+
+
+
     internal void InitializeData( JObject data )
     {
       JsonObject.Merge( data );
@@ -75,6 +79,9 @@ namespace HelloWorld
       Save();
     }
 
+
+    private Guid _token = Guid.NewGuid();
+    Guid IDataHost.Token { get { return _token; } }
 
     internal string SaveAsJson()
     {

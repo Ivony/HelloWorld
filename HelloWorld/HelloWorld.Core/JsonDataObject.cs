@@ -21,7 +21,7 @@ namespace HelloWorld
 
 
 
-    public JsonDataObject( JObject data, IDataHost host )
+    public JsonDataObject( JObject data, IDataHost host ) : this( host )
     {
       foreach ( var property in data.Properties().Select( ConvertProperty ) )
         Add( property );
@@ -43,6 +43,11 @@ namespace HelloWorld
     {
       if ( data == null )
         return null;
+
+
+      var dataHost = data as IDataHost;
+      if ( dataHost != null && dataHost.Token == host.Token )
+        return data;
 
 
       var obj = data as JObject;
@@ -67,7 +72,11 @@ namespace HelloWorld
     protected override void OnPropertyChanged( string propertyName )
     {
 
-      this[propertyName] = ConvertValue( this[propertyName], _host );
+      var value = ConvertValue( this[propertyName], _host );
+      if ( value == this[propertyName] )
+        return;
+
+      this[propertyName] = value;
 
       _host.Save( this );
     }
@@ -77,7 +86,8 @@ namespace HelloWorld
     {
       _host.Save( this );
     }
+
+    Guid IDataHost.Token { get { return _host.Token; } }
+
   }
-
-
 }

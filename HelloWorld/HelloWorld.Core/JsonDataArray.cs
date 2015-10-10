@@ -33,5 +33,8 @@ namespace HelloWorld
     {
       _host.Save( this );
     }
+
+    Guid IDataHost.Token { get { return _host.Token; } }
+
   }
 }

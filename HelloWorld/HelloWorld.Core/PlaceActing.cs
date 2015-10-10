@@ -16,7 +16,11 @@ namespace HelloWorld
 
     private object _sync = new object();
 
-    protected object SyncRoot { get { return _sync; } }
+
+    /// <summary>
+    /// 用于同步的对象
+    /// </summary>
+    public object SyncRoot { get { return _sync; } }
 
 
 
@@ -26,9 +30,6 @@ namespace HelloWorld
     /// </summary>
     public ActionDescriptorBase ActionDescriptor { get; private set; }
 
-
-
-    private bool disposed = false;
 
     /// <summary>
     /// 在指定地块开始这个活动
@@ -178,7 +179,7 @@ namespace HelloWorld
 
       var descriptor = ActionDescriptor as ActionDescriptor;
       if ( descriptor != null )
-        data["Remaining"] = ( StartOn + descriptor.Requirment.Time ) - DateTime.UtcNow;
+        data["Remaining"] = (StartOn + descriptor.Requirment.Time) - DateTime.UtcNow;
 
       return data;
     }

@@ -10,6 +10,10 @@ namespace HelloWorld
   internal interface IDataHost
   {
 
+
+
+    Guid Token { get; }
+
     void Save( JToken data );
 
   }

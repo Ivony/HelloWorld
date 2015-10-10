@@ -14,8 +14,6 @@ namespace HelloWorld
   /// </summary>
   public class Unit : GameDataItem
   {
-    private JObject data;
-
     public Unit( IGameDataService dataService, Guid id, UnitDescriptor unit, Coordinate coordinate ) : base( dataService )
     {
 
@@ -44,11 +42,22 @@ namespace HelloWorld
     }
 
 
+
+    /// <summary>
+    /// 单位唯一标识
+    /// </summary>
     public Guid Guid { get; private set; }
 
+
+    /// <summary>
+    /// 单位描述对象
+    /// </summary>
     public UnitDescriptor UnitDescriptor { get; private set; }
 
 
+    /// <summary>
+    /// 单位目前活动状态
+    /// </summary>
     public UnitActionState ActionState
     {
       get { return DataObject.State; }
@@ -76,7 +85,9 @@ namespace HelloWorld
 
 
 
-
+    /// <summary>
+    /// 例行检查状态
+    /// </summary>
     public void Check()
     {
 

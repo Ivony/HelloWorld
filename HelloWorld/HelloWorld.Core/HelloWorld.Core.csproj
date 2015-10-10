@@ -98,6 +98,7 @@
     <Compile Include="TextFileMessageService.cs" />
     <Compile Include="TypeResolver.cs" />
     <Compile Include="Unit.cs" />
+    <Compile Include="UnitActionDescriptor.cs" />
     <Compile Include="UnitDescriptor.cs" />
     <Compile Include="IGameUserService.cs" />
     <Compile Include="UnitRestriction.cs" />

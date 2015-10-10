@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,24 @@ namespace HelloWorld
     /// 单位限制
     /// </summary>
     public object Restrict { get; private set; }
+
+    public static UnitRestriction FromData( GameRules rules, JToken data )
+    {
+      var value = data as JValue;
+      if ( value != null )
+      {
+        var unit = rules.GetDataItem<UnitDescriptor>( value.GuidValue() );
+        return new UnitRestriction
+        {
+          Unit = unit,
+        };
+      }
+
+      else
+        return null;
+
+    }
+
 
   }
 }

@@ -14,6 +14,14 @@ namespace HelloWorld
   /// </summary>
   public class Unit : GameDataItem
   {
+
+    /// <summary>
+    /// 创建一个玩家单位对象
+    /// </summary>
+    /// <param name="dataService">游戏数据服务</param>
+    /// <param name="id"></param>
+    /// <param name="unit"></param>
+    /// <param name="coordinate"></param>
     public Unit( IGameDataService dataService, Guid id, UnitDescriptor unit, Coordinate coordinate ) : base( dataService )
     {
 
@@ -28,6 +36,11 @@ namespace HelloWorld
     }
 
 
+    /// <summary>
+    /// 创建一个玩家单位对象
+    /// </summary>
+    /// <param name="dataService">游戏数据服务</param>
+    /// <param name="data">单位数据</param>
     private Unit( IGameDataService dataService, JObject data ) : base( dataService )
     {
       JsonObject.Merge( data );

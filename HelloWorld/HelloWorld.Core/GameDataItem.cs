@@ -7,9 +7,19 @@ using Newtonsoft.Json.Linq;
 
 namespace HelloWorld
 {
+
+
+  /// <summary>
+  /// 定义游戏数据对象的抽象实现
+  /// </summary>
   public abstract class GameDataItem : IDataHost
   {
 
+
+    /// <summary>
+    /// 创建一个游戏数据对象
+    /// </summary>
+    /// <param name="dataService"></param>
     protected GameDataItem( IGameDataService dataService )
     {
       DataService = dataService;
@@ -23,7 +33,10 @@ namespace HelloWorld
 
 
 
-
+    /// <summary>
+    /// 从 JSON 数据中初始化对象
+    /// </summary>
+    /// <param name="data"></param>
     internal void InitializeData( JObject data )
     {
       JsonObject.Merge( data );
@@ -39,6 +52,9 @@ namespace HelloWorld
 
 
 
+    /// <summary>
+    /// 初始化对象
+    /// </summary>
     protected virtual void Initialize()
     {
     }

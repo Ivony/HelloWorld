@@ -12,16 +12,25 @@ namespace HelloWorld
   /// <summary>
   /// 一个游戏活动的描述
   /// </summary>
-  public abstract class ActionDescriptorBase : GameRuleDataItem
+  public abstract class ActionDescriptorBase : GameRuleItem
   {
 
 
 
+    /// <summary>
+    /// 名称
+    /// </summary>
     public abstract string Name { get; }
 
+    /// <summary>
+    /// 描述
+    /// </summary>
     public abstract string Description { get; }
 
 
+    /// <summary>
+    /// 构建活动描述对象
+    /// </summary>
     protected ActionDescriptorBase() : base() { }
 
 

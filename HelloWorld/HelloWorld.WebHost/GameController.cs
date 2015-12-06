@@ -14,6 +14,7 @@ namespace HelloWorld.WebHost
     [HttpGet]
     public async Task<object> Test()
     {
+      await Task.Yield();
       return "Test OK!";
     }
 
@@ -53,6 +54,7 @@ namespace HelloWorld.WebHost
 
     private async Task<Place> GetPlace( string coordinate )
     {
+      await Task.Yield();
       var place = Player.GetPlace( Coordinate.Parse( coordinate ) );
       if ( place.Owner != Player.UserID )
         return null;
@@ -98,6 +100,7 @@ namespace HelloWorld.WebHost
 
     public async Task<object> Info( string oldPassword, string newPassword )
     {
+      await Task.Yield();
       return Host.UserService.TryResetPassword( LoginToken, oldPassword, newPassword );
     }
 
@@ -106,14 +109,10 @@ namespace HelloWorld.WebHost
     [HttpGet]
     public async Task<object> Messages( DateTime? start = null, int count = 100 )
     {
-
+      await Task.Yield();
 
       return Host.MessageService.GetMessages( Player.UserID, start ).Take( count ).ToArray();
-
-
-
     }
-
 
   }
 }

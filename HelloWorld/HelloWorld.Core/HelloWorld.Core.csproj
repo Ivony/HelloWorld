@@ -72,7 +72,7 @@
     <Compile Include="GameHost.cs" />
     <Compile Include="GameMessageEntry.cs" />
     <Compile Include="GameRules.cs" />
-    <Compile Include="GameRuleDataItem.cs" />
+    <Compile Include="GameRuleItem.cs" />
     <Compile Include="GameRulesBase.cs" />
     <Compile Include="JsonDataArray.cs" />
     <Compile Include="JsonDataObject.cs" />

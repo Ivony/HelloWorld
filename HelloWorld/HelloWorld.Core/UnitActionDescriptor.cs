@@ -19,7 +19,7 @@ namespace HelloWorld
     /// <summary>
     /// 单位限制
     /// </summary>
-    public UnitRestriction UnitRestriction
+    public new UnitRestriction UnitRestriction
     {
       get; private set;
     }

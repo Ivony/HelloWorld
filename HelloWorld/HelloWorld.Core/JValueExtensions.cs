@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace HelloWorld
 {
+
+  /// <summary>
+  /// 提供针对 JSON 的扩展方法。
+  /// </summary>
   public static class JValueExtensions
   {
 

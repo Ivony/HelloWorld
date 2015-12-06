@@ -84,22 +84,22 @@ namespace HelloWorld
 
 
     /// <summary>
-    /// 加载游戏数据对象
+    /// 加载游戏规则数据并创建相应描述符对象
     /// </summary>
-    /// <param name="data"></param>
+    /// <param name="data">游戏规则数据</param>
     /// <returns></returns>
-    protected virtual GameRuleDataItem LoadData( JObject data )
+    protected virtual GameRuleItem LoadData( JObject data )
     {
       var type = GetType( data.Value<String>( "Type" ) );
 
       if ( type == null )
         return null;
 
-      if ( typeof( GameRuleDataItem ).IsAssignableFrom( type ) == false )
+      if ( typeof( GameRuleItem ).IsAssignableFrom( type ) == false )
         return null;
 
 
-      var instance = Activator.CreateInstance( type ) as GameRuleDataItem;
+      var instance = Activator.CreateInstance( type ) as GameRuleItem;
       instance.InitializeCore( data );
 
       return instance;
@@ -120,7 +120,7 @@ namespace HelloWorld
 
 
 
-    public override GameRuleDataItem GetDataItem( Guid id )
+    public override GameRuleItem GetDataItem( Guid id )
     {
 
       if ( _collection == null )

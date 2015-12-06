@@ -10,7 +10,7 @@ namespace HelloWorld
   /// <summary>
   /// 定义一个单位描述信息
   /// </summary>
-  public class UnitDescriptor : GameRuleDataItem
+  public class UnitDescriptor : GameRuleItem
   {
 
 

@@ -8,6 +8,11 @@ using System.Threading.Tasks;
 
 namespace HelloWorld
 {
+
+
+  /// <summary>
+  /// 游戏全局规则和对象管理器实现基类
+  /// </summary>
   public abstract class GameRulesBase
   {
 
@@ -15,9 +20,9 @@ namespace HelloWorld
     /// <summary>
     /// 定义一个游戏规则容器，可以按照规则唯一标识获取规则数据
     /// </summary>
-    protected class GameRuleDataItemCollection : KeyedCollection<Guid, GameRuleDataItem>
+    protected class GameRuleDataItemCollection : KeyedCollection<Guid, GameRuleItem>
     {
-      protected override Guid GetKeyForItem( GameRuleDataItem item )
+      protected override Guid GetKeyForItem( GameRuleItem item )
       {
         return item.Guid;
       }
@@ -31,9 +36,9 @@ namespace HelloWorld
 
 
 
-    public abstract GameRuleDataItem GetDataItem( Guid id );
+    public abstract GameRuleItem GetDataItem( Guid id );
 
-    public virtual GameRuleDataItem GetDataItem( Guid? id )
+    public virtual GameRuleItem GetDataItem( Guid? id )
     {
       if ( id == null )
         return null;
@@ -44,7 +49,7 @@ namespace HelloWorld
 
 
 
-    public virtual T GetDataItem<T>( Guid? id ) where T : GameRuleDataItem
+    public virtual T GetDataItem<T>( Guid? id ) where T : GameRuleItem
     {
       if ( id == null )
         return null;

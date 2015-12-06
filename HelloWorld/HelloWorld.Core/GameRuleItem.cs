@@ -11,7 +11,7 @@ namespace HelloWorld
   /// <summary>
   /// 游戏规则对象的基础类型
   /// </summary>
-  public abstract class GameRuleDataItem
+  public abstract class GameRuleItem
   {
 
 
@@ -23,13 +23,19 @@ namespace HelloWorld
 
 
 
-    protected GameRuleDataItem()
+    /// <summary>
+    /// 创建游戏规则对象
+    /// </summary>
+    protected GameRuleItem()
     {
 
     }
 
 
-
+    /// <summary>
+    /// 初始化游戏规则数据
+    /// </summary>
+    /// <param name="data">游戏规则数据</param>
     protected virtual void Initialize( JObject data )
     {
 
@@ -56,13 +62,13 @@ namespace HelloWorld
 
 
     /// <summary>
-    /// 重写 Equals 方法，判断 Guid 是否一致
+    /// 重写 Equals 方法，判断规则 ID 是否一致
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
     public override bool Equals( object obj )
     {
-      var item = obj as GameRuleDataItem;
+      var item = obj as GameRuleItem;
 
       if ( item == null )
         return false;
@@ -76,7 +82,7 @@ namespace HelloWorld
     }
 
 
-    public static bool operator ==( GameRuleDataItem a, GameRuleDataItem b )
+    public static bool operator ==( GameRuleItem a, GameRuleItem b )
     {
 
       if ( object.ReferenceEquals( a, null ) && object.ReferenceEquals( b, null ) )
@@ -89,7 +95,7 @@ namespace HelloWorld
     }
 
 
-    public static bool operator !=( GameRuleDataItem a, GameRuleDataItem b )
+    public static bool operator !=( GameRuleItem a, GameRuleItem b )
     {
 
       if ( object.ReferenceEquals( a, null ) && object.ReferenceEquals( b, null ) )

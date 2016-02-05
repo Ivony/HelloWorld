@@ -14,42 +14,44 @@ namespace HelloWorld.WebHost
 
 
 
-    protected override Task Authentication( HttpRequestMessage request )
+    protected override Task Authentication(HttpRequestMessage request)
     {
       return Task.CompletedTask;
     }
 
 
 
-    public async Task<object> Get( string email, string password, bool writeCookie = false )
+    public async Task<object> Get(string email, string password, bool writeCookie = false)
     {
       string loginToken;
       string mode;
 
 
-      if ( Host.UserService.TryLogin( email, password, out loginToken ) )
+      if (Host.UserService.TryLogin(email, password, out loginToken))
         mode = "Login";
 
-      else if ( Host.UserService.TryRegister( email, password, out loginToken ) )
+      else if (Host.UserService.TryRegister(email, password, out loginToken))
         mode = "Register";
 
       else
         mode = null;
 
-      if ( mode == null )
+      await Task.Yield();
+
+      if (mode == null)
         return new
         {
           Success = false,
-          Reason = "Unknow"
+          Reason = "Unknown"
         };
 
       var result = new { Success = true, Mode = mode, LoginToken = loginToken };
 
-      if ( writeCookie )
+      if (writeCookie)
       {
-        var response = Request.CreateResponse( result );
+        var response = Request.CreateResponse(result);
 
-        response.Headers.AddCookies( new[] { new CookieHeaderValue( GameController.CookieName, loginToken ) { Path = "/", Expires = DateTimeOffset.Now.AddDays( 1 ) } } );
+        response.Headers.AddCookies(new[] { new CookieHeaderValue(GameController.CookieName, loginToken) { Path = "/", Expires = DateTimeOffset.Now.AddDays(1) } });
 
         return response;
       }

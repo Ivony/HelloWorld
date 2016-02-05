@@ -19,14 +19,14 @@ namespace HelloWorld
     /// 创建一个玩家单位对象
     /// </summary>
     /// <param name="dataService">游戏数据服务</param>
-    /// <param name="id"></param>
-    /// <param name="unit"></param>
-    /// <param name="coordinate"></param>
-    public Unit( IGameDataService dataService, Guid id, UnitDescriptor unit, Coordinate coordinate ) : base( dataService )
+    /// <param name="id">单位唯一标识</param>
+    /// <param name="descriptor">单位描述</param>
+    /// <param name="coordinate">单位所在坐标</param>
+    public Unit( IGameDataService dataService, Guid id, UnitDescriptor descriptor, Coordinate coordinate ) : base( dataService )
     {
 
       DataObject.ID = id;
-      DataObject.Descriptor = unit.Guid;
+      DataObject.Descriptor = descriptor.Guid;
       DataObject.Coordinate = coordinate.ToString();
       DataObject.State = UnitActionState.Idle;
       DataObject.Mobility = 0m;
@@ -136,6 +136,11 @@ namespace HelloWorld
     }
 
 
+
+    /// <summary>
+    /// 获取当前单位可以进行的行动
+    /// </summary>
+    /// <returns></returns>
     public ActionDescriptor[] GetActions()
     {
 
@@ -145,9 +150,17 @@ namespace HelloWorld
 
 
 
+    /// <summary>
+    /// 获取单位所在的坐标
+    /// </summary>
     public Coordinate Coordinate { get; private set; }
 
 
+    /// <summary>
+    /// 获取单位是否满足指定的限制条件
+    /// </summary>
+    /// <param name="restriction">限制条件</param>
+    /// <returns>是否满足</returns>
     public bool IsSatisfy( UnitRestriction restriction )
     {
       return UnitDescriptor == restriction.Unit;

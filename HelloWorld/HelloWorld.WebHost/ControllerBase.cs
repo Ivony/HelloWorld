@@ -16,38 +16,41 @@ namespace HelloWorld.WebHost
 
     internal const string CookieName = "hu";
 
-    public async override Task<HttpResponseMessage> ExecuteAsync( HttpControllerContext controllerContext, CancellationToken cancellationToken )
+    public async override Task<HttpResponseMessage> ExecuteAsync(HttpControllerContext controllerContext, CancellationToken cancellationToken)
     {
 
-      await Authentication( controllerContext.Request );
-      return await base.ExecuteAsync( controllerContext, cancellationToken );
+      await Authentication(controllerContext.Request);
+      return await base.ExecuteAsync(controllerContext, cancellationToken);
 
     }
 
-    protected virtual async Task Authentication( HttpRequestMessage request )
+    protected virtual async Task Authentication(HttpRequestMessage request)
     {
-      if ( LoginToken == null )
+      if (LoginToken == null)
       {
         var authorization = request.Headers.Authorization;
 
-        if ( authorization != null && authorization.Scheme == "Hello" )
+        if (authorization != null && authorization.Scheme == "Hello")
           LoginToken = authorization.Parameter;
       }
 
-      if ( LoginToken == null )
+      if (LoginToken == null)
       {
-        var cookie = request.Headers.GetCookies().SelectMany( c => c.Cookies ).Where( c => c.Name == CookieName ).FirstOrDefault();
-        if ( cookie != null )
+        var cookie = request.Headers.GetCookies().SelectMany(c => c.Cookies).Where(c => c.Name == CookieName).FirstOrDefault();
+        if (cookie != null)
           LoginToken = cookie.Value;
 
       }
 
 
-      var userId = Host.UserService.GetUserID( LoginToken );
-      if ( userId == null )
-        throw new HttpResponseException( request.CreateErrorResponse( HttpStatusCode.Unauthorized, "Unauthorized" ) );
+      await Task.Yield();
 
-      Player = Host.DataService.GetPlayer( userId.Value );
+
+      var userId = Host.UserService.GetUserID(LoginToken);
+      if (userId == null)
+        throw new HttpResponseException(request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Unauthorized"));
+
+      Player = Host.DataService.GetPlayer(userId.Value);
     }
 
 

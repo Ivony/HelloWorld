@@ -48,6 +48,14 @@ namespace HelloWorld
     /// </summary>
     /// <param name="dataItem"></param>
     void Save( GameDataItem dataItem );
+
+
+    /// <summary>
+    /// 初始化游戏数据服务
+    /// </summary>
+    void Initialize();
+
+
   }
 
 

@@ -19,13 +19,15 @@ namespace HelloWorld
     /// 创建一个玩家单位对象
     /// </summary>
     /// <param name="dataService">游戏数据服务</param>
+    /// <param name="owner">所属玩家ID</param>
     /// <param name="id">单位唯一标识</param>
     /// <param name="descriptor">单位描述</param>
     /// <param name="coordinate">单位所在坐标</param>
-    public Unit( IGameDataService dataService, Guid id, UnitDescriptor descriptor, Coordinate coordinate ) : base( dataService )
+    public Unit( IGameDataService dataService, Guid id, Guid owner, UnitDescriptor descriptor, Coordinate coordinate ) : base( dataService )
     {
 
       DataObject.ID = id;
+      DataObject.Owner = owner;
       DataObject.Descriptor = descriptor.Guid;
       DataObject.Coordinate = coordinate.ToString();
       DataObject.State = UnitActionState.Idle;
@@ -48,10 +50,21 @@ namespace HelloWorld
     }
 
 
+
+    /// <summary>
+    /// 初始化对象
+    /// </summary>
     protected virtual void Initialze()
     {
       Guid = JsonObject.GuidValue( "ID" ).Value;
       UnitDescriptor = GameHost.GameRules.GetDataItem<UnitDescriptor>( JsonObject.GuidValue( "Descriptor" ) );
+
+
+      var place = DataService.GetPlace( Coordinate );
+      place.EnsureUnit( this );
+
+      var player = DataService.GetPlayer( OwnerID );
+      player.EnsureUnit( this );
     }
 
 
@@ -66,6 +79,8 @@ namespace HelloWorld
     /// 单位描述对象
     /// </summary>
     public UnitDescriptor UnitDescriptor { get; private set; }
+
+
 
 
     /// <summary>
@@ -153,7 +168,31 @@ namespace HelloWorld
     /// <summary>
     /// 获取单位所在的坐标
     /// </summary>
-    public Coordinate Coordinate { get; private set; }
+    public Coordinate Coordinate
+    {
+      get
+      {
+        return JsonObject.CoordinateValue( "Coordinate" );
+      }
+
+      private set
+      {
+        if ( value == null )
+          throw new ArgumentNullException( "null" );
+
+        JsonObject["Coordinate"] = value.ToString();
+      }
+    }
+
+
+    /// <summary>
+    /// 单位所有者 ID
+    /// </summary>
+    public Guid OwnerID
+    {
+      get { return JsonObject.GuidValue( "Owner" ).Value; }
+    }
+
 
 
     /// <summary>

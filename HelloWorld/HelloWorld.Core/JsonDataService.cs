@@ -242,16 +242,55 @@ namespace HelloWorld
       }
     }
 
+    /// <summary>
+    /// 获取指定地块所有单位
+    /// </summary>
+    /// <param name="coordinate">地块坐标</param>
+    /// <returns></returns>
     public Unit[] GetUnits( Coordinate coordinate )
     {
-      throw new NotImplementedException();
+      lock ( _unitSync )
+      {
+
+        List<Unit> units;
+
+        if ( _placeUnits.TryGetValue( coordinate, out units ) )
+          return units.ToArray();
+
+        else
+          return new Unit[0];
+
+      }
     }
 
+
+
+    /// <summary>
+    /// 获取指定玩家所有单位
+    /// </summary>
+    /// <param name="player">玩家对象</param>
+    /// <returns></returns>
     public Unit[] GetUnits( GamePlayer player )
     {
-      throw new NotImplementedException();
+      lock ( _unitSync )
+      {
+
+        List<Unit> units;
+
+        if ( _playerUnits.TryGetValue( player.UserID, out units ) )
+          return units.ToArray();
+
+        else
+          return new Unit[0];
+
+      }
     }
 
+
+    /// <summary>
+    /// 保存游戏数据对象
+    /// </summary>
+    /// <param name="dataItem"></param>
     public void Save( GameDataItem dataItem )
     {
       var unit = dataItem as Unit;
@@ -269,22 +308,53 @@ namespace HelloWorld
       {
         Save( place );
       }
-
-
-
     }
 
+
+
+    /// <summary>
+    /// 保存游戏地块对象
+    /// </summary>
+    /// <param name="place"></param>
     private void Save( Place place )
     {
       var filepath = Path.Combine( DataRoot, "places", place.Coordinate + ".json" );
       File.WriteAllText( filepath, place.SaveAsJson() );
     }
 
+
+    /// <summary>
+    /// 保存游戏单位对象
+    /// </summary>
+    /// <param name="unit"></param>
     private void Save( Unit unit )
     {
       var filepath = Path.Combine( DataRoot, "units", unit.Guid + ".json" );
       File.WriteAllText( filepath, unit.SaveAsJson() );
     }
 
+
+
+    private object _unitSync = new object();
+
+
+    private Dictionary<Guid, List<Unit>> _playerUnits = new Dictionary<Guid, List<Unit>>();
+
+    private Dictionary<Coordinate, List<Unit>> _placeUnits = new Dictionary<Coordinate, List<Unit>>();
+
+    /// <summary>
+    /// 初始化游戏数据服务
+    /// </summary>
+    void IGameDataService.Initialize()
+    {
+
+      InitializeUnits();
+
+    }
+
+    private void InitializeUnits()
+    {
+      throw new NotImplementedException();
+    }
   }
 }

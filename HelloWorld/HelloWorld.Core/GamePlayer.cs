@@ -101,6 +101,16 @@ namespace HelloWorld
     }
 
 
+
+    /// <summary>
+    /// 确保指定的单位在自己的单位列表中
+    /// </summary>
+    /// <param name="unit"></param>
+    internal void EnsureUnit( Unit unit )
+    {
+      throw new NotImplementedException();
+    }
+
     public static bool operator !=( GamePlayer player1, GamePlayer player2 )
     {
 

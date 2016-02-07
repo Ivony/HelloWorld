@@ -100,7 +100,7 @@ namespace HelloWorld
 
 
       var instance = Activator.CreateInstance( type ) as GameRuleItem;
-      instance.InitializeCore( data );
+      instance.InitializeData( data );
 
       return instance;
     }

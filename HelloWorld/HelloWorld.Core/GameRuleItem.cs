@@ -122,7 +122,7 @@ namespace HelloWorld
     protected bool AlreadyInitialized { get; private set; }
 
 
-    internal void InitializeCore( JObject data )
+    internal void InitializeData( JObject data )
     {
       Initialize( data );
 

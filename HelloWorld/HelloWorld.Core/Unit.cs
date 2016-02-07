@@ -44,10 +44,8 @@ namespace HelloWorld
     /// </summary>
     /// <param name="dataService">游戏数据服务</param>
     /// <param name="data">单位数据</param>
-    private Unit( IGameDataService dataService, JObject data ) : base( dataService )
+    internal Unit( IGameDataService dataService ) : base( dataService )
     {
-      JsonObject.Merge( data );
-      Initialze();
     }
 
 
@@ -211,6 +209,13 @@ namespace HelloWorld
     {
       get { return JsonObject.GuidValue( "Owner" ).Value; }
     }
+
+
+
+    /// <summary>
+    /// 单位所有者玩家对象
+    /// </summary>
+    public GamePlayer Player { get { return DataService.GetPlayer( OwnerID ); } }
 
 
 

@@ -262,7 +262,7 @@ namespace HelloWorld
       lock ( _unitSync )
       {
 
-        List<Unit> units;
+        HashSet<Unit> units;
 
         if ( _placeUnits.TryGetValue( coordinate, out units ) )
         {
@@ -290,11 +290,16 @@ namespace HelloWorld
       lock ( _unitSync )
       {
 
-        List<Unit> units;
+        HashSet<Unit> units;
 
         if ( _playerUnits.TryGetValue( player.UserID, out units ) )
-          return units.ToArray();
+        {
+          var invalids = units.Where( item => item.OwnerID != player.UserID ).ToArray();//检查单位是否还属于这个玩家。
+          foreach ( var item in invalids )
+            units.Remove( item );
 
+          return units.ToArray();
+        }
         else
           return new Unit[0];
 
@@ -344,6 +349,7 @@ namespace HelloWorld
     /// <param name="unit"></param>
     private void Save( Unit unit )
     {
+      RefreshUnitCahce( unit );
       var filepath = Path.Combine( DataRoot, "units", unit.Guid + ".json" );
       File.WriteAllText( filepath, unit.SaveAsJson() );
     }
@@ -353,9 +359,9 @@ namespace HelloWorld
     private object _unitSync = new object();
 
 
-    private Dictionary<Guid, List<Unit>> _playerUnits = new Dictionary<Guid, List<Unit>>();
+    private Dictionary<Guid, HashSet<Unit>> _playerUnits = new Dictionary<Guid, HashSet<Unit>>();
 
-    private Dictionary<Coordinate, List<Unit>> _placeUnits = new Dictionary<Coordinate, List<Unit>>();
+    private Dictionary<Coordinate, HashSet<Unit>> _placeUnits = new Dictionary<Coordinate, HashSet<Unit>>();
 
     /// <summary>
     /// 初始化游戏数据服务
@@ -369,7 +375,38 @@ namespace HelloWorld
 
     private void InitializeUnits()
     {
-      throw new NotImplementedException();
+
+      foreach ( var file in Directory.EnumerateFiles( Path.Combine( DataRoot, "units" ) ) )
+      {
+        var data = JObject.Parse( File.ReadAllText( file ) );
+        var unit = new Unit( this );
+
+        unit.InitializeData( data );
+
+        RefreshUnitCahce( unit );
+      }
+    }
+
+    private void RefreshUnitCahce( Unit unit )
+    {
+
+      lock ( _unitSync )
+      {
+
+        HashSet<Unit> set;
+
+        if ( _playerUnits.TryGetValue( unit.OwnerID, out set ) == false )
+          _playerUnits[unit.OwnerID] = set = new HashSet<Unit>();
+
+        set.Add( unit );
+
+
+
+        if ( _placeUnits.TryGetValue( unit.Coordinate, out set ) == false )
+          _placeUnits[unit.Coordinate] = set = new HashSet<Unit>();
+
+        set.Add( unit );
+      }
     }
   }
 }

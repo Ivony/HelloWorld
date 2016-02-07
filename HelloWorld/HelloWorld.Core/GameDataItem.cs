@@ -30,6 +30,16 @@ namespace HelloWorld
 
 
 
+    /// <summary>
+    /// 创建一个游戏数据对象
+    /// </summary>
+    /// <param name="dataService">数据服务</param>
+    /// <param name="host">数据对象宿主</param>
+    protected GameDataItem( IGameDataService dataService, GameDataItem host ) : this( dataService )
+    {
+
+    }
+
 
 
 

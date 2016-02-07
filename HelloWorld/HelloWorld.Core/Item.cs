@@ -14,6 +14,11 @@ namespace HelloWorld
   {
 
 
+    /// <summary>
+    /// 创建 Item 对象
+    /// </summary>
+    /// <param name="descriptor">物品描述</param>
+    /// <param name="quantity">物品数量</param>
     public Item( ItemDescriptor descriptor, int quantity )
     {
       ItemDescriptor = descriptor;
@@ -22,8 +27,14 @@ namespace HelloWorld
 
 
 
+    /// <summary>
+    /// 物品描述
+    /// </summary>
     public ItemDescriptor ItemDescriptor { get; private set; }
 
+    /// <summary>
+    /// 物品数量
+    /// </summary>
     public int Quantity { get; private set; }
 
 

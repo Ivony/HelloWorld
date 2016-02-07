@@ -111,8 +111,8 @@ namespace HelloWorld
     /// 从 JSON 数据中读取
     /// </summary>
     /// <param name="place">活动所处地块</param>
-    /// <param name="data"></param>
-    /// <returns></returns>
+    /// <param name="data">活动数据</param>
+    /// <returns>活动对象</returns>
     public static PlaceActing FromData( Place place, JObject data )
     {
 

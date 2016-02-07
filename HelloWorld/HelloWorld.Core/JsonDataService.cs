@@ -42,6 +42,16 @@ namespace HelloWorld
 
 
 
+    private INameService _nameService = new DefaultNameService();
+
+    /// <summary>
+    /// 获取名称服务
+    /// </summary>
+    public INameService NameService
+    {
+      get { return _nameService; }
+    }
+
 
     private sealed class JsonDataItem : JObject
     {

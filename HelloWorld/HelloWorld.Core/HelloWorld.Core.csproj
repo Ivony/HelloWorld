@@ -66,6 +66,7 @@
     <Compile Include="Coordinate.cs" />
     <Compile Include="CoordinateJsonConverter.cs" />
     <Compile Include="ActionReturnsDescriptor.cs" />
+    <Compile Include="DefaultNameService.cs" />
     <Compile Include="GameDataItem.cs" />
     <Compile Include="IDataHost.cs" />
     <Compile Include="IGameDataService.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="GameRules.cs" />
     <Compile Include="GameRuleItem.cs" />
     <Compile Include="GameRulesBase.cs" />
+    <Compile Include="INameService.cs" />
     <Compile Include="JsonDataArray.cs" />
     <Compile Include="JsonDataObject.cs" />
     <Compile Include="JsonDataResolver.cs" />
@@ -95,6 +97,7 @@
     <Compile Include="Probability.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ActionInvestmentDescriptor.cs" />
+    <Compile Include="RandomExtensions.cs" />
     <Compile Include="ResourceDataResolver.cs" />
     <Compile Include="TextFileMessageService.cs" />
     <Compile Include="TypeResolver.cs" />

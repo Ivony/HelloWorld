@@ -12,7 +12,7 @@ namespace HelloWorld
   /// <summary>
   /// 代表一个玩家的单位
   /// </summary>
-  public class Unit : GameDataItem
+  public class Unit : GameDataItem, IDisposable
   {
 
     /// <summary>
@@ -23,10 +23,11 @@ namespace HelloWorld
     /// <param name="id">单位唯一标识</param>
     /// <param name="descriptor">单位描述</param>
     /// <param name="coordinate">单位所在坐标</param>
-    public Unit( IGameDataService dataService, Guid id, Guid owner, UnitDescriptor descriptor, Coordinate coordinate ) : base( dataService )
+    public Unit( IGameDataService dataService, Guid id, string name, Guid owner, UnitDescriptor descriptor, Coordinate coordinate ) : base( dataService )
     {
 
       DataObject.ID = id;
+      DataObject.Name = name;
       DataObject.Owner = owner;
       DataObject.Descriptor = descriptor.Guid;
       DataObject.Coordinate = coordinate.ToString();
@@ -57,9 +58,13 @@ namespace HelloWorld
     protected virtual void Initialze()
     {
       Guid = JsonObject.GuidValue( "ID" ).Value;
+      Name = (string) DataObject.Name;
+
+      if ( Name == null )
+        Name = DataService.NameService.AllocateName();
+
+
       UnitDescriptor = GameHost.GameRules.GetDataItem<UnitDescriptor>( JsonObject.GuidValue( "Descriptor" ) );
-
-
       var place = DataService.GetPlace( Coordinate );
       place.EnsureUnit( this );
 
@@ -73,6 +78,20 @@ namespace HelloWorld
     /// 单位唯一标识
     /// </summary>
     public Guid Guid { get; private set; }
+
+
+
+    /// <summary>
+    /// 单位名字，用于称呼和标识单位
+    /// </summary>
+    public string Name { get; private set; }
+
+
+
+    public void Rename( string name )
+    {
+      DataObject.Name = Name = name;
+    }
 
 
     /// <summary>
@@ -270,6 +289,9 @@ namespace HelloWorld
       return Guid.GetHashCode();
     }
 
+    public void Dispose()
+    {
+    }
   }
 
 

@@ -11,6 +11,12 @@ namespace HelloWorld
   /// </summary>
   public interface IGameDataService
   {
+
+    /// <summary>
+    /// 获取游戏名称服务
+    /// </summary>
+    INameService NameService { get; }
+
     /// <summary>
     /// 获取游戏地块对象
     /// </summary>

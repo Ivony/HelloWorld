@@ -255,8 +255,13 @@ namespace HelloWorld
         List<Unit> units;
 
         if ( _placeUnits.TryGetValue( coordinate, out units ) )
-          return units.ToArray();
+        {
+          var invalids = units.Where( item => item.Coordinate != coordinate ).ToArray();//检查单位是否还在这个坐标。
+          foreach ( var item in invalids )
+            units.Remove( item );
 
+          return units.ToArray();
+        }
         else
           return new Unit[0];
 

@@ -256,6 +256,20 @@ namespace HelloWorld
       }
     }
 
+    public override bool Equals( object obj )
+    {
+      var unit = obj as Unit;
+      if ( unit == null )
+        return false;
+
+      return unit.Guid == this.Guid;
+    }
+
+    public override int GetHashCode()
+    {
+      return Guid.GetHashCode();
+    }
+
   }
 
 

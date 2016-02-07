@@ -39,6 +39,12 @@ namespace HelloWorld
     }
 
 
+    /// <summary>
+    /// 将 Json 数据包装成相应的数据对象
+    /// </summary>
+    /// <param name="data">要包装的 JSON 数据对象</param>
+    /// <param name="host">s游戏数据宿主对象</param>
+    /// <returns>转换好的对象</returns>
     internal static JToken ConvertValue( JToken data, IDataHost host )
     {
       if ( data == null )
@@ -68,6 +74,11 @@ namespace HelloWorld
     }
 
 
+
+    protected override void OnPropertyChanging( string propertyName )
+    {
+      base.OnPropertyChanging( propertyName );
+    }
 
     protected override void OnPropertyChanged( string propertyName )
     {

@@ -66,6 +66,33 @@ namespace HelloWorld.WebHost
     }
 
 
+    [HttpGet]
+    public async Task<object> Unit()
+    {
+
+      await Task.Yield();
+
+
+      var units = GameHost.DataService.GetUnits( Player );
+      return units.Select( item => new { item.Guid, item.Name } );
+
+    }
+
+
+    [HttpGet]
+    public async Task<object> Unit( Guid id )
+    {
+      await Task.Yield();
+
+
+      var unit = GameHost.DataService.GetUnits( Player ).FirstOrDefault( item => item.Guid == id );
+      if ( unit == null )
+        return null;
+
+      return unit.GetInfo();
+    }
+
+
 
     [HttpGet]
     public async Task<object> Acting( string coordinate, Guid id )

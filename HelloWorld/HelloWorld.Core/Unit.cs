@@ -70,6 +70,23 @@ namespace HelloWorld
       player.EnsureUnit( this );
     }
 
+    /// <summary>
+    /// 获取用于输出给客户端的信息
+    /// </summary>
+    /// <returns></returns>
+    public object GetInfo()
+    {
+      return new
+      {
+        Guid,
+        Name,
+        Coordinate,
+        Mobility,
+        ActionState = ActionState.ToString(),
+        Descriptor = UnitDescriptor.GetInfo(),
+      };
+    }
+
 
 
     /// <summary>

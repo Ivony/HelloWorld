@@ -275,6 +275,12 @@ namespace HelloWorld
       }
     }
 
+
+    /// <summary>
+    /// 重写 Equals 方法比较两个单位对象的 GUID
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public override bool Equals( object obj )
     {
       var unit = obj as Unit;

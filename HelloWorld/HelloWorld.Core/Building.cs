@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace HelloWorld
 {
@@ -10,8 +11,37 @@ namespace HelloWorld
   /// <summary>
   /// 定义一个实际存在的建筑
   /// </summary>
-  public class Building
+  public class Building : GameDataItem
   {
+
+
+    internal Building( Place place, IGameDataService dataService ) : base( dataService )
+    {
+      Place = place;
+    }
+
+
+    public Building( Place place, BuildingDescriptor descriptor, IGameDataService dataService ) : base( dataService )
+    {
+
+      Place = place;
+      BuildingDescriptor = descriptor;
+
+    }
+
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    protected override void Initialize()
+    {
+      base.Initialize();
+
+      BuildingDescriptor = GameHost.GameRules.GetDataItem<BuildingDescriptor>( JsonObject.GuidValue( "Descriptor" ) );
+
+    }
+
 
     /// <summary>
     /// 建筑物描述对象

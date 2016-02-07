@@ -60,6 +60,21 @@ namespace HelloWorld
 
 
 
+
+    /// <summary>
+    /// 创建单位对象
+    /// </summary>
+    /// <param name="dataService">数据服务</param>
+    /// <param name="owner">单位所属玩家</param>
+    /// <param name="coordinate">单位所在坐标</param>
+    /// <returns></returns>
+    public Unit CreateUnit( IGameDataService dataService, Guid owner, Coordinate coordinate )
+    {
+      return new Unit( dataService, owner, dataService.NameService.AllocateName(), owner, this, coordinate );
+    }
+
+
+
     /// <summary>
     /// 获取单位可以执行的操作列表
     /// </summary>

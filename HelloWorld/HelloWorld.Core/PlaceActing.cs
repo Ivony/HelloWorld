@@ -110,7 +110,8 @@ namespace HelloWorld
     /// <summary>
     /// 从 JSON 数据中读取
     /// </summary>
-    /// <param name="jObject"></param>
+    /// <param name="place">活动所处地块</param>
+    /// <param name="data"></param>
     /// <returns></returns>
     public static PlaceActing FromData( Place place, JObject data )
     {
@@ -179,7 +180,7 @@ namespace HelloWorld
 
       var descriptor = ActionDescriptor as ActionDescriptor;
       if ( descriptor != null )
-        data["Remaining"] = (StartOn + descriptor.Requirment.Time) - DateTime.UtcNow;
+        data["Remaining"] = ( StartOn + descriptor.Requirment.Time ) - DateTime.UtcNow;
 
       return data;
     }

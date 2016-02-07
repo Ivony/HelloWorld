@@ -100,6 +100,7 @@
     <Compile Include="RandomExtensions.cs" />
     <Compile Include="ResourceDataResolver.cs" />
     <Compile Include="TextFileMessageService.cs" />
+    <Compile Include="Topography.cs" />
     <Compile Include="TypeResolver.cs" />
     <Compile Include="Unit.cs" />
     <Compile Include="UnitActionDescriptor.cs" />

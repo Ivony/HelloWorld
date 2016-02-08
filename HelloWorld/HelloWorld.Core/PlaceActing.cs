@@ -180,7 +180,7 @@ namespace HelloWorld
 
       var descriptor = ActionDescriptor as ActionDescriptor;
       if ( descriptor != null )
-        data["Remaining"] = ( StartOn + descriptor.Requirment.Time ) - DateTime.UtcNow;
+        data["Remaining"] = ( StartOn + descriptor.Requirement.Time ) - DateTime.UtcNow;
 
       return data;
     }

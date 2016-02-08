@@ -22,7 +22,7 @@ namespace HelloWorld
       base.Initialize( data );
 
       BuildingRestriction = BuildingRestriction.FromData( GameHost.GameRules, data["Building"] );
-      Requirment = ActionInvestmentDescriptor.FromData( (JObject) data["Requirment"] );
+      Requirement = ActionInvestmentDescriptor.FromData( (JObject) data["Requirement"] );
       Returns = ActionReturnsDescriptor.FromData( (JObject) data["Returns"] );
 
 
@@ -64,7 +64,7 @@ namespace HelloWorld
     /// <summary>
     /// 生产所需资源列表
     /// </summary>
-    public ActionInvestmentDescriptor Requirment { get; private set; }
+    public ActionInvestmentDescriptor Requirement { get; private set; }
 
 
     /// <summary>
@@ -106,7 +106,7 @@ namespace HelloWorld
         if ( place.Acting != null )
           throw new InvalidOperationException();
 
-        if ( Requirment.TryInvest( place ) == false )
+        if ( Requirement.TryInvest( place ) == false )
           return null;
       }
 
@@ -122,7 +122,7 @@ namespace HelloWorld
     /// <returns>活动是否已经完成</returns>
     public override bool TryComplete( PlaceActing acting )
     {
-      var completedOn = acting.StartOn + Requirment.Time;
+      var completedOn = acting.StartOn + Requirement.Time;
 
       if ( completedOn > DateTime.UtcNow )
         return false;
@@ -150,7 +150,7 @@ namespace HelloWorld
         Guid,
         Name,
         Description,
-        Requirment,
+        Requirement,
         Returns,
       };
     }
@@ -169,7 +169,7 @@ namespace HelloWorld
       else if ( Returns.Items != null && Returns.Items.Any() )
       {
 
-        if ( Requirment.Items != null && Requirment.Items.Any() )
+        if ( Requirement.Items != null && Requirement.Items.Any() )
           builder.Append( "生产 " );
 
         else

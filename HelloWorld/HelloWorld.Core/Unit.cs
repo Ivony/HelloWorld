@@ -15,6 +15,7 @@ namespace HelloWorld
   public class Unit : GameDataItem, IDisposable
   {
 
+
     /// <summary>
     /// 创建一个玩家单位对象
     /// </summary>
@@ -23,7 +24,7 @@ namespace HelloWorld
     /// <param name="id">单位唯一标识</param>
     /// <param name="descriptor">单位描述</param>
     /// <param name="coordinate">单位所在坐标</param>
-    public Unit( IGameDataService dataService, Guid id, string name, Guid owner, UnitDescriptor descriptor, Coordinate coordinate ) : base( dataService )
+    private Unit( IGameDataService dataService, UnitDescriptor descriptor, Guid owner, Coordinate coordinate, Guid id, string name ) : base( dataService )
     {
 
       DataObject.ID = id;
@@ -37,6 +38,16 @@ namespace HelloWorld
 
       Initialze();
     }
+
+
+
+    internal static Unit CreateUnit( IGameDataService dataService, UnitDescriptor descriptor, Guid owner, Coordinate coordinate, Guid? id = null, string name = null )
+    {
+      var unit = new Unit( dataService, descriptor, owner, coordinate, id ?? Guid.NewGuid(), name );
+      unit.Save();//通知游戏数据服务保存这个单位对象
+      return unit;
+    }
+
 
 
     /// <summary>

@@ -84,10 +84,8 @@ namespace HelloWorld
     {
 
       var value = ConvertValue( this[propertyName], _host );
-      if ( value == this[propertyName] )
-        return;
-
-      this[propertyName] = value;
+      if ( value != this[propertyName] )
+        this[propertyName] = value;
 
       _host.Save( this );
     }

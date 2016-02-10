@@ -60,8 +60,6 @@ namespace HelloWorld
     /// 初始化游戏数据服务
     /// </summary>
     void Initialize();
-
-
   }
 
 

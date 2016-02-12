@@ -14,7 +14,7 @@ namespace HelloWorld
   {
 
 
-    public static void Initialize( GameRules rules, IGameDataService dataService, IGameMessageService messageService )
+    public static void Initialize( GameRulesBase rules, IGameDataService dataService, IGameMessageService messageService )
     {
       if ( rules == null )
         throw new ArgumentNullException( "rules" );
@@ -34,7 +34,7 @@ namespace HelloWorld
     }
 
 
-    public static GameRules GameRules { get; private set; }
+    public static GameRulesBase GameRules { get; private set; }
 
 
     public static IGameDataService DataService { get; private set; }

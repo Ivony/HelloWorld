@@ -17,16 +17,13 @@ namespace HelloWorld
   {
 
 
-    /// <summary>
-    /// 创建一个游戏数据对象
-    /// </summary>
-    /// <param name="dataService"></param>
-    protected GameDataItem( IGameDataService dataService )
+
+    protected GameDataItem()
     {
-      DataService = dataService;
       SyncRoot = new object();
 
       _data = new JsonDataObject( this );
+
     }
 
 
@@ -36,8 +33,12 @@ namespace HelloWorld
     /// </summary>
     /// <param name="dataService">数据服务</param>
     /// <param name="host">数据对象宿主</param>
-    protected GameDataItem( IGameDataService dataService, GameDataItem host ) : this( dataService )
+    protected GameDataItem( IGameDataService dataService, GameDataItem host )
     {
+      DataService = dataService;
+
+
+      throw new NotImplementedException();
 
     }
 
@@ -48,8 +49,10 @@ namespace HelloWorld
     /// 从 JSON 数据中初始化对象
     /// </summary>
     /// <param name="data"></param>
-    internal void InitializeData( JObject data )
+    internal void InitializeData( IGameDataService dataService, JObject data )
     {
+      DataService = dataService;
+
       using ( BeginSaveTransaction() )
       {
         JsonObject.Merge( data );
@@ -66,11 +69,25 @@ namespace HelloWorld
 
 
 
+
+    public bool Initailzied { get; private set; }
+
+
     /// <summary>
     /// 初始化对象
     /// </summary>
     protected virtual void Initialize()
     {
+      DataObject.Type = GetType().FullName;
+
+      Initailzied = true;
+    }
+
+
+    protected void EnsureInitialized()
+    {
+      if ( Initailzied == false )
+        throw new ObjectDisposedException( "对象尚未初始化或者已被销毁" );
     }
 
 
@@ -105,6 +122,8 @@ namespace HelloWorld
         if ( _saveTransaction != null )
           return;
 
+
+        EnsureInitialized();
         DataService.Save( this );
       }
     }

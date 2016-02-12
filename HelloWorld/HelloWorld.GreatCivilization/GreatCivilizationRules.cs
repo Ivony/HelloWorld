@@ -49,5 +49,11 @@ namespace HelloWorld.GreatCivilization
       player.GetPlace( Coordinate.Origin ).Building = GetDataItem<BuildingDescriptor>( palace );
     }
 
+
+    public override Place CreatePlace( Coordinate coordinate )
+    {
+      return new CivPlace( coordinate );
+    }
+
   }
 }

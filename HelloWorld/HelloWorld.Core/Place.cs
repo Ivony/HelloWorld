@@ -7,23 +7,25 @@ using Newtonsoft.Json.Linq;
 namespace HelloWorld
 {
   /// <summary>
-  /// 代表一个地块
+  /// 代表一个地块的抽象
   /// </summary>
-  public class Place : GameDataItem
+  public abstract class Place : PlaceBase
   {
 
-    public Place( IGameDataService service, Coordinate coordinate ) : base( service )
-    {
-      Coordinate = coordinate;
-    }
+
+    /// <summary>
+    /// 创建 Place 对象
+    /// </summary>
+    /// <param name="coordinate">地块所处坐标</param>
+    protected Place( Coordinate coordinate ) : base( coordinate ) { }
 
 
 
-
+    /// <summary>
+    /// 初始化 Place 对象
+    /// </summary>
     protected override void Initialize()
     {
-      base.Initialize();
-
       {
         var items = ItemListJsonConverter.FromJson( (JObject) DataObject.Resources );
         Resources = new ItemCollection( items, collection =>
@@ -35,6 +37,7 @@ namespace HelloWorld
 
       Acting = PlaceActing.FromData( this, (JObject) DataObject.Acting );
 
+      base.Initialize();
     }
 
 
@@ -48,6 +51,7 @@ namespace HelloWorld
       SaveActing();
     }
 
+
     private void SaveActing()
     {
       if ( Acting == null )
@@ -60,10 +64,6 @@ namespace HelloWorld
 
 
     /// <summary>
-    /// 地块坐标
-    /// </summary>
-    public Coordinate Coordinate { get; private set; }
-
     /// <summary>
     /// 地块上的建筑
     /// </summary>
@@ -140,7 +140,7 @@ namespace HelloWorld
     /// <summary>
     /// 对地块执行例行检查，处理例行事项
     /// </summary>
-    public void Check()
+    public virtual void Check()
     {
       lock ( SyncRoot )
       {
@@ -253,7 +253,9 @@ namespace HelloWorld
     public virtual ActionDescriptor[] GetActions()
     {
 
-      return GameHost.GameRules.GetActions( this );
+      var actions = Building.GetActions().AsEnumerable();
+
+      return actions.ToArray();
     }
 
 

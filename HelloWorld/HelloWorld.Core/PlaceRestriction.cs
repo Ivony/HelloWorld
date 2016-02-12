@@ -7,21 +7,31 @@ using Newtonsoft.Json.Linq;
 
 namespace HelloWorld
 {
-  public sealed class BuildingRestriction
+
+  /// <summary>
+  /// 代表一个地块限制
+  /// </summary>
+  public sealed class PlaceRestriction
   {
 
 
-    private BuildingRestriction() { }
+    private PlaceRestriction() { }
 
 
 
-    public static BuildingRestriction FromData( GameRules rules, JToken data )
+    /// <summary>
+    /// 从 JSON 数据中还原地块限制对象
+    /// </summary>
+    /// <param name="rules">游戏规则引擎</param>
+    /// <param name="data">数据</param>
+    /// <returns>地块限制对象</returns>
+    public static PlaceRestriction FromData( GameRulesBase rules, JToken data )
     {
       var value = data as JValue;
       if ( value != null )
       {
         var building = rules.GetDataItem<BuildingDescriptor>( value.GuidValue() );
-        return new BuildingRestriction
+        return new PlaceRestriction
         {
           Building = building,
         };

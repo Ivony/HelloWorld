@@ -21,7 +21,7 @@ namespace HelloWorld
     {
       base.Initialize( data );
 
-      BuildingRestriction = BuildingRestriction.FromData( GameHost.GameRules, data["Building"] );
+      BuildingRestriction = PlaceRestriction.FromData( GameHost.GameRules, data["Building"] );
       Requirement = ActionInvestmentDescriptor.FromData( (JObject) data["Requirement"] );
       Returns = ActionReturnsDescriptor.FromData( (JObject) data["Returns"] );
 
@@ -53,7 +53,7 @@ namespace HelloWorld
     /// <summary>
     /// 此生产过程所依赖的建筑/场所
     /// </summary>
-    public BuildingRestriction BuildingRestriction { get; private set; }
+    public PlaceRestriction BuildingRestriction { get; private set; }
 
 
     /// <summary>

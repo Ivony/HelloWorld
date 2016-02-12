@@ -48,8 +48,10 @@
     <Compile Include="Factory.cs" />
     <Compile Include="GreatCivilizationRules.cs" />
     <Compile Include="NewWorker.cs" />
+    <Compile Include="CivPlace.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Terrain.cs" />
+    <Compile Include="Worker.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HelloWorld.Core\HelloWorld.Core.csproj">

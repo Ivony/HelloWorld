@@ -247,8 +247,8 @@ namespace HelloWorld
         var filepath = Path.ChangeExtension( Path.Combine( placesDirectory, coordinate.ToString() ), _extensions );
         var data = JsonDataItem.LoadData( filepath, new { Building = GameHost.GameRules.InitiationBuilding.Guid, CheckPoint = DateTime.UtcNow } );
 
-        place = new Place( this, coordinate );
-        place.InitializeData( data );
+        place = GameHost.GameRules.CreatePlace( coordinate );
+        place.InitializeData( this, data );
 
         return place;
       }
@@ -296,7 +296,7 @@ namespace HelloWorld
 
         if ( _playerUnits.TryGetValue( player.UserID, out units ) )
         {
-          var invalids = units.Where( item => item.OwnerID != player.UserID ).ToArray();//检查单位是否还属于这个玩家。
+          var invalids = units.Where( item => item.Owner != player.UserID ).ToArray();//检查单位是否还属于这个玩家。
           foreach ( var item in invalids )
             units.Remove( item );
 
@@ -385,9 +385,11 @@ namespace HelloWorld
       foreach ( var file in Directory.EnumerateFiles( Path.Combine( DataRoot, "units" ) ) )
       {
         var data = JObject.Parse( File.ReadAllText( file ) );
-        var unit = new Unit( this );
+        var type = GameHost.GameRules.GetType( (string) data["Type"] );
 
-        unit.InitializeData( data );
+        var unit = (Unit) Activator.CreateInstance( type );
+        unit.InitializeData( this, data );
+
 
         RefreshUnitCahce( unit );
       }
@@ -401,8 +403,8 @@ namespace HelloWorld
 
         HashSet<Unit> set;
 
-        if ( _playerUnits.TryGetValue( unit.OwnerID, out set ) == false )
-          _playerUnits[unit.OwnerID] = set = new HashSet<Unit>();
+        if ( _playerUnits.TryGetValue( unit.Owner, out set ) == false )
+          _playerUnits[unit.Owner] = set = new HashSet<Unit>();
 
         set.Add( unit );
 

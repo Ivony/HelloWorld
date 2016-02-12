@@ -16,17 +16,9 @@ namespace HelloWorld
   {
 
 
-    /// <summary>
-    /// 创建一个玩家单位对象
-    /// </summary>
-    /// <param name="dataService">游戏数据服务</param>
-    /// <param name="owner">所属玩家ID</param>
-    /// <param name="id">单位唯一标识</param>
-    /// <param name="descriptor">单位描述</param>
-    /// <param name="coordinate">单位所在坐标</param>
-    private Unit( IGameDataService dataService, UnitDescriptor descriptor, Guid owner, Coordinate coordinate, Guid id, string name ) : base( dataService )
-    {
 
+    internal static Unit CreateUnit( IGameDataService dataService, UnitDescriptor descriptor, Guid owner, Coordinate coordinate, Guid? id = null, string name = null )
+    {
       var data = new JObject() as dynamic;
 
       data.ID = id;
@@ -38,15 +30,12 @@ namespace HelloWorld
       data.Mobility = 0m;
       data.LastActTime = DateTime.UtcNow;
 
-      InitializeData( data );
-    }
 
 
+      var type = descriptor.UnitType;
+      var unit = (Unit) Activator.CreateInstance( type );
 
-    internal static Unit CreateUnit( IGameDataService dataService, UnitDescriptor descriptor, Guid owner, Coordinate coordinate, Guid? id = null, string name = null )
-    {
-      var unit = new Unit( dataService, descriptor, owner, coordinate, id ?? Guid.NewGuid(), name );
-      unit.Save();//通知游戏数据服务保存这个单位对象
+      unit.InitializeData( dataService, data );
       return unit;
     }
 
@@ -57,7 +46,7 @@ namespace HelloWorld
     /// </summary>
     /// <param name="dataService">游戏数据服务</param>
     /// <param name="data">单位数据</param>
-    internal Unit( IGameDataService dataService ) : base( dataService )
+    public Unit()
     {
     }
 
@@ -79,21 +68,23 @@ namespace HelloWorld
       var place = DataService.GetPlace( Coordinate );
       place.EnsureUnit( this );
 
-      var player = DataService.GetPlayer( OwnerID );
+      var player = DataService.GetPlayer( Owner );
       player.EnsureUnit( this );
+
+      base.Initialize();
     }
 
     /// <summary>
     /// 获取用于输出给客户端的信息
     /// </summary>
     /// <returns></returns>
-    public object GetInfo()
+    public virtual object GetInfo()
     {
       return new
       {
         Guid,
         Name,
-        Coordinate = Player.ConvertCoordinate( Coordinate ),
+        Coordinate = GetPlayer().ConvertCoordinate( Coordinate ),
         Mobility,
         ActionState = ActionState.ToString(),
         Descriptor = UnitDescriptor.GetInfo(),
@@ -116,7 +107,7 @@ namespace HelloWorld
 
 
 
-    public void Rename( string name )
+    public virtual void Rename( string name )
     {
       DataObject.Name = Name = name;
     }
@@ -163,7 +154,7 @@ namespace HelloWorld
     /// <summary>
     /// 例行检查状态
     /// </summary>
-    public void Check()
+    public virtual void Check()
     {
 
       if ( ActionState == UnitActionState.Idle )
@@ -178,7 +169,7 @@ namespace HelloWorld
     /// <summary>
     /// 如果休息时间足够，则复原移动力
     /// </summary>
-    private void RecoveryMobilityForIdle()
+    protected virtual void RecoveryMobilityForIdle()
     {
       var restTime = DateTime.UtcNow - LastActTime;
 
@@ -203,7 +194,7 @@ namespace HelloWorld
     /// 获取当前单位可以进行的行动
     /// </summary>
     /// <returns></returns>
-    public ActionDescriptor[] GetActions()
+    public virtual ActionDescriptor[] GetActions()
     {
 
       return UnitDescriptor.GetActions( this );
@@ -235,7 +226,7 @@ namespace HelloWorld
     /// <summary>
     /// 单位所有者 ID
     /// </summary>
-    public Guid OwnerID
+    public Guid Owner
     {
       get { return JsonObject.GuidValue( "Owner" ).Value; }
     }
@@ -245,7 +236,7 @@ namespace HelloWorld
     /// <summary>
     /// 单位所有者玩家对象
     /// </summary>
-    public GamePlayer Player { get { return DataService.GetPlayer( OwnerID ); } }
+    public GamePlayer GetPlayer() { return DataService.GetPlayer( Owner ); }
 
 
 
@@ -254,7 +245,7 @@ namespace HelloWorld
     /// </summary>
     /// <param name="restriction">限制条件</param>
     /// <returns>是否满足</returns>
-    public bool IsSatisfy( UnitRestriction restriction )
+    public virtual bool IsSatisfy( UnitRestriction restriction )
     {
       return UnitDescriptor == restriction.Unit;
     }
@@ -266,7 +257,7 @@ namespace HelloWorld
     /// </summary>
     /// <param name="place">抵达位置</param>
     /// <returns>所需移动力</returns>
-    public decimal MobilityRequired( Place place )
+    public virtual decimal MobilityRequired( Place place )
     {
 
       return 1;
@@ -281,7 +272,7 @@ namespace HelloWorld
     /// </summary>
     /// <param name="direction">移动方向</param>
     /// <returns>是否成功</returns>
-    public bool Move( Direction direction )
+    public virtual bool Move( Direction direction )
     {
 
       Check();

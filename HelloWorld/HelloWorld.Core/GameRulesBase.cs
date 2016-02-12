@@ -85,5 +85,22 @@ namespace HelloWorld
     public abstract void InitializePlayer( GamePlayer player );
 
 
+    /// <summary>
+    /// 创建一个指定坐标的 Place 对象
+    /// </summary>
+    /// <param name="coordinate">地块坐标</param>
+    /// <returns>指定坐标的 Place 对象</returns>
+    public abstract Place CreatePlace( Coordinate coordinate );
+
+
+    /// <summary>
+    /// 根据名称获取类型
+    /// </summary>
+    /// <param name="typeName">类型名称</param>
+    /// <returns>类型实例</returns>
+
+    public abstract Type GetType( string typeName );
+
+
   }
 }

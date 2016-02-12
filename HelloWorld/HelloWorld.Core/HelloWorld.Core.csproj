@@ -62,7 +62,7 @@
     <Compile Include="ActionDescriptorBase.cs" />
     <Compile Include="Building.cs" />
     <Compile Include="BuildingDescriptor.cs" />
-    <Compile Include="BuildingRestriction.cs" />
+    <Compile Include="PlaceRestriction.cs" />
     <Compile Include="Coordinate.cs" />
     <Compile Include="CoordinateJsonConverter.cs" />
     <Compile Include="ActionReturnsDescriptor.cs" />
@@ -94,6 +94,7 @@
     <Compile Include="GamePlayer.cs" />
     <Compile Include="ActionDescriptor.cs" />
     <Compile Include="PlaceActing.cs" />
+    <Compile Include="PlaceBase.cs" />
     <Compile Include="Probability.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ActionInvestmentDescriptor.cs" />

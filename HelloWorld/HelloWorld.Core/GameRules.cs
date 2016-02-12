@@ -109,9 +109,9 @@ namespace HelloWorld
     /// <summary>
     /// 根据名称获取类型
     /// </summary>
-    /// <param name="typeName"></param>
-    /// <returns></returns>
-    protected virtual Type GetType( string typeName )
+    /// <param name="typeName">类型名称</param>
+    /// <returns>类型实例</returns>
+    public override Type GetType( string typeName )
     {
       return _typeResolver.GetType( typeName );
     }
@@ -183,18 +183,5 @@ namespace HelloWorld
       }
     }
 
-
-    /// <summary>
-    /// 获取指定地块可以进行的活动列表
-    /// </summary>
-    /// <param name="place">要进行活动的地块</param>
-    /// <returns></returns>
-    public virtual ActionDescriptor[] GetActions( Place place )
-    {
-      var actions = place.Building.GetActions().AsEnumerable();
-
-      return actions.ToArray();
-
-    }
   }
 }

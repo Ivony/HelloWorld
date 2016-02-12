@@ -24,7 +24,7 @@ namespace HelloWorld
     /// </summary>
     public object Restrict { get; private set; }
 
-    public static UnitRestriction FromData( GameRules rules, JToken data )
+    public static UnitRestriction FromData( GameRulesBase rules, JToken data )
     {
       var value = data as JValue;
       if ( value != null )

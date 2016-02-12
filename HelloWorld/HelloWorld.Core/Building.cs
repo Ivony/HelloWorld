@@ -15,13 +15,13 @@ namespace HelloWorld
   {
 
 
-    internal Building( Place place, IGameDataService dataService ) : base( dataService )
+    internal Building( Place place )
     {
       Place = place;
     }
 
 
-    public Building( Place place, BuildingDescriptor descriptor, IGameDataService dataService ) : base( dataService )
+    public Building( Place place, BuildingDescriptor descriptor )
     {
 
       Place = place;
@@ -36,9 +36,9 @@ namespace HelloWorld
     /// </summary>
     protected override void Initialize()
     {
-      base.Initialize();
-
       BuildingDescriptor = GameHost.GameRules.GetDataItem<BuildingDescriptor>( JsonObject.GuidValue( "Descriptor" ) );
+
+      base.Initialize();
 
     }
 
@@ -59,7 +59,7 @@ namespace HelloWorld
     /// </summary>
     /// <param name="restriction"></param>
     /// <returns></returns>
-    public bool IsSatisfy( BuildingRestriction restriction )
+    public bool IsSatisfy( PlaceRestriction restriction )
     {
       return BuildingDescriptor == restriction.Building;
     }

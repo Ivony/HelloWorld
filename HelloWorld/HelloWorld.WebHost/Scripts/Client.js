@@ -10,9 +10,8 @@ var hello;
             return "(" + this.x + ", " + this.y + ")";
         };
         Coordinate.parse = function (str) {
-            if (this.regex.test(str) == false) {
-                window.alert("coordinate error");
-            }
+            if (this.regex.test(str) == false)
+                throw "coordinate error";
             var result = str.match(this.regex);
             return new Coordinate(parseInt(result[1]), parseInt(result[2]));
         };
@@ -120,7 +119,6 @@ var hello;
                 hello.Client.Unit(unitId, function (unit) { return fun(unit); });
         };
         Client.Action = function (id) {
-            var coordinate = Coordinate.parse(decodeURIComponent(window.location.search));
             $.getJSON("/" + coordinate.toString() + "/" + id, function (data) { return window.location.reload(); });
         };
         Client.Place = function (coordinate, fun) {
@@ -159,13 +157,12 @@ var hello;
 ;
 $(function () {
     hello.Client.Run(function (unit) {
-        var coordinate;
         if (unit == null)
             coordinate = hello.Coordinate.Root;
         else
             coordinate = unit.Coordinate;
         hello.Client.Place(coordinate, function (place) {
-            $("#map #placeO").text(place.building.name);
+            $("#map #placeO").text(place.building.name).append($("<div />").text(coordinate.toString()));
             hello.Client.Place(coordinate.NW, function (place) { return hello.bindPlace(place, "NW", unit, $("#map #placeNW")); });
             hello.Client.Place(coordinate.NE, function (place) { return hello.bindPlace(place, "NE", unit, $("#map #placeNE")); });
             hello.Client.Place(coordinate.E, function (place) { return hello.bindPlace(place, "E", unit, $("#map #placeE")); });

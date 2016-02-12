@@ -31,9 +31,7 @@ module hello
     {
 
       if (this.regex.test(str) == false)
-      {
-        window.alert("coordinate error");
-      }
+        throw "coordinate error";
 
 
       var result = str.match(this.regex);
@@ -186,8 +184,6 @@ module hello
     static Action(id: string)
     {
 
-      var coordinate = Coordinate.parse(decodeURIComponent(window.location.search));
-
       $.getJSON("/" + coordinate.toString() + "/" + id, data => window.location.reload());
 
     }
@@ -250,15 +246,13 @@ module hello
 
 
 
-
+declare var coordinate: hello.Coordinate;
 
 $(() =>
 {
 
   hello.Client.Run(function (unit)
   {
-
-    var coordinate: hello.Coordinate;
 
     if (unit == null)
       coordinate = hello.Coordinate.Root;
@@ -269,7 +263,7 @@ $(() =>
     hello.Client.Place(coordinate, place =>
     {
 
-      $("#map #placeO").text(place.building.name);
+      $("#map #placeO").text(place.building.name).append($("<div />").text(coordinate.toString()));
 
 
       hello.Client.Place(coordinate.NW, place => hello.bindPlace(place, "NW", unit, $("#map #placeNW")));

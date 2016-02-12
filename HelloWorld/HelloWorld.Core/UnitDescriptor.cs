@@ -25,6 +25,21 @@ namespace HelloWorld
       MobilityMaximum = d.Mobility.Maximum;
       MobilityRecoveryCycle = d.Mobility.RecoveryCycle;
       MobilityRecoveryScale = d.Mobility.RecoveryScale;
+
+      var type = typeof( Unit );
+      var typeName = (string) d.UnitType;
+
+
+      if ( string.IsNullOrWhiteSpace( typeName ) == false )
+        type = GameHost.GameRules.GetType( typeName );
+
+      if ( type == null )
+        throw new Exception( string.Format( "type {0} is not found." ) );
+
+      if ( typeof( Unit ).IsAssignableFrom( type ) == false )
+        throw new Exception( string.Format( "type {0} is not unit instance type, data load failed." ) );
+
+      UnitType = type;
     }
 
 
@@ -38,6 +53,12 @@ namespace HelloWorld
     /// 单位描述
     /// </summary>
     public string Description { get; private set; }
+
+
+    /// <summary>
+    /// 单位类型
+    /// </summary>
+    public Type UnitType { get; private set; }
 
 
     /// <summary>

@@ -27,16 +27,18 @@ namespace HelloWorld
     private Unit( IGameDataService dataService, UnitDescriptor descriptor, Guid owner, Coordinate coordinate, Guid id, string name ) : base( dataService )
     {
 
-      DataObject.ID = id;
-      DataObject.Name = name;
-      DataObject.Owner = owner;
-      DataObject.Descriptor = descriptor.Guid;
-      DataObject.Coordinate = coordinate.ToString();
-      DataObject.State = UnitActionState.Idle;
-      DataObject.Mobility = 0m;
-      DataObject.LastActTime = DateTime.UtcNow;
+      var data = new JObject() as dynamic;
 
-      Initialze();
+      data.ID = id;
+      data.Name = name;
+      data.Owner = owner;
+      data.Descriptor = descriptor.Guid;
+      data.Coordinate = coordinate.ToString();
+      data.State = UnitActionState.Idle;
+      data.Mobility = 0m;
+      data.LastActTime = DateTime.UtcNow;
+
+      InitializeData( data );
     }
 
 
@@ -64,7 +66,7 @@ namespace HelloWorld
     /// <summary>
     /// 初始化对象
     /// </summary>
-    protected virtual void Initialze()
+    protected override void Initialize()
     {
       Guid = JsonObject.GuidValue( "ID" ).Value;
       Name = (string) DataObject.Name;
@@ -91,7 +93,7 @@ namespace HelloWorld
       {
         Guid,
         Name,
-        Coordinate,
+        Coordinate = Player.ConvertCoordinate( Coordinate ),
         Mobility,
         ActionState = ActionState.ToString(),
         Descriptor = UnitDescriptor.GetInfo(),

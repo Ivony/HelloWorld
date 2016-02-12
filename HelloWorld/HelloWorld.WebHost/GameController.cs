@@ -56,7 +56,7 @@ namespace HelloWorld.WebHost
     {
       await Task.Yield();
       var place = Player.GetPlace( Coordinate.Parse( coordinate ) );
-      if ( place.Owner != Player.UserID )
+      if ( place.Owner != Player.UserID && Player.Units().All( item => item.Coordinate.Distance( place.Coordinate ) > 1 ) )
         return null;
 
 

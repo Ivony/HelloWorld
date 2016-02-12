@@ -12,27 +12,12 @@ namespace HelloWorld.WebHost
 
 
     /// <summary>
-    /// 获取自己所有单位
-    /// </summary>
-    /// <returns></returns>
-    public async Task<object> Get()
-    {
-
-      await Task.Yield();
-
-
-      var units = GameHost.DataService.GetUnits( Player );
-      return units.Select( item => new { item.Guid, item.Name } );
-
-    }
-
-
-    /// <summary>
     /// 获取单位信息
     /// </summary>
     /// <param name="id">单位ID</param>
     /// <returns></returns>
-    public async Task<object> Get( Guid id )
+    [HttpGet]
+    public async Task<object> Info( Guid id )
     {
       await Task.Yield();
 

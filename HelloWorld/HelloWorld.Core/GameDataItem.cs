@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
+using System.Threading;
 
 namespace HelloWorld
 {
@@ -49,8 +50,11 @@ namespace HelloWorld
     /// <param name="data"></param>
     internal void InitializeData( JObject data )
     {
-      JsonObject.Merge( data );
-      Initialize();
+      using ( BeginSaveTransaction() )
+      {
+        JsonObject.Merge( data );
+        Initialize();
+      }
     }
 
 
@@ -96,8 +100,49 @@ namespace HelloWorld
     /// </summary>
     protected virtual void Save()
     {
-      DataService.Save( this );
+      lock ( _saveSync )
+      {
+        if ( _saveTransaction != null )
+          return;
+
+        DataService.Save( this );
+      }
     }
+
+
+
+    private object _saveSync = new object();
+    private IDisposable _saveTransaction;
+
+
+    protected IDisposable BeginSaveTransaction()
+    {
+      return new SaveTransaction( this );
+    }
+
+    private sealed class SaveTransaction : IDisposable
+    {
+
+      private GameDataItem _dataItem;
+
+      public SaveTransaction( GameDataItem dataItem )
+      {
+        Monitor.Enter( dataItem._saveSync );
+        dataItem._saveTransaction = this;
+        _dataItem = dataItem;
+      }
+
+
+      void IDisposable.Dispose()
+      {
+
+        _dataItem._saveTransaction = null;
+        _dataItem.Save();
+        Monitor.Exit( _dataItem._saveSync );
+
+      }
+    }
+
 
 
     void IDataHost.Save( JToken dataItem )

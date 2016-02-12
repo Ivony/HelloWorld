@@ -30,6 +30,7 @@ namespace HelloWorld
       MessageService = messageService;
 
       GameRules.Initialize();
+      DataService.Initialize();
     }
 
 

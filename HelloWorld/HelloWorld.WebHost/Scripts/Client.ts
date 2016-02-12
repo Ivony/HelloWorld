@@ -5,6 +5,8 @@ module hello
 {
 
 
+
+
   export class Coordinate
   {
 
@@ -23,7 +25,7 @@ module hello
       return "(" + this.x + ", " + this.y + ")";
     }
 
-    private static regex: RegExp = /^[#?]?\(\s*([\+\-]?[0-9]+)\s*,\s*([\+\-]?[0-9])\s*\)$/;
+    private static regex: RegExp = /^[#?]?\(\s*([\+\-]?[0-9]+)\s*,\s*([\+\-]?[0-9]+)\s*\)$/;
 
     public static parse(str: string)
     {
@@ -84,6 +86,29 @@ module hello
       return this.add(new Coordinate(-2, 0));
     }
 
+
+    public static get Root(): Coordinate
+    {
+      return new Coordinate(0, 0);
+    }
+
+  }
+
+
+  export class Unit
+  {
+
+    public ID: string;
+    public Name: string;
+    public Coordinate: Coordinate;
+
+    constructor(data: any)
+    {
+      this.ID = data.Guid;
+      this.Name = data.Name;
+      this.Coordinate = Coordinate.parse(data.Coordinate);
+    }
+
   }
 
 
@@ -134,7 +159,7 @@ module hello
   export class Client
   {
 
-    static Run(fun: (coordinate: Coordinate) => void)
+    static Run(fun: (unit: Unit) => void)
     {
 
 
@@ -149,18 +174,13 @@ module hello
       });
 
 
-      if (window.location.search == "")
-      {
-        window.location.search = "(0,0)";
-        return;
-      }
+      var unitId = decodeURIComponent(window.location.search).substring(1);
 
-      var coordinate = Coordinate.parse(decodeURIComponent(window.location.search));
+      if (unitId == null || unitId == "")
+        fun(null);
 
-      fun(coordinate);
-
-
-
+      else
+        hello.Client.Unit(unitId, unit => fun(unit));
     }
 
     static Action(id: string)
@@ -177,6 +197,12 @@ module hello
     static Place(coordinate: Coordinate, fun: (place: Place) => void)
     {
       $.getJSON("/" + coordinate.toString(), data => fun(new Place(data)));
+    }
+
+
+    static Unit(unitId: string, fun: (unit: Unit) => void)
+    {
+      $.getJSON("/Unit/" + unitId, data => fun(new Unit(data)));
     }
 
 
@@ -197,12 +223,26 @@ module hello
   }
 
 
-  export function bindPlace(place: Place, dom: JQuery)
+  export function bindPlace(place: Place, direction: string, unit: Unit, dom: JQuery)
   {
     var name = place.building.name;
     if (place.acting != null)
       name += "(" + place.acting.ActionDescriptor.Name + ")"
-    dom.find("a").attr("href", "?" + place.coordinate.toString()).text(name);
+
+    if (unit != null)
+      dom.find("a").text(name).css("cursor", "pointer").click(() => moveTo(unit.ID, direction));
+    else
+      dom.find("a").text(name);
+  }
+
+  export function moveTo(unitId: string, direction: string)
+  {
+    console.info(unitId + " move to " + direction);
+
+    $.get("/Unit/" + unitId + "/Move/" + direction, function ()
+    {
+      window.location.reload();
+    })
   }
 
 };
@@ -215,22 +255,29 @@ module hello
 $(() =>
 {
 
-  hello.Client.Run(function (coordinate)
+  hello.Client.Run(function (unit)
   {
+
+    var coordinate: hello.Coordinate;
+
+    if (unit == null)
+      coordinate = hello.Coordinate.Root;
+
+    else
+      coordinate = unit.Coordinate;
 
     hello.Client.Place(coordinate, place =>
     {
 
-
       $("#map #placeO").text(place.building.name);
 
 
-      hello.Client.Place(coordinate.NW, place => hello.bindPlace(place, $("#map #placeNW")));
-      hello.Client.Place(coordinate.NE, place => hello.bindPlace(place, $("#map #placeNE")));
-      hello.Client.Place(coordinate.E, place => hello.bindPlace(place, $("#map #placeE")));
-      hello.Client.Place(coordinate.SE, place => hello.bindPlace(place, $("#map #placeSE")));
-      hello.Client.Place(coordinate.SW, place => hello.bindPlace(place, $("#map #placeSW")));
-      hello.Client.Place(coordinate.W, place => hello.bindPlace(place, $("#map #placeW")));
+      hello.Client.Place(coordinate.NW, place => hello.bindPlace(place, "NW", unit, $("#map #placeNW")));
+      hello.Client.Place(coordinate.NE, place => hello.bindPlace(place, "NE", unit, $("#map #placeNE")));
+      hello.Client.Place(coordinate.E, place => hello.bindPlace(place, "E", unit, $("#map #placeE")));
+      hello.Client.Place(coordinate.SE, place => hello.bindPlace(place, "SE", unit, $("#map #placeSE")));
+      hello.Client.Place(coordinate.SW, place => hello.bindPlace(place, "SW", unit, $("#map #placeSW")));
+      hello.Client.Place(coordinate.W, place => hello.bindPlace(place, "W", unit, $("#map #placeW")));
 
 
       $("#building .name").text(place.building.name);
@@ -262,18 +309,37 @@ $(() =>
     hello.Client.GameInfo(info =>
     {
 
-      var list = $("#resources ul");
-
-
-      for (var key in info.Resources)
       {
+        let list = $("#resources ul");
 
-        console.info(key);
-        list.append(
-          $("<li/>")
-            .append($("<div/>").addClass("name").text(key)).addBack()
-            .append($("<div/>").addClass("quantity").text(info.Resources[key])).addBack()
+
+        for (var key in info.Resources)
+        {
+
+          list.append(
+            $("<li/>")
+              .append($("<div/>").addClass("name").text(key)).addBack()
+              .append($("<div/>").addClass("quantity").text(info.Resources[key])).addBack()
           );
+        }
+      }
+
+
+      {
+        var list = $("#units ul");
+
+        for (var i = 0; i < info.Units.length; i++)
+        {
+
+          var item = info.Units[i];
+          console.info(item);
+          list.append($("<li/>")
+            .append($("<a/>").addClass("name").text(item.Name).attr("href", "?" + item.Guid)).addBack()
+            .append("/").addBack()
+            .append($("<span/>").text(item.Mobility)).addBack()
+          );
+
+        }
       }
     });
 
@@ -294,7 +360,7 @@ $(() =>
           $("<li/>")
             .append($("<div/>").addClass("date").text(date.toLocaleString())).addBack()
             .append($("<div/>").addClass("content").text(item.Content)).addBack()
-          );
+        );
       });
 
     });

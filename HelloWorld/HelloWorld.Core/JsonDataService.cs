@@ -17,6 +17,7 @@ namespace HelloWorld
     {
       DataRoot = dataRoot;
       Directory.CreateDirectory( DataRoot );
+      Directory.CreateDirectory( unitsDirectory = Path.Combine( DataRoot, "Units" ) );
       Directory.CreateDirectory( placesDirectory = Path.Combine( DataRoot, "Places" ) );
       Directory.CreateDirectory( playersDirectory = Path.Combine( DataRoot, "Players" ) );
     }
@@ -25,6 +26,7 @@ namespace HelloWorld
 
     private readonly string placesDirectory;
     private readonly string playersDirectory;
+    private readonly string unitsDirectory;
 
 
     private const string _extensions = ".json";
@@ -338,7 +340,7 @@ namespace HelloWorld
     /// <param name="place"></param>
     private void Save( Place place )
     {
-      var filepath = Path.Combine( DataRoot, "places", place.Coordinate + ".json" );
+      var filepath = Path.Combine( placesDirectory, place.Coordinate + ".json" );
       File.WriteAllText( filepath, place.SaveAsJson() );
     }
 
@@ -350,7 +352,7 @@ namespace HelloWorld
     private void Save( Unit unit )
     {
       RefreshUnitCahce( unit );
-      var filepath = Path.Combine( DataRoot, "units", unit.Guid + ".json" );
+      var filepath = Path.Combine( unitsDirectory, unit.Guid + ".json" );
       File.WriteAllText( filepath, unit.SaveAsJson() );
     }
 
@@ -363,12 +365,16 @@ namespace HelloWorld
 
     private Dictionary<Coordinate, HashSet<Unit>> _placeUnits = new Dictionary<Coordinate, HashSet<Unit>>();
 
+
+
+
+
+
     /// <summary>
     /// 初始化游戏数据服务
     /// </summary>
     void IGameDataService.Initialize()
     {
-
       InitializeUnits();
 
     }

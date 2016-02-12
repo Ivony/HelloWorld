@@ -3,37 +3,32 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <title></title>
-  <script src="Scripts/jquery-2.1.4.min.js"></script>
+  <script src="Scripts/jquery-2.2.0.min.js"></script>
   <meta charset="utf-8" />
   <style>
-      form
-      {
+      form {
         width: 300px;
         margin: 100px auto;
         padding: 50px;
         border: solid 1px gray;
       }
 
-        form label
-        {
+        form label {
           display: flex;
           flex-flow: row nowrap;
           margin: 20px;
         }
 
-          form label div
-          {
+          form label div {
             flex: auto;
             text-align: right;
           }
 
-          form label input
-          {
+          form label input {
             flex: 0 150px;
           }
 
-        form > div
-        {
+        form > div {
           text-align: center;
         }
   </style>
@@ -53,10 +48,8 @@
   </form>
 
   <script>
-    function login()
-    {
-      $.get("/User?email=" + $("#email").val() + "&password=" + $("#password").val() + "&writecookie=true", function (data)
-      {
+    function login() {
+      $.get("/User?email=" + $("#email").val() + "&password=" + $("#password").val() + "&writecookie=true", function (data) {
 
         if (data.Success)
           window.location = "Client.html";

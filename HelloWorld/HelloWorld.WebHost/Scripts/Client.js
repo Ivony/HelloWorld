@@ -61,10 +61,26 @@ var hello;
             enumerable: true,
             configurable: true
         });
-        Coordinate.regex = /^[#?]?\(\s*([\+\-]?[0-9]+)\s*,\s*([\+\-]?[0-9])\s*\)$/;
+        Object.defineProperty(Coordinate, "Root", {
+            get: function () {
+                return new Coordinate(0, 0);
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Coordinate.regex = /^[#?]?\(\s*([\+\-]?[0-9]+)\s*,\s*([\+\-]?[0-9]+)\s*\)$/;
         return Coordinate;
     })();
     hello.Coordinate = Coordinate;
+    var Unit = (function () {
+        function Unit(data) {
+            this.ID = data.Guid;
+            this.Name = data.Name;
+            this.Coordinate = Coordinate.parse(data.Coordinate);
+        }
+        return Unit;
+    })();
+    hello.Unit = Unit;
     var Building = (function () {
         function Building(data) {
             this.name = data.Name;
@@ -97,12 +113,11 @@ var hello;
                     }
                 }
             });
-            if (window.location.search == "") {
-                window.location.search = "(0,0)";
-                return;
-            }
-            var coordinate = Coordinate.parse(decodeURIComponent(window.location.search));
-            fun(coordinate);
+            var unitId = decodeURIComponent(window.location.search).substring(1);
+            if (unitId == null || unitId == "")
+                fun(null);
+            else
+                hello.Client.Unit(unitId, function (unit) { return fun(unit); });
         };
         Client.Action = function (id) {
             var coordinate = Coordinate.parse(decodeURIComponent(window.location.search));
@@ -110,6 +125,9 @@ var hello;
         };
         Client.Place = function (coordinate, fun) {
             $.getJSON("/" + coordinate.toString(), function (data) { return fun(new Place(data)); });
+        };
+        Client.Unit = function (unitId, fun) {
+            $.getJSON("/Unit/" + unitId, function (data) { return fun(new Unit(data)); });
         };
         Client.GameInfo = function (fun) {
             $.getJSON("/", function (data) { return fun(data); });
@@ -120,25 +138,40 @@ var hello;
         return Client;
     })();
     hello.Client = Client;
-    function bindPlace(place, dom) {
+    function bindPlace(place, direction, unit, dom) {
         var name = place.building.name;
         if (place.acting != null)
             name += "(" + place.acting.ActionDescriptor.Name + ")";
-        dom.find("a").attr("href", "?" + place.coordinate.toString()).text(name);
+        if (unit != null)
+            dom.find("a").text(name).css("cursor", "pointer").click(function () { return moveTo(unit.ID, direction); });
+        else
+            dom.find("a").text(name);
     }
     hello.bindPlace = bindPlace;
+    function moveTo(unitId, direction) {
+        console.info(unitId + " move to " + direction);
+        $.get("/Unit/" + unitId + "/Move/" + direction, function () {
+            window.location.reload();
+        });
+    }
+    hello.moveTo = moveTo;
 })(hello || (hello = {}));
 ;
 $(function () {
-    hello.Client.Run(function (coordinate) {
+    hello.Client.Run(function (unit) {
+        var coordinate;
+        if (unit == null)
+            coordinate = hello.Coordinate.Root;
+        else
+            coordinate = unit.Coordinate;
         hello.Client.Place(coordinate, function (place) {
             $("#map #placeO").text(place.building.name);
-            hello.Client.Place(coordinate.NW, function (place) { return hello.bindPlace(place, $("#map #placeNW")); });
-            hello.Client.Place(coordinate.NE, function (place) { return hello.bindPlace(place, $("#map #placeNE")); });
-            hello.Client.Place(coordinate.E, function (place) { return hello.bindPlace(place, $("#map #placeE")); });
-            hello.Client.Place(coordinate.SE, function (place) { return hello.bindPlace(place, $("#map #placeSE")); });
-            hello.Client.Place(coordinate.SW, function (place) { return hello.bindPlace(place, $("#map #placeSW")); });
-            hello.Client.Place(coordinate.W, function (place) { return hello.bindPlace(place, $("#map #placeW")); });
+            hello.Client.Place(coordinate.NW, function (place) { return hello.bindPlace(place, "NW", unit, $("#map #placeNW")); });
+            hello.Client.Place(coordinate.NE, function (place) { return hello.bindPlace(place, "NE", unit, $("#map #placeNE")); });
+            hello.Client.Place(coordinate.E, function (place) { return hello.bindPlace(place, "E", unit, $("#map #placeE")); });
+            hello.Client.Place(coordinate.SE, function (place) { return hello.bindPlace(place, "SE", unit, $("#map #placeSE")); });
+            hello.Client.Place(coordinate.SW, function (place) { return hello.bindPlace(place, "SW", unit, $("#map #placeSW")); });
+            hello.Client.Place(coordinate.W, function (place) { return hello.bindPlace(place, "W", unit, $("#map #placeW")); });
             $("#building .name").text(place.building.name);
             $("#building .description").text(place.building.description);
             if (place.acting != null) {
@@ -155,12 +188,24 @@ $(function () {
             }
         });
         hello.Client.GameInfo(function (info) {
-            var list = $("#resources ul");
-            for (var key in info.Resources) {
-                console.info(key);
-                list.append($("<li/>")
-                    .append($("<div/>").addClass("name").text(key)).addBack()
-                    .append($("<div/>").addClass("quantity").text(info.Resources[key])).addBack());
+            {
+                var list_1 = $("#resources ul");
+                for (var key in info.Resources) {
+                    list_1.append($("<li/>")
+                        .append($("<div/>").addClass("name").text(key)).addBack()
+                        .append($("<div/>").addClass("quantity").text(info.Resources[key])).addBack());
+                }
+            }
+            {
+                var list = $("#units ul");
+                for (var i = 0; i < info.Units.length; i++) {
+                    var item = info.Units[i];
+                    console.info(item);
+                    list.append($("<li/>")
+                        .append($("<a/>").addClass("name").text(item.Name).attr("href", "?" + item.Guid)).addBack()
+                        .append("/").addBack()
+                        .append($("<span/>").text(item.Mobility)).addBack());
+                }
             }
         });
         hello.Client.Messages(function (messages) {

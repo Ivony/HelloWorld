@@ -7,20 +7,17 @@
   <script src="Scripts/Client.js"></script>
 
   <style>
-      section
-      {
+      section {
         padding: 0 20px;
         margin: 10px;
       }
 
-      #map td
-      {
+      #map td {
         height: 50px;
         text-align: center;
       }
 
-      #map tr.scale td
-      {
+      #map tr.scale td {
         font-size: 0;
         height: 0px;
         width: 50px;
@@ -28,87 +25,73 @@
 
 
 
-      #map #placeO
-      {
+      #map #placeO {
         font-weight: bold;
       }
 
-      #map a
-      {
+      #map a {
         text-decoration: none;
         color: black;
       }
 
 
-      #actions li
-      {
+      #actions li {
         cursor: pointer;
       }
 
-      body
-      {
+      body {
         display: flex;
         flex-flow: row wrap;
       }
 
-      #place
-      {
+      #place {
         flex: 0 300px;
       }
 
-      #status
-      {
+      #status {
         flex: 350px;
         display: flex;
         flex-flow: column nowrap;
       }
 
-      #resources
-      {
+      #resources {
         max-width: 500px;
       }
 
-        #resources li
-        {
+        #resources li {
           display: flex;
           flex-flow: row nowrap;
         }
 
 
 
-          #resources li .name
-          {
+          #resources li .name {
             min-width: 200px;
             font-weight: bold;
             word-break: break-all;
           }
 
-          #resources li .quantity
-          {
+          #resources li .quantity {
             flex: 1;
             text-align: right;
           }
 
 
-      #messages
-      {
+      #messages {
         min-width: 300px;
       }
 
-        #messages li
-        {
+        #messages li {
           display: flex;
           flex-flow: row wrap;
           margin: 5px;
         }
 
-          #messages li .date
-          {
+          #messages li .date {
             flex: 0 250px;
           }
 
-          #messages li .content
-          {
+          #messages li .content {
             flex: 1;
             min-width: 180px;
             word-break: break-all;
@@ -163,6 +146,11 @@
   <section id="status">
     <section id="resources">
       <h3>资源情况</h3>
+      <ul></ul>
+    </section>
+
+    <section id="units">
+      <h3>单位列表</h3>
       <ul></ul>
     </section>
 

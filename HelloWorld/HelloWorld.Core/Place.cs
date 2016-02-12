@@ -80,7 +80,6 @@ namespace HelloWorld
     /// <param name="unit"></param>
     internal void EnsureUnit( Unit unit )
     {
-      throw new NotImplementedException();
     }
 
 

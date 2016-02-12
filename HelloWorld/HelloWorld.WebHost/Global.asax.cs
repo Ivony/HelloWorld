@@ -29,11 +29,16 @@ namespace HelloWorld.WebHost
       routes.MapHttpRoute( "Test", "Test", new { controller = "Game", action = "Test" } );
       routes.MapHttpRoute( "Messages", "Messages", new { controller = "Game", action = "Messages" } );
       routes.MapHttpRoute( "User", "User", new { controller = "User" } );
+
+      routes.MapHttpRoute( "UnitList", "Unit", new { controller = "Unit" } );
+      routes.MapHttpRoute( "Unit", "Unit/{id}", new { controller = "Unit", action = "Info" } );
+      routes.MapHttpRoute( "UnitAction", "Unit/{id}/{action}", new { controller = "Unit" } );
+      routes.MapHttpRoute( "UnitMove", "Unit/{id}/Move/{direction}", new { controller = "Unit", action = "Move" } );
+
+
       routes.MapHttpRoute( "Place", "{coordinate}", new { controller = "Game", action = "Place" } );
       routes.MapHttpRoute( "Acting", "{coordinate}/{id}", new { controller = "Game", action = "Acting" } );
 
-      routes.MapHttpRoute( "Unit", "Unit/{action}", new { controller = "Unit" } );
-      routes.MapHttpRoute( "UnitMove", "Unit/Move/{direction}", new { controller = "Unit", action = "Move" } );
 
 
     }

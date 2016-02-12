@@ -49,6 +49,16 @@ namespace HelloWorld
 
 
     /// <summary>
+    /// 获取玩家拥有的所有单位列表
+    /// </summary>
+    /// <returns></returns>
+    public Unit[] Units()
+    {
+      return DataService.GetUnits( this );
+    }
+
+
+    /// <summary>
     /// 根据玩家原点相对坐标获取地块
     /// </summary>
     /// <param name="coordinate">相对坐标</param>
@@ -56,6 +66,17 @@ namespace HelloWorld
     public Place GetPlace( Coordinate coordinate )
     {
       return DataService.GetPlace( Initiation + coordinate );
+    }
+
+
+    /// <summary>
+    /// 将绝对坐标转换为相对坐标
+    /// </summary>
+    /// <param name="coordinate">要转换的绝对坐标</param>
+    /// <returns></returns>
+    public Coordinate ConvertCoordinate( Coordinate coordinate )
+    {
+      return coordinate - Initiation;
     }
 
 
@@ -69,6 +90,7 @@ namespace HelloWorld
       {
         Nickname,
         Resources = Resources,
+        Units = DataService.GetUnits( this ).Select( item => item.GetInfo() ).ToArray(),
       };
     }
 
@@ -108,7 +130,6 @@ namespace HelloWorld
     /// <param name="unit"></param>
     internal void EnsureUnit( Unit unit )
     {
-      throw new NotImplementedException();
     }
 
     public static bool operator !=( GamePlayer player1, GamePlayer player2 )

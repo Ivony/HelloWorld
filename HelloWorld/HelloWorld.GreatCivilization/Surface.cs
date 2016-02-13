@@ -55,17 +55,17 @@ namespace HelloWorld.GreatCivilization
     {
 
       if ( Descriptor.Guid == wildernessId )
-        return Probability.IfHit( 2d / 100d, () => place.SetBuilding( GameHost.GameRules.GetDataItem<ImmovableDescriptor>( grasslandId ) ) )
-          || Probability.IfHit( 1d / 1000d, () => place.SetBuilding( GameHost.GameRules.GetDataItem<ImmovableDescriptor>( poolId ) ) );
+        return Probability.IfHit( 2d / 100d, () => place.SetBuilding( grasslandId ) )
+          || Probability.IfHit( 1d / 1000d, () => place.SetBuilding( poolId ) );
 
       else if ( Descriptor.Guid == grasslandId )
-        return Probability.IfHit( 1d / 100d, () => place.SetBuilding( GameHost.GameRules.GetDataItem<ImmovableDescriptor>( forestId ) ) );
+        return Probability.IfHit( 1d / 100d, () => place.SetBuilding( forestId ) );
 
       else if ( Descriptor.Guid == poolId )
-        return Probability.IfHit( 1d / 3000d, () => place.SetBuilding( GameHost.GameRules.GetDataItem<ImmovableDescriptor>( marshId ) ) );
+        return Probability.IfHit( 1d / 3000d, () => place.SetBuilding( marshId ) );
 
       else if ( Descriptor.Guid == marshId )
-        return Probability.IfHit( 5d / 1000d, () => place.SetBuilding( GameHost.GameRules.GetDataItem<ImmovableDescriptor>( wildernessId ) ) );
+        return Probability.IfHit( 5d / 1000d, () => place.SetBuilding( wildernessId ) );
 
       else
         return false;

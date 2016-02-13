@@ -14,9 +14,9 @@ namespace HelloWorld
   {
 
 
-    protected override void Initialize( JObject data )
+    protected override void Initialize( GameRulesBase rules, JObject data )
     {
-      base.Initialize( data );
+      base.Initialize( rules, data );
 
       dynamic d = data;
 
@@ -26,7 +26,7 @@ namespace HelloWorld
       MobilityRecoveryCycle = d.Mobility.RecoveryCycle;
       MobilityRecoveryScale = d.Mobility.RecoveryScale;
 
-      UnitType = GameHost.GameRules.ParseType( (string) d.UnitType, typeof( Unit ) );
+      InstanceType = rules.GetType( (string) d.InstanceType, typeof( Unit ) );
     }
 
 
@@ -45,7 +45,7 @@ namespace HelloWorld
     /// <summary>
     /// 单位类型
     /// </summary>
-    public Type UnitType { get; private set; }
+    public Type InstanceType { get; private set; }
 
 
     /// <summary>

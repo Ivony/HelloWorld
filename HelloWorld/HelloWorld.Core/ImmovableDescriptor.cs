@@ -16,14 +16,24 @@ namespace HelloWorld
 
 
 
-    protected override void Initialize( JObject data )
+    protected override void Initialize( GameRulesBase rules, JObject data )
     {
-      base.Initialize( data );
+      base.Initialize( rules, data );
 
       Name = data.Value<string>( "Name" );
       Description = data.Value<string>( "Description" );
 
-      BuildingType = GameHost.GameRules.ParseType( (string) data["BuildingType"], typeof( Building ) );
+      InstanceType = rules.GetType( (string) data["InstanceType"], DefaultInstanceType );
+    }
+
+
+
+    /// <summary>
+    /// 如果没有设置 InstanceType 则需要使用的默认类型
+    /// </summary>
+    protected virtual Type DefaultInstanceType
+    {
+      get { return typeof( Immovable ); }
     }
 
 
@@ -49,7 +59,7 @@ namespace HelloWorld
     /// <summary>
     /// 获取 Building 对象的类型
     /// </summary>
-    public Type BuildingType
+    public Type InstanceType
     {
       get;
       private set;
@@ -68,7 +78,7 @@ namespace HelloWorld
       data.Descriptor = this.Guid;
 
 
-      var type = BuildingType;
+      var type = InstanceType;
       var building = (Building) Activator.CreateInstance( type );
 
       building.InitializeData( place.DataService, data );

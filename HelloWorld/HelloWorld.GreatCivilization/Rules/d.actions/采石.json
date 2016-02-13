@@ -1,6 +1,16 @@
 {
   "ID": "{A69323E4-5D9A-47CD-9939-51485BCCA77F}",
   "Type": "HelloWorld.ActionDescriptor",
+  "Constraint":
+  {
+    "Terrain":
+    {
+      "Decriptors":
+      [
+        "{523BB3EF-EE89-4C1F-B51E-26B08C4D378B}"
+      ]
+    }
+  },
   "Returns":
   {
     "Items":

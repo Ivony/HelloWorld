@@ -32,7 +32,7 @@ namespace HelloWorld
 
 
 
-      var type = descriptor.UnitType;
+      var type = descriptor.InstanceType;
       var unit = (Unit) Activator.CreateInstance( type );
 
       unit.InitializeData( dataService, data );
@@ -246,11 +246,11 @@ namespace HelloWorld
     /// <summary>
     /// 获取单位是否满足指定的限制条件
     /// </summary>
-    /// <param name="restriction">限制条件</param>
+    /// <param name="constraint">限制条件</param>
     /// <returns>是否满足</returns>
-    public virtual bool IsSatisfy( UnitRestriction restriction )
+    public virtual bool IsSatisfy( ActionConstraint constraint )
     {
-      return UnitDescriptor == restriction.Unit;
+      return true;
     }
 
 

@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace HelloWorld
 {
@@ -28,8 +29,16 @@ namespace HelloWorld
       }
     }
 
+
     /// <summary>
-    /// 初始化游戏环境
+    /// 创建 ActionConstraint 对象
+    /// </summary>
+    /// <param name="data">限制数据</param>
+    /// <returns></returns>
+    public abstract ActionConstraint CreateConstraint( JObject data );
+
+    /// <summary>
+    /// 初始化游戏规则
     /// </summary>
     /// <param name="typeResolver"></param>
     public abstract void Initialize();

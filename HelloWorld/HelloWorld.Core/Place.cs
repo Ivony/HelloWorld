@@ -38,19 +38,26 @@ namespace HelloWorld
       Acting = PlaceActing.FromData( this, (JObject) DataObject.Acting );
 
 
-      var buildingData = (JObject) DataObject.Building;
-      if ( buildingData != null )
-      {
-        var building = GameHost.GameRules.CreateInstance<Building>( (string) buildingData["Type"] );
-        building.InitializeData( this, DataObject.Building );
+      Terrain = InitializeImmovableInstance<Terrain>( (JsonDataObject) DataObject.Terrain );
+      TraficNetwork = InitializeImmovableInstance<TraficNetwork>( (JsonDataObject) DataObject.TraficNetwork );
+      Building = InitializeImmovableInstance<Building>( (JsonDataObject) DataObject.Building );
 
-        Building = building;
-      }
 
-      else
-        Building = null;
 
       base.Initialize();
+    }
+
+
+
+    protected T InitializeImmovableInstance<T>( JsonDataObject dataObject ) where T : Immovable
+    {
+      if ( dataObject == null )
+        return null;
+
+      var instance = GameHost.GameRules.CreateInstance<T>( (string) dataObject["Type"] );
+      instance.InitializeData( this, dataObject );
+
+      return instance;
     }
 
 
@@ -82,11 +89,47 @@ namespace HelloWorld
 
 
 
-
     /// <summary>
     /// 地块上的地形
     /// </summary>
     public Terrain Terrain { get; private set; }
+
+    /// <summary>
+    /// 设置地形
+    /// </summary>
+    /// <param name="building">建筑描述</param>
+    public virtual void SetTerrain( Guid? id )
+    {
+
+      if ( id == null )
+      {
+        DataObject.Terrain = null;
+        DataObject.TraficNetwork = null;
+        DataObject.Building = null;
+
+        return;
+      }
+
+      var descriptor = GameHost.GameRules.GetDataItem<TerrainDescriptor>( id );
+
+
+      DataObject.Terrain = new JObject();
+      DataObject.Terrain.Descriptor = descriptor.Guid;
+
+      DataObject.TraficNetwork = null;
+      DataObject.Building = null;
+
+
+      var type = descriptor.InstanceType;
+      var instance = (Terrain) Activator.CreateInstance( type );
+
+      instance.InitializeData( this, DataObject.Terrain );
+
+
+      Terrain = instance;
+
+
+    }
 
 
 
@@ -105,20 +148,20 @@ namespace HelloWorld
 
 
 
-
-
     /// <summary>
     /// 设置地块上的建筑
     /// </summary>
     /// <param name="building">建筑描述</param>
-    public virtual void SetBuilding( ImmovableDescriptor building )
+    public virtual void SetBuilding( Guid? id )
     {
+      var descriptor = GameHost.GameRules.GetDataItem<BuildingDescriptor>( id );
+
 
       DataObject.Building = new JObject();
-      DataObject.Building.Descriptor = building.Guid;
+      DataObject.Building.Descriptor = descriptor.Guid;
 
 
-      var type = building.BuildingType;
+      var type = descriptor.InstanceType;
       var instance = (Building) Activator.CreateInstance( type );
 
       instance.InitializeData( this, DataObject.Building );
@@ -126,6 +169,17 @@ namespace HelloWorld
 
       Building = instance;
 
+    }
+
+
+
+    /// <summary>
+    /// 获取当前地块上所有单位
+    /// </summary>
+    /// <returns></returns>
+    public Unit[] GetUnits()
+    {
+      return DataService.GetUnits( Coordinate );
     }
 
 
@@ -203,7 +257,7 @@ namespace HelloWorld
         Building.Check( now );
 
 
-        foreach ( var item in DataService.GetUnits( this.Coordinate ) )
+        foreach ( var item in GetUnits() )
           item.Check( now );
 
 

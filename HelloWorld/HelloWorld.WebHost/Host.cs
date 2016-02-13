@@ -35,7 +35,7 @@ namespace HelloWorld.WebHost
       var typeResolver = new HttpRuntimeTypeResolver( configuration.Services.GetAssembliesResolver() );
 
 
-      var rules = new GreatCivilizationRules( typeResolver );
+      var rules = GreatCivilizationRules.CreateInstance( typeResolver );
       GameHost.Initialize( rules, DataService, MessageService );
 
 

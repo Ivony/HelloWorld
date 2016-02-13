@@ -8,7 +8,6 @@ namespace HelloWorld
 {
   public class Terrain : BaseImmovable
   {
-    public new Place Place { get { return (Place) base.Place; } }
 
   }
 }

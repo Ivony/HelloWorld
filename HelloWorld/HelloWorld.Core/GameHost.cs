@@ -29,7 +29,7 @@ namespace HelloWorld
       DataService = dataService;
       MessageService = messageService;
 
-      GameRules.Initialize();
+      rules.Initialize();
       DataService.Initialize();
     }
 

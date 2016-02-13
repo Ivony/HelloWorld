@@ -34,7 +34,6 @@ namespace HelloWorld
     }
 
 
-
     /// <summary>
     /// 初始化游戏规则
     /// </summary>
@@ -52,10 +51,15 @@ namespace HelloWorld
           continue;
 
         _collection.Add( item );
-
-
       }
     }
+
+
+    protected ActionDescriptor[] AllActions()
+    {
+      return _collection.OfType<ActionDescriptor>().ToArray();
+    }
+
 
 
 
@@ -88,7 +92,7 @@ namespace HelloWorld
 
 
       var instance = Activator.CreateInstance( type ) as GameRuleItem;
-      instance.InitializeData( data );
+      instance.InitializeData( this, data );
 
       return instance;
     }

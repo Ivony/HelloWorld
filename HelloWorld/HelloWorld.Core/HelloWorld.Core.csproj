@@ -49,7 +49,7 @@
     <Compile Include="ActionDescriptor.cs" />
     <Compile Include="ActionDescriptorBase.cs" />
     <Compile Include="ActionInvestmentDescriptor.cs" />
-    <Compile Include="ActionRestriction.cs" />
+    <Compile Include="ActionConstraint.cs" />
     <Compile Include="ActionReturnsDescriptor.cs" />
     <Compile Include="BaseImmovable.cs" />
     <Compile Include="Building.cs" />
@@ -101,7 +101,6 @@
     <Compile Include="TraficNetworkDescriptor.cs" />
     <Compile Include="TypeResolver.cs" />
     <Compile Include="Unit.cs" />
-    <Compile Include="UnitActionDescriptor.cs" />
     <Compile Include="UnitDescriptor.cs" />
     <Compile Include="UnitExtensions.cs" />
     <Compile Include="UnitRestriction.cs" />

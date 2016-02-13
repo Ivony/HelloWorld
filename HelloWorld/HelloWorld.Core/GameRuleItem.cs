@@ -36,7 +36,7 @@ namespace HelloWorld
     /// 初始化游戏规则数据
     /// </summary>
     /// <param name="data">游戏规则数据</param>
-    protected virtual void Initialize( JObject data )
+    protected virtual void Initialize( GameRulesBase rules, JObject data )
     {
 
       if ( data == null )
@@ -122,9 +122,9 @@ namespace HelloWorld
     protected bool AlreadyInitialized { get; private set; }
 
 
-    internal void InitializeData( JObject data )
+    internal void InitializeData( GameRulesBase rules, JObject data )
     {
-      Initialize( data );
+      Initialize( rules, data );
 
       AlreadyInitialized = true;
     }

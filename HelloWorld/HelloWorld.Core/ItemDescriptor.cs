@@ -17,9 +17,9 @@ namespace HelloWorld
   {
 
 
-    protected override void Initialize( JObject data )
+    protected override void Initialize( GameRulesBase rules, JObject data )
     {
-      base.Initialize( data );
+      base.Initialize( rules, data );
 
       Name = data.Value<string>( "Name" );
       Description = data.Value<string>( "Description" );

@@ -17,11 +17,11 @@ namespace HelloWorld
   {
 
 
-    protected override void Initialize( JObject data )
+    protected override void Initialize( GameRulesBase rules, JObject data )
     {
-      base.Initialize( data );
+      base.Initialize( rules, data );
 
-      Restrictions = ActionRestriction.FromData( GameHost.GameRules, data["Building"] );
+      Constraint = rules.CreateConstraint( (JObject) data["Constraint"] );
       Requirement = ActionInvestmentDescriptor.FromData( (JObject) data["Requirement"] );
       Returns = ActionReturnsDescriptor.FromData( (JObject) data["Returns"] );
 
@@ -53,7 +53,7 @@ namespace HelloWorld
     /// <summary>
     /// 此生产过程所依赖的建筑/场所
     /// </summary>
-    public ActionRestriction Restrictions { get; private set; }
+    public ActionConstraint Constraint { get; private set; }
 
 
     /// <summary>
@@ -132,9 +132,17 @@ namespace HelloWorld
       if ( place.Acting != null )
         throw new InvalidOperationException( "土地上已经存在一个正在进行的活动" );
 
-      if ( place.Building.IsSatisfy( Restrictions ) == false )
-        throw new InvalidOperationException( "地块建筑不满足活动需求" );
+      if ( place.Terrain.IsSatisfy( Constraint ) == false )
+        throw new InvalidOperationException( "地形不满足活动需求" );
 
+      if ( place.TraficNetwork.IsSatisfy( Constraint ) == false )
+        throw new InvalidOperationException( "交通网络不满足活动需求" );
+
+      if ( place.Building.IsSatisfy( Constraint ) == false )
+        throw new InvalidOperationException( "建筑不满足活动需求" );
+
+      if ( place.GetUnits().All( item => item.IsSatisfy( Constraint ) == false ) )
+        throw new InvalidOperationException( "单位不满足活动需求" );
 
 
       lock ( place )
@@ -172,7 +180,7 @@ namespace HelloWorld
         player.Resources.AddItems( Returns.Items );
 
       if ( Returns.Building != null )
-        place.SetBuilding( Returns.Building );
+        place.SetBuilding( Returns.Building.Guid );
 
 
       place.CheckPoint = completedOn;

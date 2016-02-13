@@ -8,5 +8,11 @@ namespace HelloWorld
 {
   public class TerrainDescriptor : ImmovableDescriptor
   {
+
+    protected override Type DefaultInstanceType
+    {
+      get { return typeof( Terrain ); }
+    }
+
   }
 }

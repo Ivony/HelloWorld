@@ -1,7 +1,16 @@
 {
   "ID": "{C6E6CE69-E1DE-4B47-A35A-5F9FC84B8C78}",
   "Type": "HelloWorld.ActionDescriptor",
-  "Building": "{8105A10F-1E11-4FF0-B2D2-1FD910258648}",
+  "Constraint":
+  {
+    "Building":
+    {
+      "Decriptors":
+      [
+        "{8105A10F-1E11-4FF0-B2D2-1FD910258648}"
+      ]
+    }
+  },
   "Name": "狩猎",
   "Description": "看，那里有只猫，那是老虎你这个猪。",
   "Returns":

@@ -1,7 +1,7 @@
 {
   "ID": "{72213162-0D16-4C53-89F3-AE2A0180E031}",
   "Type": "HelloWorld.UnitDescriptor",
-  "UnitType": "HelloWorld.GreatCivilization.Worker",
+  "InstanceType": "HelloWorld.GreatCivilization.Worker",
   "Name": "工人",
   "Description": "工人就是什么工作都能做的人",
   "Mobility":

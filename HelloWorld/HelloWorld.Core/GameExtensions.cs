@@ -17,7 +17,7 @@ namespace HelloWorld
     /// <param name="restrict"></param>
     /// <param name="defaultType"></param>
     /// <returns></returns>
-    public static Type ParseType( this GameRulesBase rules, string typeName, Type restrict, Type defaultType = null )
+    public static Type GetType( this GameRulesBase rules, string typeName, Type restrict, Type defaultType = null )
     {
 
       if ( restrict == null )
@@ -35,7 +35,7 @@ namespace HelloWorld
         throw new Exception( string.Format( "type {0} is not found.", typeName ) );
 
 
-      if ( restrict.IsAssignableFrom( type ) == false )
+      if ( restrict != null && restrict.IsAssignableFrom( type ) == false )
         throw new Exception( string.Format( "type {0} is not unit instance type, data load failed.", typeName ) );
 
       return type;

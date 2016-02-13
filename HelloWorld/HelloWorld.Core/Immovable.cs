@@ -51,11 +51,11 @@ namespace HelloWorld
     /// <summary>
     /// 检查建筑物是否满足建筑物限制
     /// </summary>
-    /// <param name="restriction"></param>
+    /// <param name="constraint"></param>
     /// <returns></returns>
-    public bool IsSatisfy( ActionRestriction restriction )
+    public bool IsSatisfy( ActionConstraint constraint )
     {
-      return Descriptor == restriction.Building;
+      return true;
     }
 
 

@@ -1,7 +1,7 @@
 {
   "ID": "{C6E4329A-D722-439C-B846-F0EADF388AD9}",
   "Type": "HelloWorld.BuildingDescriptor",
-  "BuildingType": "HelloWorld.GreatCivilization.Surface",
+  "InstanceType": "HelloWorld.GreatCivilization.Surface",
   "Name": "草原",
   "Description": "一望无际的草原，上面全是草"
 

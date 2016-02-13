@@ -8,5 +8,11 @@ namespace HelloWorld
 {
   public class BuildingDescriptor : ImmovableDescriptor
   {
+
+    protected override Type DefaultInstanceType
+    {
+      get { return typeof( Building ); }
+    }
+
   }
 }

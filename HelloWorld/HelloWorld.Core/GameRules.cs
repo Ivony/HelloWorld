@@ -54,18 +54,6 @@ namespace HelloWorld
         _collection.Add( item );
 
 
-
-
-        var action = item as ActionDescriptor;
-        if ( action != null )
-        {
-
-          if ( action.UnitRestriction == null )
-            action.BuildingRestriction.Building.RegisterAction( action );
-
-          else
-            action.UnitRestriction.Unit.RegisterAction( action );
-        }
       }
     }
 
@@ -161,10 +149,10 @@ namespace HelloWorld
         return initiation;
       }
 
-
       throw new InvalidOperationException( "无法找到合适的初始点" );
-
     }
+
+
 
 
     /// <summary>

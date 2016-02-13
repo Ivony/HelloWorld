@@ -1,4 +1,6 @@
-﻿namespace HelloWorld
+﻿using System;
+
+namespace HelloWorld
 {
 
   /// <summary>
@@ -20,5 +22,22 @@
     {
       Coordinate = coordinate;
     }
+
+
+
+    /// <summary>
+    /// 获取可以进行的操作列表
+    /// </summary>
+    /// <returns>可以进行的操作列表</returns>
+    public abstract ActionDescriptor[] GetActions();
+
+
+
+    /// <summary>
+    /// 对地块进行例行检查
+    /// </summary>
+    /// <param name="now">系统时间</param>
+    public abstract void Check( DateTime now );
+
   }
 }

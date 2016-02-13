@@ -21,7 +21,7 @@ namespace HelloWorld
     {
       base.Initialize( data );
 
-      BuildingRestriction = PlaceRestriction.FromData( GameHost.GameRules, data["Building"] );
+      Restrictions = ActionRestriction.FromData( GameHost.GameRules, data["Building"] );
       Requirement = ActionInvestmentDescriptor.FromData( (JObject) data["Requirement"] );
       Returns = ActionReturnsDescriptor.FromData( (JObject) data["Returns"] );
 
@@ -53,13 +53,8 @@ namespace HelloWorld
     /// <summary>
     /// 此生产过程所依赖的建筑/场所
     /// </summary>
-    public PlaceRestriction BuildingRestriction { get; private set; }
+    public ActionRestriction Restrictions { get; private set; }
 
-
-    /// <summary>
-    /// 此生产过程所依赖的单位
-    /// </summary>
-    public UnitRestriction UnitRestriction { get; private set; }
 
     /// <summary>
     /// 生产所需资源列表
@@ -73,9 +68,14 @@ namespace HelloWorld
     public ActionReturnsDescriptor Returns { get; private set; }
 
 
+    /// <summary>
+    /// 确认是否可以在指定地块开始这个活动
+    /// </summary>
+    /// <param name="place">地块对象</param>
+    /// <returns>是否可以开展这个活动</returns>
     public override bool CanStartAt( Place place )
     {
-      return place.Building == BuildingRestriction.Building;
+      throw new NotImplementedException();
     }
 
 
@@ -96,7 +96,7 @@ namespace HelloWorld
       if ( place.Acting != null )
         throw new InvalidOperationException( "土地上已经存在一个正在进行的活动" );
 
-      if ( place.Building != BuildingRestriction.Building )
+      if ( place.Building.IsSatisfy( Restrictions ) == false )
         throw new InvalidOperationException( "地块建筑不满足活动需求" );
 
 
@@ -120,11 +120,11 @@ namespace HelloWorld
     /// </summary>
     /// <param name="acting">正在进行的活动</param>
     /// <returns>活动是否已经完成</returns>
-    public override bool TryComplete( PlaceActing acting )
+    public override bool TryComplete( PlaceActing acting, DateTime now )
     {
       var completedOn = acting.StartOn + Requirement.Time;
 
-      if ( completedOn > DateTime.UtcNow )
+      if ( completedOn > now )
         return false;
 
       var place = acting.Place;
@@ -134,7 +134,7 @@ namespace HelloWorld
         player.Resources.AddItems( Returns.Items );
 
       if ( Returns.Building != null )
-        place.Building = Returns.Building;
+        place.SetBuilding( Returns.Building );
 
 
       place.CheckPoint = completedOn;

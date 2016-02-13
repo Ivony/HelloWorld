@@ -20,9 +20,9 @@ namespace HelloWorld.GreatCivilization
     }
 
 
-    public override bool TryComplete( PlaceActing acting )
+    public override bool TryComplete( PlaceActing acting, DateTime now )
     {
-      if ( base.TryComplete( acting ) == false )
+      if ( base.TryComplete( acting, now ) == false )
         return false;
 
       acting.Place.NewUnit( new Guid( "{72213162-0D16-4C53-89F3-AE2A0180E031}" ) );

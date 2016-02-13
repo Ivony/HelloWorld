@@ -245,7 +245,7 @@ namespace HelloWorld
 
 
         var filepath = Path.ChangeExtension( Path.Combine( placesDirectory, coordinate.ToString() ), _extensions );
-        var data = JsonDataItem.LoadData( filepath, new { Building = GameHost.GameRules.InitiationBuilding.Guid, CheckPoint = DateTime.UtcNow } );
+        var data = JsonDataItem.LoadData( filepath, new { CheckPoint = DateTime.UtcNow } );
 
         place = GameHost.GameRules.CreatePlace( coordinate );
         place.InitializeData( this, data );
@@ -376,20 +376,17 @@ namespace HelloWorld
     void IGameDataService.Initialize()
     {
       InitializeUnits();
-
     }
+
 
     private void InitializeUnits()
     {
-
       foreach ( var file in Directory.EnumerateFiles( Path.Combine( DataRoot, "units" ) ) )
       {
         var data = JObject.Parse( File.ReadAllText( file ) );
-        var type = GameHost.GameRules.GetType( (string) data["Type"] );
 
-        var unit = (Unit) Activator.CreateInstance( type );
+        var unit = GameHost.GameRules.CreateInstance<Unit>( (string) data["Type"] );
         unit.InitializeData( this, data );
-
 
         RefreshUnitCahce( unit );
       }

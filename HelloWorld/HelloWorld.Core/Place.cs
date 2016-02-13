@@ -37,9 +37,28 @@ namespace HelloWorld
 
       Acting = PlaceActing.FromData( this, (JObject) DataObject.Acting );
 
+
+      var buildingData = (JObject) DataObject.Building;
+      if ( buildingData != null )
+      {
+        var building = GameHost.GameRules.CreateInstance<Building>( (string) buildingData["Type"] );
+        building.InitializeData( this, DataObject.Building );
+
+        Building = building;
+      }
+
+      else
+        Building = null;
+
       base.Initialize();
     }
 
+
+
+    /// <summary>
+    /// 正在进行的活动
+    /// </summary>
+    public PlaceActing Acting { get; private set; }
 
 
     internal void SetActing( PlaceActing acting )
@@ -67,11 +86,39 @@ namespace HelloWorld
     /// <summary>
     /// 地块上的建筑
     /// </summary>
-    public BuildingDescriptor Building
+    public Building Building
     {
-      get { return GameHost.GameRules.GetDataItem<BuildingDescriptor>( JsonObject.GuidValue( "Building" ) ); }
-      set { DataObject.Building = value.Guid; }
+      get;
+      private set;
     }
+
+
+
+    /// <summary>
+    /// 设置地块上的建筑
+    /// </summary>
+    /// <param name="building">建筑描述</param>
+    public virtual void SetBuilding( BuildingDescriptor building )
+    {
+
+      DataObject.Building = new JObject();
+      DataObject.Building.Descriptor = building.Guid;
+
+
+
+
+      var type = building.BuildingType;
+      var instance = (Building) Activator.CreateInstance( type );
+
+      instance.InitializeData( this, DataObject.Building );
+
+
+      Building = instance;
+
+    }
+
+
+
 
 
     /// <summary>
@@ -81,8 +128,6 @@ namespace HelloWorld
     internal void EnsureUnit( Unit unit )
     {
     }
-
-
 
 
     /// <summary>
@@ -121,12 +166,6 @@ namespace HelloWorld
 
 
     /// <summary>
-    /// 正在进行的活动
-    /// </summary>
-    public PlaceActing Acting { get; private set; }
-
-
-    /// <summary>
     /// 上次检查时间
     /// </summary>
     public DateTime CheckPoint
@@ -140,16 +179,22 @@ namespace HelloWorld
     /// <summary>
     /// 对地块执行例行检查，处理例行事项
     /// </summary>
-    public virtual void Check()
+    public override void Check( DateTime now )
     {
       lock ( SyncRoot )
       {
         Collect();
 
         if ( Acting != null )
-          Acting.Check();
+          Acting.Check( now );
 
-        Building.Check( this );
+
+        Building.Check( now );
+
+
+        foreach ( var item in DataService.GetUnits( this.Coordinate ) )
+          item.Check( now );
+
 
         SaveActing();
       }
@@ -159,8 +204,7 @@ namespace HelloWorld
     /// <summary>
     /// 收集地块上所有的资源
     /// </summary>
-    /// <param name="player"></param>
-    public void Collect()
+    public virtual void Collect()
     {
       lock ( SyncRoot )
       {
@@ -176,7 +220,7 @@ namespace HelloWorld
     /// </summary>
     /// <param name="player"></param>
     /// <returns></returns>
-    public object GetInfo( GamePlayer player )
+    public virtual object GetInfo( GamePlayer player )
     {
 
       var coordinate = Coordinate - player.Initiation;
@@ -245,21 +289,6 @@ namespace HelloWorld
 
 
 
-
-    /// <summary>
-    /// 获取可以执行的活动列表
-    /// </summary>
-    /// <returns></returns>
-    public virtual ActionDescriptor[] GetActions()
-    {
-
-      var actions = Building.GetActions().AsEnumerable();
-
-      return actions.ToArray();
-    }
-
-
-
     /// <summary>
     /// 获取相对于地块所在玩家而言地块的坐标
     /// </summary>
@@ -287,6 +316,5 @@ namespace HelloWorld
 
       return Coordinate - player.Initiation;
     }
-
   }
 }

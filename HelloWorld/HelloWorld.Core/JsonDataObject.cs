@@ -74,6 +74,15 @@ namespace HelloWorld
     }
 
 
+    public override void Add( object content )
+    {
+      var property = content as JProperty;
+      if ( property != null )
+        property.Value = ConvertValue( property.Value, _host );
+
+      base.Add( content );
+    }
+
 
     protected override void OnPropertyChanging( string propertyName )
     {

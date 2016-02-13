@@ -71,7 +71,7 @@ namespace HelloWorld
     /// <summary>
     /// 检查活动状态
     /// </summary>
-    public void Check()
+    public void Check( DateTime now )
     {
       lock ( SyncRoot )
       {
@@ -82,7 +82,7 @@ namespace HelloWorld
         if ( this.Equals( Place.Acting ) == false )
           throw new InvalidOperationException();
 
-        if ( ActionDescriptor.TryComplete( this ) )
+        if ( ActionDescriptor.TryComplete( this, now ) )
         {
           Place.SetActing( null );
         }

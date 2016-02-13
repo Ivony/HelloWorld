@@ -22,6 +22,8 @@ namespace HelloWorld
 
       Name = data.Value<string>( "Name" );
       Description = data.Value<string>( "Description" );
+
+      BuildingType = GameHost.GameRules.ParseType( (string) data["BuildingType"], typeof( Building ) );
     }
 
 
@@ -48,42 +50,41 @@ namespace HelloWorld
     /// 系统定期调用此方法通知建筑物检查自己的状态，或者执行相应的事件
     /// </summary>
     /// <param name="place">建筑物所在的地块</param>
-    public virtual void Check( Place place )
+    public virtual void Check( Place place, DateTime now )
     {
 
-      place.CheckPoint = DateTime.UtcNow;
-
-    }
-
-
-
-
-    private static object _sync = new object();
-
-    private HashSet<ActionDescriptor> _actions = new HashSet<ActionDescriptor>();
-
-    internal void RegisterAction( ActionDescriptor action )
-    {
-
-      lock ( _sync )
-      {
-        _actions.Add( action );
-      }
+      place.CheckPoint = now;
 
     }
 
 
     /// <summary>
-    /// 获取建筑可以执行的行动列表
+    /// 获取 Building 对象的类型
     /// </summary>
-    /// <returns>可以执行的行动列表</returns>
-    public virtual ActionDescriptor[] GetActions()
+    public Type BuildingType
     {
-
-      return _actions.ToArray();
-
+      get;
+      private set;
     }
 
 
+    /// <summary>
+    /// 创建一个 Building 对象
+    /// </summary>
+    /// <param name="place">所处地块</param>
+    /// <returns>Building 对象</returns>
+    public Building CreateBuilding( Place place )
+    {
+      var data = new JObject() as dynamic;
+
+      data.Descriptor = this.Guid;
+
+
+      var type = BuildingType;
+      var building = (Building) Activator.CreateInstance( type );
+
+      building.InitializeData( place.DataService, data );
+      return building;
+    }
   }
 }

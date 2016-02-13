@@ -26,20 +26,7 @@ namespace HelloWorld
       MobilityRecoveryCycle = d.Mobility.RecoveryCycle;
       MobilityRecoveryScale = d.Mobility.RecoveryScale;
 
-      var type = typeof( Unit );
-      var typeName = (string) d.UnitType;
-
-
-      if ( string.IsNullOrWhiteSpace( typeName ) == false )
-        type = GameHost.GameRules.GetType( typeName );
-
-      if ( type == null )
-        throw new Exception( string.Format( "type {0} is not found." ) );
-
-      if ( typeof( Unit ).IsAssignableFrom( type ) == false )
-        throw new Exception( string.Format( "type {0} is not unit instance type, data load failed." ) );
-
-      UnitType = type;
+      UnitType = GameHost.GameRules.ParseType( (string) d.UnitType, typeof( Unit ) );
     }
 
 
@@ -94,22 +81,5 @@ namespace HelloWorld
 
 
     private static object _sync = new object();
-
-    private HashSet<ActionDescriptor> _actions = new HashSet<ActionDescriptor>();
-
-    /// <summary>
-    /// 注册一个依赖于该单位的活动
-    /// </summary>
-    /// <param name="action"></param>
-    internal void RegisterAction( ActionDescriptor action )
-    {
-
-      lock ( _sync )
-      {
-        _actions.Add( action );
-      }
-
-    }
-
   }
 }

@@ -60,7 +60,7 @@ namespace HelloWorld.WebHost
         return null;
 
 
-      place.Check();
+      place.Check( DateTime.UtcNow );
 
       return place;
     }

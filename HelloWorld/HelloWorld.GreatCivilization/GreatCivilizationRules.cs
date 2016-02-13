@@ -21,16 +21,8 @@ namespace HelloWorld.GreatCivilization
     public override void Initialize()
     {
       base.Initialize();
-
-      _initiationBuilding = GetDataItem<BuildingDescriptor>( new Guid( "eb0c8ae8-fc09-4874-9985-98c081f4d1b7" ) );
     }
 
-    BuildingDescriptor _initiationBuilding;
-
-    public override BuildingDescriptor InitiationBuilding
-    {
-      get { return _initiationBuilding; }
-    }
 
     /// <summary>
     /// 宫殿 ID
@@ -46,7 +38,7 @@ namespace HelloWorld.GreatCivilization
     {
       base.InitializePlayer( player );
 
-      player.GetPlace( Coordinate.Origin ).Building = GetDataItem<BuildingDescriptor>( palace );
+      player.GetPlace( Coordinate.Origin ).SetBuilding( GetDataItem<BuildingDescriptor>( palace ) );
     }
 
 

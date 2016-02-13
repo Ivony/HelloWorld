@@ -62,12 +62,13 @@
     <Compile Include="ActionDescriptorBase.cs" />
     <Compile Include="Building.cs" />
     <Compile Include="BuildingDescriptor.cs" />
-    <Compile Include="PlaceRestriction.cs" />
+    <Compile Include="ActionRestriction.cs" />
     <Compile Include="Coordinate.cs" />
     <Compile Include="CoordinateJsonConverter.cs" />
     <Compile Include="ActionReturnsDescriptor.cs" />
     <Compile Include="DefaultNameService.cs" />
     <Compile Include="GameDataItem.cs" />
+    <Compile Include="GameExtensions.cs" />
     <Compile Include="IDataHost.cs" />
     <Compile Include="IGameDataService.cs" />
     <Compile Include="GameHost.cs" />
@@ -90,6 +91,7 @@
     <Compile Include="JsonUserService.cs" />
     <Compile Include="JValueExtensions.cs" />
     <Compile Include="IGameMessageService.cs" />
+    <Compile Include="NestedGameDataItem.cs" />
     <Compile Include="Place.cs" />
     <Compile Include="GamePlayer.cs" />
     <Compile Include="ActionDescriptor.cs" />

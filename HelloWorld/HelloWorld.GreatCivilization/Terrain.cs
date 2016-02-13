@@ -24,7 +24,7 @@ namespace HelloWorld.GreatCivilization
     private static readonly Guid marshId = new Guid( "6EC01992-1693-4F56-B8DE-30BD0DD355FB" );
 
 
-    public override void Check( Place place )
+    public override void Check( Place place, DateTime now )
     {
 
       if ( place.Acting != null )//当地块上正在进行某种活动时，不进行地块转换。
@@ -33,18 +33,18 @@ namespace HelloWorld.GreatCivilization
 
       if ( Guid == forestId )
       {
-        place.CheckPoint = DateTime.UtcNow;
+        place.CheckPoint = now;
         return;
       }
 
 
-      var times = (int) ( DateTime.UtcNow - place.CheckPoint ).TotalMinutes / 5;//每五分钟一次改变的机会
+      var times = (int) ( now - place.CheckPoint ).TotalMinutes / 5;//每五分钟一次改变的机会
       for ( int i = 0; i < times; i++ )
       {
         if ( TerrainChanged( place ) )
         {
           place.CheckPoint = place.CheckPoint.AddMinutes( i + 1 );
-          place.Check();
+          place.Check( now );
           return;
         }
       }
@@ -57,17 +57,17 @@ namespace HelloWorld.GreatCivilization
     {
 
       if ( Guid == wildernessId )
-        return Probability.IfHit( 2d / 100d, () => place.Building = GameHost.GameRules.GetDataItem<BuildingDescriptor>( grasslandId ) )
-          || Probability.IfHit( 1d / 1000d, () => place.Building = GameHost.GameRules.GetDataItem<BuildingDescriptor>( poolId ) );
+        return Probability.IfHit( 2d / 100d, () => place.SetBuilding( GameHost.GameRules.GetDataItem<BuildingDescriptor>( grasslandId ) ) )
+          || Probability.IfHit( 1d / 1000d, () => place.SetBuilding( GameHost.GameRules.GetDataItem<BuildingDescriptor>( poolId ) ) );
 
       else if ( Guid == grasslandId )
-        return Probability.IfHit( 1d / 100d, () => place.Building = GameHost.GameRules.GetDataItem<BuildingDescriptor>( forestId ) );
+        return Probability.IfHit( 1d / 100d, () => place.SetBuilding( GameHost.GameRules.GetDataItem<BuildingDescriptor>( forestId ) ) );
 
       else if ( Guid == poolId )
-        return Probability.IfHit( 1d / 3000d, () => place.Building = GameHost.GameRules.GetDataItem<BuildingDescriptor>( marshId ) );
+        return Probability.IfHit( 1d / 3000d, () => place.SetBuilding( GameHost.GameRules.GetDataItem<BuildingDescriptor>( marshId ) ) );
 
       else if ( Guid == marshId )
-        return Probability.IfHit( 5d / 1000d, () => place.Building = GameHost.GameRules.GetDataItem<BuildingDescriptor>( wildernessId ) );
+        return Probability.IfHit( 5d / 1000d, () => place.SetBuilding( GameHost.GameRules.GetDataItem<BuildingDescriptor>( wildernessId ) ) );
 
       else
         return false;

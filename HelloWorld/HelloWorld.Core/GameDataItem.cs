@@ -29,35 +29,50 @@ namespace HelloWorld
 
 
     /// <summary>
-    /// 创建一个游戏数据对象
+    /// 从 JSON 数据中初始化对象
     /// </summary>
-    /// <param name="dataService">数据服务</param>
-    /// <param name="host">数据对象宿主</param>
-    protected GameDataItem( IGameDataService dataService, GameDataItem host )
+    /// <param name="dataService">游戏数据服务</param>
+    /// <param name="data">JSON 数据</param>
+    internal void InitializeData( IGameDataService dataService, JObject data )
     {
       DataService = dataService;
 
+      var transaction = BeginSaveTransaction();
+      bool exception = false;
 
-      throw new NotImplementedException();
-
+      try
+      {
+        JsonObject.Merge( data );
+        Initialize();
+      }
+      catch
+      {
+        exception = true;
+        throw;
+      }
+      finally
+      {
+        if ( exception == false )
+          transaction.Dispose();
+      }
     }
-
-
 
 
     /// <summary>
     /// 从 JSON 数据中初始化对象
     /// </summary>
-    /// <param name="data"></param>
-    internal void InitializeData( IGameDataService dataService, JObject data )
+    /// <param name="dataService">游戏数据服务</param>
+    /// <param name="host">数据宿主</param>
+    /// <param name="data">JSON 数据保存对象</param>
+    internal void InitializeData( IGameDataService dataService, GameDataItem host, JsonDataObject data )
     {
-      DataService = dataService;
 
-      using ( BeginSaveTransaction() )
-      {
-        JsonObject.Merge( data );
-        Initialize();
-      }
+      DataService = dataService;
+      Host = host;
+
+      _data = data;
+      Initialize();
+
     }
 
 
@@ -112,11 +127,22 @@ namespace HelloWorld
     protected JObject JsonObject { get { return _data; } }
 
 
+
+    /// <summary>
+    /// 数据宿主对象，如果有的话，则 Save 方法将重定向到该对象的 Save 方法
+    /// </summary>
+    protected GameDataItem Host { get; private set; }
+
+
+
     /// <summary>
     /// 通知数据服务保存数据对象
     /// </summary>
     protected virtual void Save()
     {
+      if ( Host != null )
+        Host.Save();
+
       lock ( _saveSync )
       {
         if ( _saveTransaction != null )
@@ -134,8 +160,16 @@ namespace HelloWorld
     private IDisposable _saveTransaction;
 
 
+
+    /// <summary>
+    /// 开始一个保存事务，在该对象销毁时，所有修改才会被写入
+    /// </summary>
+    /// <returns>保存事务</returns>
     protected IDisposable BeginSaveTransaction()
     {
+      if ( Host != null )
+        return Host.BeginSaveTransaction();
+
       return new SaveTransaction( this );
     }
 

@@ -15,24 +15,11 @@ namespace HelloWorld
   {
 
 
-    internal Building( Place place )
-    {
-      Place = place;
-    }
-
-
-    public Building( Place place, BuildingDescriptor descriptor )
-    {
-
-      Place = place;
-      BuildingDescriptor = descriptor;
-
-    }
-
+    public Building() { }
 
 
     /// <summary>
-    /// 
+    /// 初始化数据
     /// </summary>
     protected override void Initialize()
     {
@@ -48,6 +35,17 @@ namespace HelloWorld
     /// </summary>
     public BuildingDescriptor BuildingDescriptor { get; private set; }
 
+
+    /// <summary>
+    /// 初始化建筑数据
+    /// </summary>
+    /// <param name="data">数据对象</param>
+    internal void InitializeData( Place place, JsonDataObject data )
+    {
+      Place = place;
+      InitializeData( place.DataService, place, data );
+    }
+
     /// <summary>
     /// 建筑物所在地块
     /// </summary>
@@ -59,10 +57,19 @@ namespace HelloWorld
     /// </summary>
     /// <param name="restriction"></param>
     /// <returns></returns>
-    public bool IsSatisfy( PlaceRestriction restriction )
+    public bool IsSatisfy( ActionRestriction restriction )
     {
       return BuildingDescriptor == restriction.Building;
     }
 
+    public virtual void Check( DateTime now )
+    {
+      BuildingDescriptor.Check( Place, now );
+    }
+
+    public virtual object GetInfo()
+    {
+      return BuildingDescriptor.GetInfo();
+    }
   }
 }

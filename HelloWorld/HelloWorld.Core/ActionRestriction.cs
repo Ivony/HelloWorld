@@ -9,29 +9,29 @@ namespace HelloWorld
 {
 
   /// <summary>
-  /// 代表一个地块限制
+  /// 代表一个活动的限制条件
   /// </summary>
-  public sealed class PlaceRestriction
+  public sealed class ActionRestriction
   {
 
 
-    private PlaceRestriction() { }
+    private ActionRestriction() { }
 
 
 
     /// <summary>
-    /// 从 JSON 数据中还原地块限制对象
+    /// 从 JSON 数据中还原活动限制条件
     /// </summary>
     /// <param name="rules">游戏规则引擎</param>
     /// <param name="data">数据</param>
     /// <returns>地块限制对象</returns>
-    public static PlaceRestriction FromData( GameRulesBase rules, JToken data )
+    public static ActionRestriction FromData( GameRulesBase rules, JToken data )
     {
       var value = data as JValue;
       if ( value != null )
       {
         var building = rules.GetDataItem<BuildingDescriptor>( value.GuidValue() );
-        return new PlaceRestriction
+        return new ActionRestriction
         {
           Building = building,
         };
@@ -41,6 +41,9 @@ namespace HelloWorld
         return null;
 
     }
+
+
+
 
     /// <summary>
     /// 建筑描述

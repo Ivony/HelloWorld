@@ -55,7 +55,7 @@ namespace HelloWorld
     /// </summary>
     /// <param name="acting">正在进行的活动对象</param>
     /// <returns>是否已经完成</returns>
-    public abstract bool TryComplete( PlaceActing acting );
+    public abstract bool TryComplete( PlaceActing acting, DateTime now );
 
   }
 }

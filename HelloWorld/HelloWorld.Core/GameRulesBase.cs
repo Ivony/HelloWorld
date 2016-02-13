@@ -63,12 +63,6 @@ namespace HelloWorld
 
 
 
-    /// <summary>
-    /// 获取初始建筑
-    /// </summary>
-    public abstract BuildingDescriptor InitiationBuilding { get; }
-
-
 
     /// <summary>
     /// 获取玩家初始点

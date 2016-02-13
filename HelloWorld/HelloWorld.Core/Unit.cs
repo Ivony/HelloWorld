@@ -107,6 +107,10 @@ namespace HelloWorld
 
 
 
+    /// <summary>
+    /// 更改单位名字
+    /// </summary>
+    /// <param name="name">新的名字</param>
     public virtual void Rename( string name )
     {
       DataObject.Name = Name = name;
@@ -154,24 +158,23 @@ namespace HelloWorld
     /// <summary>
     /// 例行检查状态
     /// </summary>
-    public virtual void Check()
+    public virtual void Check( DateTime now )
     {
 
       if ( ActionState == UnitActionState.Idle )
       {
-
-        RecoveryMobilityForIdle();
-
+        RecoveryMobilityForIdle( now );
       }
+
     }
 
 
     /// <summary>
     /// 如果休息时间足够，则复原移动力
     /// </summary>
-    protected virtual void RecoveryMobilityForIdle()
+    protected virtual void RecoveryMobilityForIdle( DateTime now )
     {
-      var restTime = DateTime.UtcNow - LastActTime;
+      var restTime = now - LastActTime;
 
       while ( Mobility < UnitDescriptor.MobilityMaximum )
       {
@@ -275,7 +278,8 @@ namespace HelloWorld
     public virtual bool Move( Direction direction )
     {
 
-      Check();
+      var now = DateTime.UtcNow;
+      Check( now );
 
 
       var target = GameHost.DataService.GetPlace( Coordinate.GetCoordinate( direction ) );
@@ -293,7 +297,7 @@ namespace HelloWorld
 
         Coordinate = target.Coordinate;
         Mobility -= m;
-        LastActTime = DateTime.UtcNow;
+        LastActTime = now;
 
 
         Save();

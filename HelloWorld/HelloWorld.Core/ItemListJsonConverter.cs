@@ -72,7 +72,7 @@ namespace HelloWorld
     /// </summary>
     /// <param name="list">数据源</param>
     /// <returns></returns>
-    internal static JObject ToJson( IEnumerable<Item> list )
+    public static JObject ToJson( IEnumerable<Item> list )
     {
       var data = new JObject();
 

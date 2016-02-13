@@ -121,18 +121,22 @@
     <Compile Include="UserController.cs" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Scripts\Client.ts" />
+    <None Include="Scripts\jquery.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HelloWorld.Base\HelloWorld.Base.csproj">
+      <Project>{584386bd-e502-4419-a52c-621a10032df5}</Project>
+      <Name>HelloWorld.Base</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HelloWorld.Core\HelloWorld.Core.csproj">
-      <Project>{aca162fb-f382-475e-885a-c137929b2f31}</Project>
+      <Project>{5f2a4d04-3488-4fe6-b6e6-4196bc70b8e1}</Project>
       <Name>HelloWorld.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\HelloWorld.GreatCivilization\HelloWorld.GreatCivilization.csproj">
       <Project>{6e6a59cb-8901-435a-ae10-5a4085fa89e9}</Project>
       <Name>HelloWorld.GreatCivilization</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <TypeScriptCompile Include="Scripts\Client.ts" />
-    <None Include="Scripts\jquery.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

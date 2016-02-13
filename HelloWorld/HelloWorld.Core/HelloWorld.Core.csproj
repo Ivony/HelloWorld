@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{ACA162FB-F382-475E-885A-C137929B2F31}</ProjectGuid>
+    <ProjectGuid>{5F2A4D04-3488-4FE6-B6E6-4196BC70B8E1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HelloWorld</RootNamespace>
@@ -12,8 +12,6 @@
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -25,15 +23,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>full</DebugType>
+    <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>
-    </DocumentationFile>
-    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -41,16 +36,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -59,56 +46,63 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActionDescriptor.cs" />
     <Compile Include="ActionDescriptorBase.cs" />
+    <Compile Include="ActionInvestmentDescriptor.cs" />
+    <Compile Include="ActionRestriction.cs" />
+    <Compile Include="ActionReturnsDescriptor.cs" />
+    <Compile Include="BaseImmovable.cs" />
     <Compile Include="Building.cs" />
     <Compile Include="BuildingDescriptor.cs" />
-    <Compile Include="ActionRestriction.cs" />
     <Compile Include="Coordinate.cs" />
     <Compile Include="CoordinateJsonConverter.cs" />
-    <Compile Include="ActionReturnsDescriptor.cs" />
     <Compile Include="DefaultNameService.cs" />
     <Compile Include="GameDataItem.cs" />
     <Compile Include="GameExtensions.cs" />
-    <Compile Include="IDataHost.cs" />
-    <Compile Include="IGameDataService.cs" />
     <Compile Include="GameHost.cs" />
     <Compile Include="GameMessageEntry.cs" />
-    <Compile Include="GameRules.cs" />
+    <Compile Include="GamePlayer.cs" />
     <Compile Include="GameRuleItem.cs" />
+    <Compile Include="GameRules.cs" />
     <Compile Include="GameRulesBase.cs" />
+    <Compile Include="IDataHost.cs" />
+    <Compile Include="IGameDataService.cs" />
+    <Compile Include="IGameMessageService.cs" />
+    <Compile Include="IGameUserService.cs" />
+    <Compile Include="Immovable.cs" />
+    <Compile Include="ImmovableDescriptor.cs" />
     <Compile Include="INameService.cs" />
-    <Compile Include="JsonDataArray.cs" />
-    <Compile Include="JsonDataObject.cs" />
-    <Compile Include="JsonDataResolver.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="ItemCollection.cs" />
     <Compile Include="ItemDescriptor.cs" />
     <Compile Include="ItemList.cs" />
     <Compile Include="ItemListJsonConverter.cs" />
+    <Compile Include="JsonDataArray.cs" />
+    <Compile Include="JsonDataObject.cs" />
+    <Compile Include="JsonDataResolver.cs" />
     <Compile Include="JsonDataService.cs" />
     <Compile Include="JsonMessageService.cs" />
     <Compile Include="JsonPropertyChanged.cs" />
     <Compile Include="JsonUserService.cs" />
     <Compile Include="JValueExtensions.cs" />
-    <Compile Include="IGameMessageService.cs" />
     <Compile Include="NestedGameDataItem.cs" />
     <Compile Include="Place.cs" />
-    <Compile Include="GamePlayer.cs" />
-    <Compile Include="ActionDescriptor.cs" />
     <Compile Include="PlaceActing.cs" />
     <Compile Include="PlaceBase.cs" />
     <Compile Include="Probability.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ActionInvestmentDescriptor.cs" />
     <Compile Include="RandomExtensions.cs" />
     <Compile Include="ResourceDataResolver.cs" />
+    <Compile Include="Terrain.cs" />
+    <Compile Include="TerrainDescriptor.cs" />
     <Compile Include="TextFileMessageService.cs" />
     <Compile Include="Topography.cs" />
+    <Compile Include="TraficNetwork.cs" />
+    <Compile Include="TraficNetworkDescriptor.cs" />
     <Compile Include="TypeResolver.cs" />
     <Compile Include="Unit.cs" />
     <Compile Include="UnitActionDescriptor.cs" />
     <Compile Include="UnitDescriptor.cs" />
-    <Compile Include="IGameUserService.cs" />
     <Compile Include="UnitExtensions.cs" />
     <Compile Include="UnitRestriction.cs" />
   </ItemGroup>

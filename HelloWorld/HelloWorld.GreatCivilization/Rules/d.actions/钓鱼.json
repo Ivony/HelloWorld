@@ -1,7 +1,6 @@
 {
   "ID": "{A51F0EC9-C41B-43E4-A460-05CA6F91A6B2}",
   "Type": "HelloWorld.ActionDescriptor",
-  "Building": "{EC5B8863-0A10-4D29-A238-B9A26C705765}",
   "Name": "钓鱼",
   "Description": "又钓上个皮鞋，还都是左脚的",
   "Returns":

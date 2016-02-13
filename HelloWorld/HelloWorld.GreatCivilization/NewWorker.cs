@@ -9,12 +9,12 @@ namespace HelloWorld.GreatCivilization
   public class NewWorker : ActionDescriptor
   {
 
-    public override bool CanStartAt( Place place )
+    protected override bool CanStartAt( Place place )
     {
       return base.CanStartAt( place );
     }
 
-    public override PlaceActing TryStartAt( Place place )
+    protected override PlaceActing TryStartAt( Place place )
     {
       return base.TryStartAt( place );
     }

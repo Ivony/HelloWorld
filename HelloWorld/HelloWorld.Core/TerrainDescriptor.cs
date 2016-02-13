@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HelloWorld.GreatCivilization
+namespace HelloWorld
 {
-  public class Factory : ImmovableDescriptor
+  public class TerrainDescriptor : ImmovableDescriptor
   {
   }
 }

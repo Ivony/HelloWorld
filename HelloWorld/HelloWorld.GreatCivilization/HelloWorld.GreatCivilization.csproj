@@ -50,23 +50,16 @@
     <Compile Include="NewWorker.cs" />
     <Compile Include="CivPlace.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Terrain.cs" />
+    <Compile Include="Surface.cs" />
     <Compile Include="Worker.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HelloWorld.Core\HelloWorld.Core.csproj">
-      <Project>{aca162fb-f382-475e-885a-c137929b2f31}</Project>
-      <Name>HelloWorld.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Rules\b.buildings\terrain\荒原.json" />
     <EmbeddedResource Include="Rules\a.items\杂草.json" />
     <EmbeddedResource Include="Rules\d.actions\割草.json" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Rules\b.buildings\terrain\草原.json" />
-    <EmbeddedResource Include="Rules\b.buildings\terrain\森林.json" />
+    <EmbeddedResource Include="Rules\b.buildings\surfaces\草原.json" />
+    <EmbeddedResource Include="Rules\b.buildings\surfaces\森林.json" />
     <EmbeddedResource Include="Rules\d.actions\伐木.json" />
     <EmbeddedResource Include="Rules\a.items\原木.json" />
     <EmbeddedResource Include="Rules\d.actions\狩猎.json" />
@@ -74,8 +67,6 @@
     <EmbeddedResource Include="Rules\d.actions\采蘑菇.json" />
     <EmbeddedResource Include="Rules\b.buildings\宫殿.json" />
     <EmbeddedResource Include="Rules\a.items\石头.json" />
-    <EmbeddedResource Include="Rules\b.buildings\terrain\池塘.json" />
-    <EmbeddedResource Include="Rules\b.buildings\terrain\沼泽.json" />
     <EmbeddedResource Include="Rules\d.actions\采石.json" />
     <EmbeddedResource Include="Rules\b.buildings\茅屋.json" />
     <EmbeddedResource Include="Rules\b.buildings\工场.json" />
@@ -101,6 +92,23 @@
     <None Include="app.config" />
     <None Include="packages.config" />
     <EmbeddedResource Include="Rules\d.actions\宫殿\工人.json" />
+    <EmbeddedResource Include="Rules\b.buildings\terrains\平原.json" />
+    <EmbeddedResource Include="Rules\b.buildings\terrains\丘陵.json" />
+    <EmbeddedResource Include="Rules\b.buildings\terrains\山峰.json" />
+    <EmbeddedResource Include="Rules\b.buildings\terrains\河流.json" />
+    <EmbeddedResource Include="Rules\b.buildings\surfaces\荒原.json" />
+    <EmbeddedResource Include="Rules\b.buildings\terrains\戈壁.json" />
+    <EmbeddedResource Include="Rules\b.buildings\terrains\沙漠.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HelloWorld.Base\HelloWorld.Base.csproj">
+      <Project>{584386bd-e502-4419-a52c-621a10032df5}</Project>
+      <Name>HelloWorld.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HelloWorld.Core\HelloWorld.Core.csproj">
+      <Project>{5f2a4d04-3488-4fe6-b6e6-4196bc70b8e1}</Project>
+      <Name>HelloWorld.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HelloWorld.GreatCivilization
+namespace HelloWorld
 {
-  public class Factory : ImmovableDescriptor
+  public class Terrain : BaseImmovable
   {
+    public new Place Place { get { return (Place) base.Place; } }
+
   }
 }

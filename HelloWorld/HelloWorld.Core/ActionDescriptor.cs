@@ -73,9 +73,44 @@ namespace HelloWorld
     /// </summary>
     /// <param name="place">地块对象</param>
     /// <returns>是否可以开展这个活动</returns>
-    public override bool CanStartAt( Place place )
+    public override sealed bool CanStartAt( PlaceBase place )
     {
-      throw new NotImplementedException();
+      var instance = place as Place;
+
+      if ( instance == null )
+        return false; ;
+
+
+      return CanStartAt( instance );
+    }
+
+
+    /// <summary>
+    /// 确认是否可以在指定地块开始这个活动
+    /// </summary>
+    /// <param name="place">地块对象</param>
+    /// <returns>是否可以开展这个活动</returns>
+    protected virtual bool CanStartAt( Place place )
+    {
+      return false;
+    }
+
+
+
+    /// <summary>
+    /// 尝试在指定地块开始这个活动 
+    /// </summary>
+    /// <param name="place">要开始活动的地方</param>
+    /// <returns>正在进行的活动</returns>
+    public override PlaceActing TryStartAt( PlaceBase place )
+    {
+
+      var instance = place as Place;
+      if ( instance == null )
+        return null;
+
+      return TryStartAt( instance );
+
     }
 
 
@@ -84,8 +119,9 @@ namespace HelloWorld
     /// </summary>
     /// <param name="place">要开始活动的地方</param>
     /// <returns>正在进行的活动</returns>
-    public override PlaceActing TryStartAt( Place place )
+    protected virtual PlaceActing TryStartAt( Place place )
     {
+
       if ( place == null )
         throw new ArgumentNullException( "place" );
 
@@ -112,7 +148,9 @@ namespace HelloWorld
 
 
       return PlaceActing.StartAt( place, this );
+
     }
+
 
 
     /// <summary>

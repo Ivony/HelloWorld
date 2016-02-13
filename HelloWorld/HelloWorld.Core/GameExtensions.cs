@@ -32,11 +32,11 @@ namespace HelloWorld
 
 
       if ( type == null )
-        throw new Exception( string.Format( "type {0} is not found." ) );
+        throw new Exception( string.Format( "type {0} is not found.", typeName ) );
 
 
       if ( restrict.IsAssignableFrom( type ) == false )
-        throw new Exception( string.Format( "type {0} is not unit instance type, data load failed." ) );
+        throw new Exception( string.Format( "type {0} is not unit instance type, data load failed.", typeName ) );
 
       return type;
     }

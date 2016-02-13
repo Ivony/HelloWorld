@@ -38,7 +38,7 @@ namespace HelloWorld.GreatCivilization
     {
       base.InitializePlayer( player );
 
-      player.GetPlace( Coordinate.Origin ).SetBuilding( GetDataItem<BuildingDescriptor>( palace ) );
+      player.GetPlace( Coordinate.Origin ).SetBuilding( GetDataItem<ImmovableDescriptor>( palace ) );
     }
 
 

@@ -30,7 +30,7 @@ namespace HelloWorld
       var value = data as JValue;
       if ( value != null )
       {
-        var building = rules.GetDataItem<BuildingDescriptor>( value.GuidValue() );
+        var building = rules.GetDataItem<ImmovableDescriptor>( value.GuidValue() );
         return new ActionRestriction
         {
           Building = building,
@@ -48,7 +48,7 @@ namespace HelloWorld
     /// <summary>
     /// 建筑描述
     /// </summary>
-    public BuildingDescriptor Building { get; set; }
+    public ImmovableDescriptor Building { get; set; }
 
     /// <summary>
     /// 建筑限制数据

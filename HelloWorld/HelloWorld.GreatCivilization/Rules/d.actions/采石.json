@@ -1,7 +1,6 @@
 {
   "ID": "{A69323E4-5D9A-47CD-9939-51485BCCA77F}",
   "Type": "HelloWorld.ActionDescriptor",
-  "Building": "{EB0C8AE8-FC09-4874-9985-98C081F4D1B7}",
   "Returns":
   {
     "Items":

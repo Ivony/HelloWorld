@@ -82,15 +82,28 @@ namespace HelloWorld
 
 
 
+
+    /// <summary>
+    /// 地块上的地形
+    /// </summary>
+    public Terrain Terrain { get; private set; }
+
+
+
+    /// <summary>
+    /// 地块上的交通网络
+    /// </summary>
+    public TraficNetwork TraficNetwork { get; private set; }
+
+
+
     /// <summary>
     /// <summary>
     /// 地块上的建筑
     /// </summary>
-    public Building Building
-    {
-      get;
-      private set;
-    }
+    public Building Building { get; private set; }
+
+
 
 
 
@@ -98,13 +111,11 @@ namespace HelloWorld
     /// 设置地块上的建筑
     /// </summary>
     /// <param name="building">建筑描述</param>
-    public virtual void SetBuilding( BuildingDescriptor building )
+    public virtual void SetBuilding( ImmovableDescriptor building )
     {
 
       DataObject.Building = new JObject();
       DataObject.Building.Descriptor = building.Guid;
-
-
 
 
       var type = building.BuildingType;

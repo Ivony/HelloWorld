@@ -18,10 +18,6 @@ namespace HelloWorld.GreatCivilization
     protected override void Initialize()
     {
       base.Initialize();
-
-      if ( Building == null )
-        SetBuilding( GameHost.GameRules.GetDataItem<BuildingDescriptor>( new Guid( "eb0c8ae8-fc09-4874-9985-98c081f4d1b7" ) ) );
-
     }
 
 

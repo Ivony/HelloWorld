@@ -29,14 +29,14 @@ namespace HelloWorld
       return new ActionReturnsDescriptor
       {
         Items = ItemListJsonConverter.FromJson( (JObject) data["Items"] ),
-        Building = GameHost.GameRules.GetDataItem<BuildingDescriptor>( data.GuidValue( "Building" ) ),
+        Building = GameHost.GameRules.GetDataItem<ImmovableDescriptor>( data.GuidValue( "Building" ) ),
       };
     }
 
 
     public ItemList Items { get; private set; }
 
-    public BuildingDescriptor Building { get; set; }
+    public ImmovableDescriptor Building { get; set; }
 
 
     /// <summary>

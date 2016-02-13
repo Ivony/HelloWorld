@@ -8,7 +8,7 @@ using Newtonsoft.Json.Linq;
 
 namespace HelloWorld
 {
-  internal sealed class JsonDataObject : JObject, IDataHost
+  public sealed class JsonDataObject : JObject, IDataHost
   {
 
 
@@ -21,7 +21,7 @@ namespace HelloWorld
 
 
 
-    public JsonDataObject( JObject data, IDataHost host ) : this( host )
+    internal JsonDataObject( JObject data, IDataHost host ) : this( host )
     {
       foreach ( var property in data.Properties().Select( ConvertProperty ) )
         Add( property );

@@ -65,14 +65,14 @@
     <Compile Include="ItemListSerializeTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HelloWorld.Core\HelloWorld.Core.csproj">
-      <Project>{aca162fb-f382-475e-885a-c137929b2f31}</Project>
-      <Name>HelloWorld.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HelloWorld.Core\HelloWorld.Core.csproj">
+      <Project>{5f2a4d04-3488-4fe6-b6e6-4196bc70b8e1}</Project>
+      <Name>HelloWorld.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

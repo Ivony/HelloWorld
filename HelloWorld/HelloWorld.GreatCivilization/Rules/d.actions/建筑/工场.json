@@ -1,7 +1,7 @@
 {
   "ID": "{5072B36B-543A-4558-B34D-8D37CEE558C9}",
   "Type": "HelloWorld.ActionDescriptor",
-  "Building": "{EB0C8AE8-FC09-4874-9985-98C081F4D1B7}",
+  "Building": null,
   "Returns":
   {
     "Building": "{216E6D35-7990-4493-A3B3-B724C73AF5AF}"

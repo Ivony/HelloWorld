@@ -1,0 +1,6 @@
+{
+  "ID": "{883B0574-01FB-4118-83F1-130C16C8A5FE}",
+  "Type": "HelloWorld.BuildingDescriptor",
+  "InstanceType": "HelloWorld.Starve.Tree",
+  "Name": "梨树"
+}

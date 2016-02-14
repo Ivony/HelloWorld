@@ -61,6 +61,16 @@ namespace HelloWorld.GreatCivilization
     {
       base.InitializePlayer( player );
 
+
+
+      GameHost.DataService.GetPlace( player.Initiation ).Owner = player.Guid;
+
+      foreach ( var coordinate in player.Initiation.NearlyCoordinates( 3 ) )
+      {
+        var place = GameHost.DataService.GetPlace( coordinate );
+        place.Owner = player.Guid;
+      }
+
       player.GetPlace( Coordinate.Origin ).SetBuilding( palace );
     }
 

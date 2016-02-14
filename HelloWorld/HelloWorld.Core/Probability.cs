@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static HelloWorld.Probability;
 
 namespace HelloWorld
 {
@@ -58,8 +59,59 @@ namespace HelloWorld
 
       else
         return false;
+    }
+
+    public static IProbabilityMapping<T> Map<T>( double probability, T item )
+    {
+
+      return new ProbabilityMapping<T>().Map( probability, item );
+    }
+
+
+
+    public interface IProbabilityMapping<T>
+    {
+
+      IProbabilityMapping<T> Map( double probability, T item );
+
+      T Choose();
 
     }
+
+    private sealed class ProbabilityMapping<T> : IProbabilityMapping<T>
+    {
+
+      private List<Tuple<double, T>> mappings = new List<Tuple<double, T>>();
+
+      public ProbabilityMapping() { }
+
+      public IProbabilityMapping<T> Map( double probability, T action )
+      {
+        mappings.Add( Tuple.Create( probability, action ) );
+        return this;
+      }
+
+
+      public T Choose()
+      {
+        var basis = mappings.Sum( item => item.Item1 );
+        var value = random.NextDouble();
+
+
+        foreach ( var item in mappings )
+        {
+          if ( value < item.Item1 / basis )
+            return item.Item2;
+
+          value -= item.Item1;
+        }
+
+        return mappings.Last().Item2;
+      }
+
+
+    }
+
 
   }
 }

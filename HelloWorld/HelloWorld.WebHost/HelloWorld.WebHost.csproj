@@ -133,9 +133,9 @@
       <Project>{5f2a4d04-3488-4fe6-b6e6-4196bc70b8e1}</Project>
       <Name>HelloWorld.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\HelloWorld.GreatCivilization\HelloWorld.GreatCivilization.csproj">
-      <Project>{6e6a59cb-8901-435a-ae10-5a4085fa89e9}</Project>
-      <Name>HelloWorld.GreatCivilization</Name>
+    <ProjectReference Include="..\HelloWorld.Starve\HelloWorld.Starve.csproj">
+      <Project>{f914bf17-bddf-4061-8979-8524ad6ba158}</Project>
+      <Name>HelloWorld.Starve</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

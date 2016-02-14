@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorld.Base", "HelloWor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorld.GreatCivilization", "HelloWorld.GreatCivilization\HelloWorld.GreatCivilization.csproj", "{6E6A59CB-8901-435A-AE10-5A4085FA89E9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorld.Starve", "HelloWorld.Starve\HelloWorld.Starve.csproj", "{F914BF17-BDDF-4061-8979-8524AD6BA158}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{6E6A59CB-8901-435A-AE10-5A4085FA89E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E6A59CB-8901-435A-AE10-5A4085FA89E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E6A59CB-8901-435A-AE10-5A4085FA89E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F914BF17-BDDF-4061-8979-8524AD6BA158}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F914BF17-BDDF-4061-8979-8524AD6BA158}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F914BF17-BDDF-4061-8979-8524AD6BA158}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F914BF17-BDDF-4061-8979-8524AD6BA158}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

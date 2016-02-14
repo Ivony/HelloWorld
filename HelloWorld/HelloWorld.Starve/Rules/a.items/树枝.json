@@ -1,0 +1,7 @@
+{
+  "ID": "{365F1579-8698-4154-98B3-91F0879ACC2D}",
+  "Type": "HelloWorld.ItemDescriptor",
+  "Name": "树枝",
+  "Description": "树枝可以用来生火",
+  "Weight": 1
+}

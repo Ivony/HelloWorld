@@ -294,9 +294,9 @@ namespace HelloWorld
 
         HashSet<Unit> units;
 
-        if ( _playerUnits.TryGetValue( player.UserID, out units ) )
+        if ( _playerUnits.TryGetValue( player.Guid, out units ) )
         {
-          var invalids = units.Where( item => item.Owner != player.UserID ).ToArray();//检查单位是否还属于这个玩家。
+          var invalids = units.Where( item => item.Owner != player.Guid ).ToArray();//检查单位是否还属于这个玩家。
           foreach ( var item in invalids )
             units.Remove( item );
 

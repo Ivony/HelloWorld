@@ -9,7 +9,7 @@ namespace HelloWorld
   /// <summary>
   /// 代表一个地块的抽象
   /// </summary>
-  public abstract class Place : PlaceBase
+  public class Place : PlaceBase
   {
 
 
@@ -17,7 +17,7 @@ namespace HelloWorld
     /// 创建 Place 对象
     /// </summary>
     /// <param name="coordinate">地块所处坐标</param>
-    protected Place( Coordinate coordinate ) : base( coordinate ) { }
+    public Place( Coordinate coordinate ) : base( coordinate ) { }
 
 
 
@@ -185,16 +185,6 @@ namespace HelloWorld
 
 
 
-
-    /// <summary>
-    /// 确保指定的单位在自己的单位列表中
-    /// </summary>
-    /// <param name="unit"></param>
-    internal void EnsureUnit( Unit unit )
-    {
-    }
-
-
     /// <summary>
     /// 获取地块上存在的资源
     /// </summary>
@@ -253,8 +243,14 @@ namespace HelloWorld
         if ( Acting != null )
           Acting.Check( now );
 
+        if ( Terrain != null )
+          Terrain.Check( now );
 
-        Building.Check( now );
+        if ( TraficNetwork != null )
+          TraficNetwork.Check( now );
+
+        if ( Building != null )
+          Building.Check( now );
 
 
         foreach ( var item in GetUnits() )
@@ -287,19 +283,19 @@ namespace HelloWorld
     /// <returns></returns>
     public virtual object GetInfo( GamePlayer player )
     {
-
-      var coordinate = Coordinate - player.Initiation;
-
+      var relativeCoordinate = Coordinate.ToRelative( player );
 
       var data = JObject.FromObject(
       new
       {
-        Coordinate = coordinate,
-        Building = Building.GetInfo(),
+        Coordinate = relativeCoordinate,
+        Terrain = Terrain == null ? null : Terrain.GetInfo(),
+        TraficNetwork = TraficNetwork == null ? null : TraficNetwork.GetInfo(),
+        Building = Building == null ? null : Building.GetInfo(),
         Resources,
-        IsMine = Owner == player.UserID,
+        IsMine = Owner == player.Guid,
 
-        Nearly = coordinate.NearlyCoordinates(),
+        Nearly = relativeCoordinate.NearlyCoordinates(),
       } );
 
       if ( Acting == null )
@@ -353,33 +349,25 @@ namespace HelloWorld
 
 
 
+    private static object _sync = new object();
+    private static ActionDescriptor[] _actionsCache;
 
     /// <summary>
-    /// 获取相对于地块所在玩家而言地块的坐标
+    /// 获取该地块可以执行的所有操作列表
     /// </summary>
+    /// <param name="player">当前玩家对象</param>
     /// <returns></returns>
-    public Coordinate GetPlayerCoordinate()
+    public override ActionDescriptor[] GetActions( GamePlayer player )
     {
 
-      if ( Owner == null )
-        throw new InvalidOperationException();
+      lock ( _sync )
+      {
+        if ( _actionsCache == null )
+          _actionsCache = ( (GameRules) GameHost.GameRules ).GetRules<ActionDescriptor>();
 
-      return GetPlayerCoordinate( GetPlayer() );
-    }
 
-
-    /// <summary>
-    /// 获取相对于指定玩家而言地块的坐标
-    /// </summary>
-    /// <param name="player">玩家对象</param>
-    /// <returns></returns>
-    public Coordinate GetPlayerCoordinate( GamePlayer player )
-    {
-
-      if ( player == null )
-        throw new ArgumentNullException( "player" );
-
-      return Coordinate - player.Initiation;
+        return _actionsCache.Where( item => item.CanStartAt( player, this ) ).ToArray();
+      }
     }
   }
 }

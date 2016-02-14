@@ -1,0 +1,7 @@
+{
+  "ID": "{E198C61A-3B2F-4499-86D8-94FBCABB5591}",
+  "Type": "HelloWorld.ItemDescriptor",
+  "Name": "石头",
+  "Description": "一块笨重的石头",
+  "Weight": 50
+}

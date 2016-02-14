@@ -140,7 +140,7 @@ namespace HelloWorld
       }
 
 
-      return PlaceActing.StartAt( place, this );
+      return PlaceActing.StartAt( player, place, this );
 
     }
 
@@ -159,9 +159,10 @@ namespace HelloWorld
         return false;
 
       var place = acting.Place;
-      var player = place.GetPlayer();
+      var player = acting.GetPlayer();
 
-      if ( Returns.Items != null )
+
+      if ( Returns.Items != null && player != null )
         player.Resources.AddItems( Returns.Items );
 
       if ( Returns.Building != null )
@@ -169,8 +170,12 @@ namespace HelloWorld
 
 
       place.CheckPoint = completedOn;
-      var message = new GameMessageEntry( completedOn, string.Format( "通过不懈的努力，在位置 {0} 的活动 {1} 已经完成 {2}", place.GetPlayerCoordinate(), Name, Returns.DescriptiveMessage ) );
-      GameHost.MessageService.AddMessage( player.UserID, message );
+
+      if ( player != null )
+      {
+        var message = new GameMessageEntry( completedOn, string.Format( "通过不懈的努力，在位置 {0} 的活动 {1} 已经完成 {2}", place.Coordinate.ToRelative( player ), Name, Returns.DescriptiveMessage ) );
+        GameHost.MessageService.AddMessage( player.Guid, message );
+      }
       return true;
     }
 

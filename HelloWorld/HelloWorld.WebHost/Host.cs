@@ -7,7 +7,7 @@ using System.Net.Http.Formatting;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.Http;
-using HelloWorld.GreatCivilization;
+using HelloWorld.Starve;
 using Newtonsoft.Json;
 
 namespace HelloWorld.WebHost
@@ -35,7 +35,7 @@ namespace HelloWorld.WebHost
       var typeResolver = new HttpRuntimeTypeResolver( configuration.Services.GetAssembliesResolver() );
 
 
-      var rules = GreatCivilizationRules.CreateInstance( typeResolver );
+      var rules = StarveGameRules.CreateInstance( typeResolver );
       GameHost.Initialize( rules, DataService, MessageService );
 
 

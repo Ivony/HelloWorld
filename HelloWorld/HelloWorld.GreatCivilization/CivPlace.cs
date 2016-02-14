@@ -27,14 +27,5 @@ namespace HelloWorld.GreatCivilization
 
     }
 
-
-    public override ActionDescriptor[] GetActions( GamePlayer player )
-    {
-      return GreatCivilizationRules.Instance
-        .GetActions()
-        .Where( item => item.CanStartAt( player, this ) )
-        .ToArray();
-    }
-
   }
 }

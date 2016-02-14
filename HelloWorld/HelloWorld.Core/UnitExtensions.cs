@@ -13,10 +13,17 @@ namespace HelloWorld
   public static class UnitExtensions
   {
 
-    public static Unit NewUnit( this Place place, Guid unitDescriptor )
+    public static Unit NewUnit( this Place place, Guid descriptorId, Guid? playerId = null )
     {
-      var dataService = place.DataService;
-      return Unit.CreateUnit( dataService, GameHost.GameRules.GetDataItem<UnitDescriptor>( new Guid( "{72213162-0D16-4C53-89F3-AE2A0180E031}" ) ), place.Owner.Value, place.Coordinate, Guid.NewGuid(), dataService.NameService.AllocateName() );
+
+      var descriptor = GameHost.GameRules.GetDataItem<UnitDescriptor>( descriptorId );
+      var owner = playerId ?? place.Owner ?? Guid.Empty;
+
+      if ( owner == Guid.Empty )
+        throw new ArgumentNullException( "playerId", "无法从地块找到单位所有者，必须指定单位所有玩家" );
+
+
+      return Unit.CreateUnit( place.DataService, descriptor, owner, place.Coordinate, Guid.NewGuid(), place.DataService.NameService.AllocateName() );
     }
 
   }

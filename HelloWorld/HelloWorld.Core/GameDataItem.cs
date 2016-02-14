@@ -213,18 +213,4 @@ namespace HelloWorld
     }
 
   }
-
-
-  /// <summary>
-  /// 定义游戏数据类别枚举
-  /// </summary>
-  public enum GameDataType
-  {
-    Place,
-    Player,
-    Unit,
-    Building,
-    Acting,
-  }
-
 }

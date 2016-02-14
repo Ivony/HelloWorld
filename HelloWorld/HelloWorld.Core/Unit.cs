@@ -17,7 +17,7 @@ namespace HelloWorld
 
 
 
-    internal static Unit CreateUnit( IGameDataService dataService, UnitDescriptor descriptor, Guid owner, Coordinate coordinate, Guid? id = null, string name = null )
+    public static Unit CreateUnit( IGameDataService dataService, UnitDescriptor descriptor, Guid owner, Coordinate coordinate, Guid id, string name )
     {
       var data = new JObject() as dynamic;
 
@@ -65,11 +65,6 @@ namespace HelloWorld
 
 
       Descriptor = GameHost.GameRules.GetDataItem<UnitDescriptor>( JsonObject.GuidValue( "Descriptor" ) );
-      var place = DataService.GetPlace( Coordinate );
-      place.EnsureUnit( this );
-
-      var player = DataService.GetPlayer( Owner );
-      player.EnsureUnit( this );
 
       base.Initialize();
     }
@@ -84,7 +79,7 @@ namespace HelloWorld
       {
         Guid,
         Name,
-        Coordinate = GetPlayer().ConvertCoordinate( Coordinate ),
+        Coordinate = Coordinate.ToRelative( GetPlayer() ),
         Mobility,
         ActionState = ActionState.ToString(),
         Descriptor = Descriptor.GetInfo(),

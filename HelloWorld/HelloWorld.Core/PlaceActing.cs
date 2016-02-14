@@ -35,7 +35,7 @@ namespace HelloWorld
     /// 在指定地块开始这个活动
     /// </summary>
     /// <param name="place">要开始活动的地块</param>
-    internal static PlaceActing StartAt( Place place, ActionDescriptorBase action )
+    internal static PlaceActing StartAt( GamePlayer player, Place place, ActionDescriptorBase action )
     {
 
       if ( place == null )
@@ -46,6 +46,7 @@ namespace HelloWorld
       {
         StartOn = DateTime.UtcNow,
         ActionDescriptor = action,
+        PlayerID = player.Guid,
         Place = place,
       };
 
@@ -67,6 +68,24 @@ namespace HelloWorld
     /// </summary>
     public Place Place { get; private set; }
 
+
+    /// <summary>
+    /// 发起活动的玩家ID
+    /// </summary>
+    public Guid? PlayerID { get; private set; }
+
+
+    /// <summary>
+    /// 获取发起活动的玩家对象
+    /// </summary>
+    /// <returns></returns>
+    public GamePlayer GetPlayer()
+    {
+      if ( PlayerID == null )
+        return null;
+
+      return GameHost.DataService.GetPlayer( PlayerID.Value );
+    }
 
     /// <summary>
     /// 检查活动状态
@@ -97,6 +116,7 @@ namespace HelloWorld
       return JObject.FromObject( new
       {
         StartOn,
+        PlayerID,
         ActionDescriptor = ActionDescriptor.Guid,
       } );
     }
@@ -123,6 +143,7 @@ namespace HelloWorld
         return null;
 
       var startOn = data.Value<DateTime>( "StartOn" );
+      var playerId = data.GuidValue( "PlayerID" );
       var action = GameHost.GameRules.GetDataItem<ActionDescriptorBase>( data.GuidValue( "ActionDescriptor" ) );
 
       if ( action == null )
@@ -132,6 +153,7 @@ namespace HelloWorld
 
       return new PlaceActing
       {
+        PlayerID = playerId,
         Place = place,
         StartOn = startOn,
         ActionDescriptor = action,

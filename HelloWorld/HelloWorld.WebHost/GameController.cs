@@ -56,7 +56,7 @@ namespace HelloWorld.WebHost
     {
       await Task.Yield();
       var place = Player.GetPlace( Coordinate.Parse( coordinate ) );
-      if ( place.Owner != Player.UserID && Player.Units().All( item => item.Coordinate.Distance( place.Coordinate ) > 1 ) )
+      if ( place.Owner != Player.Guid && Player.Units().All( item => item.Coordinate.Distance( place.Coordinate ) > 1 ) )
         return null;
 
 
@@ -73,7 +73,7 @@ namespace HelloWorld.WebHost
     {
 
       var place = await GetPlace( coordinate );
-      if ( place == null || place.Owner != Player.UserID )
+      if ( place == null || place.Owner != Player.Guid )
         throw new InvalidOperationException( "不能在不是自己的领土上进行活动" );
 
 
@@ -112,7 +112,7 @@ namespace HelloWorld.WebHost
     {
       await Task.Yield();
 
-      return Host.MessageService.GetMessages( Player.UserID, start ).Take( count ).ToArray();
+      return Host.MessageService.GetMessages( Player.Guid, start ).Take( count ).ToArray();
     }
 
   }

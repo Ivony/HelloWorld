@@ -1,0 +1,7 @@
+{
+  "ID": "{6ED6C430-E1A5-4E93-911E-B21738EAFC4F}",
+  "Type": "HelloWorld.BuildingDescriptor",
+  "InstanceType": "HelloWorld.Starve.Plant",
+  "Name": "小麦"
+
+}

@@ -58,5 +58,26 @@ namespace HelloWorld
 
 
 
+    /// <summary>
+    /// 将绝对坐标转换为相对坐标
+    /// </summary>
+    /// <param name="coordinate">要转换的绝对坐标</param>
+    /// <returns></returns>
+    public static Coordinate ToRelative( this Coordinate coordinate, GamePlayer player )
+    {
+      return coordinate - player.Initiation;
+    }
+
+
+    /// <summary>
+    /// 将相对坐标转换为绝对坐标
+    /// </summary>
+    /// <param name="coordinate">要转换的相对坐标</param>
+    public static Coordinate ToAbsolute( this Coordinate coordinate, GamePlayer player )
+    {
+      return coordinate + player.Initiation;
+    }
+
+
   }
 }

@@ -1,0 +1,13 @@
+{
+  "ID": "{72213162-0D16-4C53-89F3-AE2A0180E031}",
+  "Type": "HelloWorld.UnitDescriptor",
+  "InstanceType": "HelloWorld.Starve.Self",
+  "Name": "自己",
+  "Description": "这是你唯一能控制的人",
+  "Mobility":
+  {
+    "Maximum": 0,
+    "RecoveryCycle": "00:00:00",
+    "RecoveryScale": 0
+  }
+}

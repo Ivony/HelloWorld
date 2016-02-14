@@ -12,7 +12,7 @@ namespace HelloWorld
     protected GamePlayer( IGameDataService service, Guid userId )
     {
       DataService = service;
-      UserID = userId;
+      Guid = userId;
     }
 
 
@@ -22,7 +22,7 @@ namespace HelloWorld
     /// <summary>
     /// 用户 ID
     /// </summary>
-    public Guid UserID { get; private set; }
+    public Guid Guid { get; private set; }
 
     /// <summary>
     /// 昵称
@@ -70,17 +70,6 @@ namespace HelloWorld
 
 
     /// <summary>
-    /// 将绝对坐标转换为相对坐标
-    /// </summary>
-    /// <param name="coordinate">要转换的绝对坐标</param>
-    /// <returns></returns>
-    public Coordinate ConvertCoordinate( Coordinate coordinate )
-    {
-      return coordinate - Initiation;
-    }
-
-
-    /// <summary>
     /// 获取可以用于显示的玩家信息
     /// </summary>
     /// <returns></returns>
@@ -101,12 +90,12 @@ namespace HelloWorld
       if ( player == null )
         return false;
 
-      return player.UserID == UserID;
+      return player.Guid == Guid;
     }
 
     public override int GetHashCode()
     {
-      return UserID.GetHashCode();
+      return Guid.GetHashCode();
     }
 
 
@@ -122,15 +111,6 @@ namespace HelloWorld
       return player1.Equals( player2 );
     }
 
-
-
-    /// <summary>
-    /// 确保指定的单位在自己的单位列表中
-    /// </summary>
-    /// <param name="unit"></param>
-    internal void EnsureUnit( Unit unit )
-    {
-    }
 
     public static bool operator !=( GamePlayer player1, GamePlayer player2 )
     {

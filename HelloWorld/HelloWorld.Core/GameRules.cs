@@ -26,9 +26,13 @@ namespace HelloWorld
 
     private IJsonDataResolver _dataResolver;
     private ITypeResolver _typeResolver;
+    private IGameDataService _dataService;
+
+    public IGameDataService DataService { get { return GameHost.DataService; } }
 
     protected GameRules( IJsonDataResolver dataResolver = null, ITypeResolver typeResolver = null )
     {
+
       _dataResolver = dataResolver ?? new JsonDataResolver();
       _typeResolver = typeResolver ?? new TypeResolver();
     }
@@ -53,6 +57,20 @@ namespace HelloWorld
         _collection.Add( item );
       }
     }
+
+
+
+
+    /// <summary>
+    /// 获取指定类型的规则集合
+    /// </summary>
+    /// <typeparam name="T">规则类型</typeparam>
+    /// <returns>指定类型的规则集合</returns>
+    public T[] GetRules<T>() where T : GameRuleItem
+    {
+      return _collection.OfType<T>().ToArray();
+    }
+
 
 
     protected ActionDescriptor[] AllActions()
@@ -147,7 +165,7 @@ namespace HelloWorld
         i++;
         var initiation = Coordinate.RandomCoordinate( 1000, 1000 );
 
-        if ( initiation.NearlyCoordinates( 6 ).Any( item => GameHost.DataService.GetPlace( item ).Owner != null ) )
+        if ( initiation.NearlyCoordinates( 6 ).Any( item => DataService.GetPlace( item ).Owner != null ) )
           continue;
 
         return initiation;
@@ -165,14 +183,13 @@ namespace HelloWorld
     /// <param name="player"></param>
     public override void InitializePlayer( GamePlayer player )
     {
-      GameHost.DataService.GetPlace( player.Initiation ).Owner = player.UserID;
+    }
 
 
-      foreach ( var coordinate in player.Initiation.NearlyCoordinates( 3 ) )
-      {
-        var place = GameHost.DataService.GetPlace( coordinate );
-        place.Owner = player.UserID;
-      }
+
+    public override Place CreatePlace( Coordinate coordinate )
+    {
+      return new Place( coordinate );
     }
 
   }

@@ -29,7 +29,7 @@ namespace HelloWorld
     /// 获取可以进行的操作列表
     /// </summary>
     /// <returns>可以进行的操作列表</returns>
-    public abstract ActionDescriptor[] GetActions();
+    public abstract ActionDescriptor[] GetActions( GamePlayer player );
 
 
 

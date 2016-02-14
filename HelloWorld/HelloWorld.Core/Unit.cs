@@ -64,7 +64,7 @@ namespace HelloWorld
         Name = DataService.NameService.AllocateName();
 
 
-      UnitDescriptor = GameHost.GameRules.GetDataItem<UnitDescriptor>( JsonObject.GuidValue( "Descriptor" ) );
+      Descriptor = GameHost.GameRules.GetDataItem<UnitDescriptor>( JsonObject.GuidValue( "Descriptor" ) );
       var place = DataService.GetPlace( Coordinate );
       place.EnsureUnit( this );
 
@@ -87,7 +87,7 @@ namespace HelloWorld
         Coordinate = GetPlayer().ConvertCoordinate( Coordinate ),
         Mobility,
         ActionState = ActionState.ToString(),
-        Descriptor = UnitDescriptor.GetInfo(),
+        Descriptor = Descriptor.GetInfo(),
       };
     }
 
@@ -120,7 +120,7 @@ namespace HelloWorld
     /// <summary>
     /// 单位描述对象
     /// </summary>
-    public UnitDescriptor UnitDescriptor { get; private set; }
+    public UnitDescriptor Descriptor { get; private set; }
 
 
 
@@ -176,16 +176,16 @@ namespace HelloWorld
     {
       var restTime = now - LastActTime;
 
-      while ( Mobility < UnitDescriptor.MobilityMaximum )
+      while ( Mobility < Descriptor.MobilityMaximum )
       {
-        restTime -= UnitDescriptor.MobilityRecoveryCycle;
+        restTime -= Descriptor.MobilityRecoveryCycle;
         if ( restTime < TimeSpan.Zero )
           break;
 
-        Mobility += UnitDescriptor.MobilityRecoveryScale;
-        if ( Mobility > UnitDescriptor.MobilityMaximum )
+        Mobility += Descriptor.MobilityRecoveryScale;
+        if ( Mobility > Descriptor.MobilityMaximum )
         {
-          Mobility = UnitDescriptor.MobilityMaximum;
+          Mobility = Descriptor.MobilityMaximum;
           break;
         }
       }
@@ -200,7 +200,7 @@ namespace HelloWorld
     public virtual ActionDescriptor[] GetActions()
     {
 
-      return UnitDescriptor.GetActions( this );
+      return Descriptor.GetActions( this );
 
     }
 
@@ -240,18 +240,6 @@ namespace HelloWorld
     /// 单位所有者玩家对象
     /// </summary>
     public GamePlayer GetPlayer() { return DataService.GetPlayer( Owner ); }
-
-
-
-    /// <summary>
-    /// 获取单位是否满足指定的限制条件
-    /// </summary>
-    /// <param name="constraint">限制条件</param>
-    /// <returns>是否满足</returns>
-    public virtual bool IsSatisfy( ActionConstraint constraint )
-    {
-      return true;
-    }
 
 
 

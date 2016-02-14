@@ -49,17 +49,6 @@ namespace HelloWorld
 
 
     /// <summary>
-    /// 检查建筑物是否满足建筑物限制
-    /// </summary>
-    /// <param name="constraint"></param>
-    /// <returns></returns>
-    public bool IsSatisfy( ActionConstraint constraint )
-    {
-      return true;
-    }
-
-
-    /// <summary>
     /// 进行例行检查
     /// </summary>
     /// <param name="now"></param>

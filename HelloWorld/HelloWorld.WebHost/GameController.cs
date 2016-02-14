@@ -80,7 +80,7 @@ namespace HelloWorld.WebHost
 
 
       var gameItem = GameHost.GameRules.GetDataItem<ActionDescriptorBase>( id );
-      var acting = gameItem.TryStartAt( place );
+      var acting = gameItem.TryStartAt( Player, place );
 
       if ( acting != null )
         return new

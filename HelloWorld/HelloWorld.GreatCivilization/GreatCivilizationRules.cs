@@ -72,7 +72,7 @@ namespace HelloWorld.GreatCivilization
 
     public override ActionConstraint CreateConstraint( JObject data )
     {
-      return new ActionConstraint( this, data );
+      return new ActionConstraint( this, data ?? new JObject() );
     }
   }
 }

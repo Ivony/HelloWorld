@@ -39,7 +39,7 @@ namespace HelloWorld
     /// </summary>
     /// <param name="place">要开展活动的地块</param>
     /// <returns>是否可以开展活动</returns>
-    public abstract bool CanStartAt( PlaceBase place );
+    public abstract bool CanStartAt( GamePlayer player, PlaceBase place );
 
 
     /// <summary>
@@ -47,7 +47,7 @@ namespace HelloWorld
     /// </summary>
     /// <param name="place">进行活动的地块</param>
     /// <returns>是否成功</returns>
-    public abstract PlaceActing TryStartAt( PlaceBase place );
+    public abstract PlaceActing TryStartAt( GamePlayer player, PlaceBase place );
 
 
     /// <summary>

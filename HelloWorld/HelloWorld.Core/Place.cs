@@ -303,7 +303,7 @@ namespace HelloWorld
       } );
 
       if ( Acting == null )
-        data["Actions"] = JArray.FromObject( GetActions().Select( item => item.GetInfo() ) );
+        data["Actions"] = JArray.FromObject( GetActions( player ).Select( item => item.GetInfo() ) );
 
       else
         data["Action"] = JObject.FromObject( Acting.GetInfo() );

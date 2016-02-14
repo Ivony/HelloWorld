@@ -14,6 +14,7 @@ namespace HelloWorld.GreatCivilization
     {
       if ( place.Owner == this.Owner )//在自己的领土上移动不需要移动力
         return 0;
+
       return base.MobilityRequired( place );
     }
 

@@ -73,7 +73,7 @@ namespace HelloWorld
     /// </summary>
     /// <param name="place">地块对象</param>
     /// <returns>是否可以开展这个活动</returns>
-    public override sealed bool CanStartAt( PlaceBase place )
+    public override sealed bool CanStartAt( GamePlayer player, PlaceBase place )
     {
       var instance = place as Place;
 
@@ -81,19 +81,11 @@ namespace HelloWorld
         return false; ;
 
 
-      return CanStartAt( instance );
+      return Constraint.IsSatisfy( player, place );
     }
 
 
-    /// <summary>
-    /// 确认是否可以在指定地块开始这个活动
-    /// </summary>
-    /// <param name="place">地块对象</param>
-    /// <returns>是否可以开展这个活动</returns>
-    protected virtual bool CanStartAt( Place place )
-    {
-      return false;
-    }
+
 
 
 
@@ -102,53 +94,46 @@ namespace HelloWorld
     /// </summary>
     /// <param name="place">要开始活动的地方</param>
     /// <returns>正在进行的活动</returns>
-    public override PlaceActing TryStartAt( PlaceBase place )
+    public override PlaceActing TryStartAt( GamePlayer player, PlaceBase place )
     {
 
-      var instance = place as Place;
-      if ( instance == null )
-        return null;
 
-      return TryStartAt( instance );
-
-    }
-
-
-    /// <summary>
-    /// 尝试在指定地块开始这个活动 
-    /// </summary>
-    /// <param name="place">要开始活动的地方</param>
-    /// <returns>正在进行的活动</returns>
-    protected virtual PlaceActing TryStartAt( Place place )
-    {
+      if ( player == null )
+        throw new ArgumentNullException( "player" );
 
       if ( place == null )
         throw new ArgumentNullException( "place" );
 
 
-      if ( place.Owner == null )
-        throw new InvalidOperationException( "不能在无主土地上开始活动" );
 
-      if ( place.Acting != null )
-        throw new InvalidOperationException( "土地上已经存在一个正在进行的活动" );
+      string errorMessage;
+      if ( Constraint.IsSatisfy( player, place, out errorMessage ) == false )
+        throw new InvalidOperationException( errorMessage );
 
-      if ( place.Terrain.IsSatisfy( Constraint ) == false )
-        throw new InvalidOperationException( "地形不满足活动需求" );
 
-      if ( place.TraficNetwork.IsSatisfy( Constraint ) == false )
-        throw new InvalidOperationException( "交通网络不满足活动需求" );
 
-      if ( place.Building.IsSatisfy( Constraint ) == false )
-        throw new InvalidOperationException( "建筑不满足活动需求" );
+      var instance = place as Place;
+      if ( instance == null )
+        return null;
 
-      if ( place.GetUnits().All( item => item.IsSatisfy( Constraint ) == false ) )
-        throw new InvalidOperationException( "单位不满足活动需求" );
+      return TryStartAt( player, instance );
+
+    }
+
+
+    /// <summary>
+    /// 尝试在指定地块开始这个活动 
+    /// </summary>
+    /// <param name="place">要开始活动的地方</param>
+    /// <returns>正在进行的活动</returns>
+    protected virtual PlaceActing TryStartAt( GamePlayer player, Place place )
+    {
 
 
       lock ( place )
       {
         if ( place.Acting != null )
-          throw new InvalidOperationException();
+          throw new InvalidOperationException( "土地上已经存在一个正在进行的活动" );
 
         if ( Requirement.TryInvest( place ) == false )
           return null;

@@ -5,10 +5,14 @@
   {
     "Terrain":
     {
-      "Decriptors":
+      "Descriptors":
       [
         "{523BB3EF-EE89-4C1F-B51E-26B08C4D378B}"
       ]
+    },
+    "Building":
+    {
+      "Type": "HelloWorld.GreatCivilization.Surface"
     }
   },
   "Returns":

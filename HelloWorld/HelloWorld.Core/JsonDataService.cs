@@ -20,6 +20,8 @@ namespace HelloWorld
       Directory.CreateDirectory( unitsDirectory = Path.Combine( DataRoot, "Units" ) );
       Directory.CreateDirectory( placesDirectory = Path.Combine( DataRoot, "Places" ) );
       Directory.CreateDirectory( playersDirectory = Path.Combine( DataRoot, "Players" ) );
+
+      _nameService = new DefaultNameService( dataRoot );
     }
 
 
@@ -44,7 +46,7 @@ namespace HelloWorld
 
 
 
-    private INameService _nameService = new DefaultNameService();
+    private INameService _nameService;
 
     /// <summary>
     /// 获取名称服务
@@ -215,7 +217,7 @@ namespace HelloWorld
 
         var filepath = Path.ChangeExtension( Path.Combine( playersDirectory, userId.ToString( "D" ) ), _extensions );
 
-        var data = JsonDataItem.LoadData( filepath, new { Nickname = "Guest", Initiation = GameHost.GameRules.GetInitiation(), Init = true, Resources = new ItemCollection() } );
+        var data = JsonDataItem.LoadData( filepath, new { Nickname = NameService.AllocateName(), Initiation = GameHost.GameRules.GetInitiation(), Init = true, Resources = new ItemCollection() } );
 
 
         player = new JsonPlayer( this, userId, data );

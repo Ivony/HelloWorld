@@ -37,7 +37,9 @@ namespace HelloWorld
 
         file.SetLength( 0 );
 
-        new StreamWriter( file, Encoding.UTF8 ).Write( string.Join( "\n", allocatedNames ) );
+        var writer = new StreamWriter( file, Encoding.UTF8 );
+        writer.Write( string.Join( "\n", allocatedNames ) );
+        writer.Flush();
       }
     }
 

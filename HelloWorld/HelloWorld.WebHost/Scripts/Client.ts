@@ -122,10 +122,17 @@ module hello
     }
 
 
-    public toHtml()
-    {
-      return "<b> " + this.name + "</b> " + this.description;
+  }
 
+  export class Terrain
+  {
+    public name: string;
+    public description: string;
+
+    constructor(data: any)
+    {
+      this.name = data.Name;
+      this.description = data.Description
     }
 
   }
@@ -135,6 +142,7 @@ module hello
 
     public coordinate: Coordinate;
     public building: Building;
+    public terrain: Terrain;
 
 
     public actions: Array<any>;
@@ -146,7 +154,8 @@ module hello
 
 
       this.coordinate = Coordinate.parse(data.Coordinate);
-      this.building = new Building(data.Building);
+      this.building = data.Building == null ? null : new Building(data.Building);
+      this.terrain = data.Terrain == null ? null : new Terrain(data.Terrain);
       this.actions = data.Actions;
       this.acting = data.Action;
 
@@ -221,14 +230,18 @@ module hello
 
   export function bindPlace(place: Place, direction: string, unit: Unit, dom: JQuery)
   {
-    var name = place.building.name;
-    if (place.acting != null)
-      name += "(" + place.acting.ActionDescriptor.Name + ")"
+
+    if (place.building != null)
+      dom.find(".building").text(place.building.name);
+
+    if (place.terrain != null)
+      dom.find(".terrain").text(place.terrain.name);
+
+    dom.find(".coordinate").text(place.coordinate.toString());
+
 
     if (unit != null)
-      dom.find("a").text(name).css("cursor", "pointer").click(() => moveTo(unit.ID, direction));
-    else
-      dom.find("a").text(name);
+      dom.find("a").css("cursor", "pointer").click(() => moveTo(unit.ID, direction));
   }
 
   export function moveTo(unitId: string, direction: string)
@@ -263,7 +276,7 @@ $(() =>
     hello.Client.Place(coordinate, place =>
     {
 
-      $("#map #placeO").text(place.building.name).append($("<div />").text(coordinate.toString()));
+      hello.bindPlace(place, null, null, $("#map #placeO"));
 
 
       hello.Client.Place(coordinate.NW, place => hello.bindPlace(place, "NW", unit, $("#map #placeNW")));

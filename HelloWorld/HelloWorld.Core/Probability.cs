@@ -95,12 +95,12 @@ namespace HelloWorld
       public T Choose()
       {
         var basis = mappings.Sum( item => item.Item1 );
-        var value = random.NextDouble();
+        var value = random.NextDouble() * basis;
 
 
         foreach ( var item in mappings )
         {
-          if ( value < item.Item1 / basis )
+          if ( value < item.Item1 )
             return item.Item2;
 
           value -= item.Item1;

@@ -27,5 +27,14 @@ namespace HelloWorld.GreatCivilization
 
     }
 
+
+    public override object GetInfo( GamePlayer player )
+    {
+      if ( Owner != player.Guid && player.Units().All( item => item.Coordinate.Distance( Coordinate ) > 1 ) )
+        return null;
+
+      return base.GetInfo( player );
+    }
+
   }
 }

@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Map.cs" />
+    <Compile Include="Mineral.cs" />
     <Compile Include="Plant.cs" />
     <Compile Include="Self.cs" />
     <Compile Include="StarveGameRules.cs" />
@@ -89,6 +90,9 @@
     <EmbeddedResource Include="Rules\c.buildings\plants\小麦.json" />
     <EmbeddedResource Include="Rules\c.buildings\plants\梨树.json" />
     <EmbeddedResource Include="Rules\c.buildings\plants\野花.json" />
+    <EmbeddedResource Include="Rules\c.buildings\minerals\石头.json" />
+    <EmbeddedResource Include="Rules\c.buildings\minerals\铁矿.json" />
+    <EmbeddedResource Include="Rules\c.buildings\minerals\青铜矿.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Rules\e.actions\" />

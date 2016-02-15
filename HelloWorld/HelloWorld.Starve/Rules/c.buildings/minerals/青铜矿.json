@@ -1,0 +1,7 @@
+{
+  "ID": "{10D946F8-1DBB-46D1-AF16-A70E69AA1329}",
+  "Type": "HelloWorld.BuildingDescriptor",
+  "InstanceType": "HelloWorld.Starve.Mineral",
+  "Name": "青铜矿"
+
+}

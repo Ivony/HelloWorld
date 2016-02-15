@@ -85,16 +85,22 @@ var hello;
             this.name = data.Name;
             this.description = data.Description;
         }
-        Building.prototype.toHtml = function () {
-            return "<b> " + this.name + "</b> " + this.description;
-        };
         return Building;
     })();
     hello.Building = Building;
+    var Terrain = (function () {
+        function Terrain(data) {
+            this.name = data.Name;
+            this.description = data.Description;
+        }
+        return Terrain;
+    })();
+    hello.Terrain = Terrain;
     var Place = (function () {
         function Place(data) {
             this.coordinate = Coordinate.parse(data.Coordinate);
-            this.building = new Building(data.Building);
+            this.building = data.Building == null ? null : new Building(data.Building);
+            this.terrain = data.Terrain == null ? null : new Terrain(data.Terrain);
             this.actions = data.Actions;
             this.acting = data.Action;
         }
@@ -137,13 +143,13 @@ var hello;
     })();
     hello.Client = Client;
     function bindPlace(place, direction, unit, dom) {
-        var name = place.building.name;
-        if (place.acting != null)
-            name += "(" + place.acting.ActionDescriptor.Name + ")";
+        if (place.building != null)
+            dom.find(".building").text(place.building.name);
+        if (place.terrain != null)
+            dom.find(".terrain").text(place.terrain.name);
+        dom.find(".coordinate").text(place.coordinate.toString());
         if (unit != null)
-            dom.find("a").text(name).css("cursor", "pointer").click(function () { return moveTo(unit.ID, direction); });
-        else
-            dom.find("a").text(name);
+            dom.find("a").css("cursor", "pointer").click(function () { return moveTo(unit.ID, direction); });
     }
     hello.bindPlace = bindPlace;
     function moveTo(unitId, direction) {
@@ -162,7 +168,7 @@ $(function () {
         else
             coordinate = unit.Coordinate;
         hello.Client.Place(coordinate, function (place) {
-            $("#map #placeO").text(place.building.name).append($("<div />").text(coordinate.toString()));
+            hello.bindPlace(place, null, null, $("#map #placeO"));
             hello.Client.Place(coordinate.NW, function (place) { return hello.bindPlace(place, "NW", unit, $("#map #placeNW")); });
             hello.Client.Place(coordinate.NE, function (place) { return hello.bindPlace(place, "NE", unit, $("#map #placeNE")); });
             hello.Client.Place(coordinate.E, function (place) { return hello.bindPlace(place, "E", unit, $("#map #placeE")); });

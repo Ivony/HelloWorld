@@ -1,0 +1,7 @@
+{
+  "ID": "{4740FDAC-C0C2-469D-9C2A-029DB81E7FF4}",
+  "Type": "HelloWorld.BuildingDescriptor",
+  "InstanceType": "HelloWorld.Starve.Mineral",
+  "Name": "石头"
+
+}

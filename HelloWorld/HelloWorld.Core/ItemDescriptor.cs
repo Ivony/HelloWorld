@@ -23,8 +23,15 @@ namespace HelloWorld
 
       Name = data.Value<string>( "Name" );
       Description = data.Value<string>( "Description" );
+
+      InstanceType = rules.GetType( (string) data.Value<string>( "InstanceType" ), typeof( Item ) );
+
     }
 
+
+
+
+    public Type InstanceType { get; private set; }
 
 
 

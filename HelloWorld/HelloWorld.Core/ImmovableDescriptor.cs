@@ -66,12 +66,15 @@ namespace HelloWorld
     }
 
 
+
+
+
     /// <summary>
-    /// 创建一个 Building 对象
+    /// 创建一个指定类型的 Immovable 对象
     /// </summary>
     /// <param name="place">所处地块</param>
-    /// <returns>Building 对象</returns>
-    public Building CreateBuilding( Place place )
+    /// <returns>Immovable 对象</returns>
+    protected T CreateInstance<T>( Place place ) where T : Immovable
     {
       var data = new JObject() as dynamic;
 
@@ -79,7 +82,7 @@ namespace HelloWorld
 
 
       var type = InstanceType;
-      var building = (Building) Activator.CreateInstance( type );
+      var building = (T) Activator.CreateInstance( type );
 
       building.InitializeData( place.DataService, data );
       return building;
